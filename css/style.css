@@ -1,0 +1,68 @@
+.split-intro h1 {
+  font-weight: 400;
+  text-transform: uppercase;
+  font-size: 32px;
+  line-height: 16px;
+  margin-bottom: 40px;
+  letter-spacing: 0.4px;
+  color: #eb5e28;
+}
+
+.split-intro .tagline {
+  color: #fffcf2;
+  font-size: 32px;
+}
+
+body.page-template-page-fullsingle-split {
+  background-color: #403d39;
+  font-family: "Gill Sans", sans-serif;
+  font-weight: 400;
+  font-size: 21px;
+  line-height: 33px;
+  letter-spacing: -0.2px;
+  color: #ccd5ae;
+  animation: fadein 2s;
+}
+
+body.page-template-page-fullsingle-split p {
+  color: #d4a373;
+}
+
+.split-credit p a {
+  color: #d4a373;
+}
+
+.split-bio p {
+  color: #848d96;
+  margin-bottom: 20px;
+  line-height: inherit;
+}
+.split-bio a {
+  color: #eb5e28;
+  transition-duration: 0.5s;
+  border-bottom: 1px dotted #eb5e28;
+}
+.split-bio a:hover {
+  color: #eb5e28;
+  transition-duration: 0.1s;
+  border-bottom: 1px dotted #eb5e28;
+}
+
+.split-lists .split-list h3 {
+  font-weight: 400;
+  text-transform: uppercase;
+  font-size: 11px;
+  line-height: 11px;
+  margin-bottom: 31px;
+  color: #fffcf2;
+  letter-spacing: 2px;
+  opacity: 0.5;
+}
+.split-lists .split-list ul li a {
+  color: #fffcf2;
+  transition-duration: 0.5s;
+}
+.split-lists .split-list ul li a:hover {
+  color: #eb5e28;
+  transition-duration: 0.1s;
+}
