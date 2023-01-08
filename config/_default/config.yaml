@@ -1,6 +1,7 @@
-baseURL: https://louislef299.github.io/portfolio/
+baseURL: https://louislef299.github.io/
 languageCode: en-us 
-title: Acme Corporation 
-theme: Eclectic 
+title: Louis Portfolio 
+theme: hugo-split-theme
 enableEmoji: true
 enableGitInfo: true
+copyright: "&copy;2023 Louis Lefebvre"
