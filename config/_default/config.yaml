@@ -1,0 +1,6 @@
+baseURL: https://louislef299.github.io/portfolio/
+languageCode: en-us 
+title: Acme Corporation 
+theme: Eclectic 
+enableEmoji: true
+enableGitInfo: true
