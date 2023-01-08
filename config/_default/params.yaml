@@ -17,11 +17,11 @@ links:
   - list1:
       heading: Connect
       link:
-        - text: Blog
-          url: '#'
-          new_tab: true
+      #   - text: Blog
+      #     url: '#'
+      #     new_tab: true
         - text: Email
-          url: '#'
+          url: 'mailto:lefeb073@umn.edu'
           new_tab: true
         - text: Github
           url: 'https://github.com/louislef299'
@@ -30,7 +30,7 @@ links:
       heading: Social
       link:
         - text: Twitter
-          url: '#'
+          url: 'https://twitter.com/real_lefavorite'
           new_tab: true
         - text: LinkedIn
           url: 'https://linkedin.com/in/louislef299'
