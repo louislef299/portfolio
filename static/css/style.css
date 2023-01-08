@@ -1,0 +1,14 @@
+.split-intro h1 {
+    font-weight: 400;
+    text-transform: uppercase;
+    font-size: 32px;
+    line-height: 16px;
+    margin-bottom: 40px;
+    letter-spacing: 0.4px;
+    color: #47bec7;
+  }
+
+  .split-intro .tagline {
+    color: #CCCCCC;
+    font-size: 32px;
+  }

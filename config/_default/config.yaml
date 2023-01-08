@@ -5,4 +5,3 @@ theme: hugo-split-theme
 enableEmoji: true
 enableGitInfo: true
 copyright: "&copy;2023 Louis Lefebvre"
-favicon: "favicon.ico"

@@ -1,6 +1,11 @@
 author: "Louis Lefebvre"
 description: "A portfolio website for Louis Lefebvre"
 twitterHandle: "louislef299"
+favicon: "favicon.ico"
+
+custom:
+  css: 
+    enable: true
 
 visual:
   image:
