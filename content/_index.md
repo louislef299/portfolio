@@ -3,7 +3,7 @@ title: "Louis Lefebvre"
 tagline: "Distributed Computing Engineer"
 ---
 
-Hey, my name is Louis! I'm an endurance athlete that writes code and likes to travel around the states. I began writing code at 14 years old and my imagination was instantly drawn to the unlimited possibilities of the internet. This led me to attend the University of Minnesota in 2017 for Computer Science. My interests lie around computer networks, operating systems, and open source code maintenance written in Go. 
+Hey, my name is Louis! I'm an endurance athlete that writes code and likes to travel around the world. I began writing code at 14 years old and my imagination was instantly drawn to the unlimited possibilities of the internet. This led me to attend the University of Minnesota in 2017 for Computer Science. My interests lie around computer networks, operating systems, and open source code maintenance written in Go. 
 
 In the professional environment, I constantly wear different hats shifting from IT support, to Solutions Architect, to DevOps engineer, to Platform Engineer into Network Engineer on any given day. My over-arching goals are to provide business value through software by reducing codebase complexity and cutting cloud costs by shrinking environment size with proper software tooling and languages. Currently, I work at Medtronic and support our Kubernetes platform.
 
