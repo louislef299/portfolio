@@ -32,7 +32,7 @@ links:
         # - text: Blog
         #   url: '/blog'
         - text: Email
-          url: 'mailto:lefeb073@umn.edu'
+          url: 'mailto:louislefebvre1999@gmail.com'
           new_tab: true
         - text: Github
           url: 'https://github.com/louislef299'
