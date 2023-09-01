@@ -13,21 +13,23 @@ visual:
     position: "left center"
 
 AdditionalImages:
-- "IMG_0417.jpeg"
-- "IMG_1594.jpeg"
-- "4J8A0080.jpeg"
-- "IMG_2579.jpeg"
-- "IMG_5260.jpeg"
-- "IMG_0057.jpeg"
-- "IMG_4597.jpeg"
-- "IMG_5625.jpeg"
+- name: "IMG_0417.jpeg"
+- name: "IMG_1594.jpeg"
+- name: "4J8A0080.jpeg"
+- name: "IMG_2579.jpeg"
+- name: "IMG_5260.jpeg"
+- name: "IMG_0057.jpeg"
+- name: "IMG_4597.jpeg"
+- name: "IMG_5625.jpeg"
+- name: "background.jpeg"
+  position: "left center"
 
 links:
   - list1:
       heading: Connect
       link:
-        - text: Blog
-          url: '/blog'
+        # - text: Blog
+        #   url: '/blog'
         - text: Email
           url: 'mailto:lefeb073@umn.edu'
           new_tab: true
