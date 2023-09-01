@@ -41,3 +41,7 @@
 {{ if and (.Site.GoogleAnalytics) (not (in (printf "%#v" .Site.BaseURL) "localhost")) }}
   {{ template "_internal/google_analytics.html" . }}
 {{ end }}
+
+<!-- Javascript -->
+{{ $js := resources.Get "js/main.js" | js.Build (dict "params" (dict "Album" site.Params.AdditionalImages) "minify" hugo.IsProduction)}}
+<script src="{{ $js.RelPermalink }}" defer></script>

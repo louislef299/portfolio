@@ -1,7 +1,6 @@
 author: "Louis Lefebvre"
 description: "A portfolio website for Louis Lefebvre"
 twitterHandle: "louislef299"
-favicon: "favicon.ico"
 
 custom:
   css: 
@@ -13,13 +12,22 @@ visual:
     file: "image/background.jpeg"
     position: "left center"
 
+AdditionalImages:
+- "IMG_0417.jpeg"
+- "IMG_1594.jpeg"
+- "4J8A0080.jpeg"
+- "IMG_2579.jpeg"
+- "IMG_5260.jpeg"
+- "IMG_0057.jpeg"
+- "IMG_4597.jpeg"
+- "IMG_5625.jpeg"
+
 links:
   - list1:
       heading: Connect
       link:
-      #   - text: Blog
-      #     url: '#'
-      #     new_tab: true
+        - text: Blog
+          url: '/blog'
         - text: Email
           url: 'mailto:lefeb073@umn.edu'
           new_tab: true
