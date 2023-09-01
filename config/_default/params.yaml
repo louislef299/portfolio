@@ -14,9 +14,11 @@ visual:
 
 AdditionalImages:
 - name: "IMG_0417.jpeg"
+  position: "right center"
 - name: "IMG_1594.jpeg"
 - name: "4J8A0080.jpeg"
 - name: "IMG_2579.jpeg"
+  position: "right center"
 - name: "IMG_5260.jpeg"
 - name: "IMG_0057.jpeg"
 - name: "IMG_4597.jpeg"
