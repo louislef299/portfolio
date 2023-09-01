@@ -1,0 +1,1 @@
+(()=>{var e=["IMG_0417.jpeg","IMG_1594.jpeg","4J8A0080.jpeg","IMG_2579.jpeg","IMG_5260.jpeg","IMG_0057.jpeg","IMG_4597.jpeg","IMG_5625.jpeg"];var g=e;function l(a){a.target.style.backgroundImage="url(/image/"+g[Math.floor(Math.random()*g.length)]+")"}var p=document.getElementsByClassName("split-image")[0];p.onclick=l;})();
