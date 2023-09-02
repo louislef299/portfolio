@@ -29,8 +29,8 @@ links:
   - list1:
       heading: Connect
       link:
-        # - text: Blog
-        #   url: '/blog'
+        - text: Blog
+          url: '/blog'
         - text: Email
           url: 'mailto:louislefebvre1999@gmail.com'
           new_tab: true

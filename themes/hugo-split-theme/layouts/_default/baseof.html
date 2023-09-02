@@ -5,7 +5,16 @@
   {{ partial "head" . }}
 </head>
 
-<body id="fullsingle" class="page-template-page-fullsingle-split">
+<body id="fullsingle" class="{{- if (eq .Kind `home`) -}}
+{{- print "page-template-page-fullsingle-split" -}}
+{{- else -}}
+{{- print "page-template-blog-fullsingle" -}}
+{{- end -}}
+">
+
+  {{- if (ne .Kind `home`) }}
+  {{- partialCached "header.html" . .Page }}
+  {{- end }}
 
   {{- block "main" . }}{{ end }}
 
