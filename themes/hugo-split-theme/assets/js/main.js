@@ -1,6 +1,6 @@
 import * as params from '@params';
 
-let imgs = params.Album
+let imgs = params.Album;
 function scrollImages(event) {
     let targetImage = imgs[Math.floor(Math.random() * imgs.length)];
     event.target.style.backgroundImage = "url(/image/"+targetImage.name+")";

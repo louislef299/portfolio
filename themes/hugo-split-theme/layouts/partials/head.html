@@ -43,5 +43,7 @@
 {{ end }}
 
 <!-- Javascript -->
+{{ if (eq .Kind `home`) }}
 {{ $js := resources.Get "js/main.js" | js.Build (dict "params" (dict "Album" site.Params.AdditionalImages) "minify" hugo.IsProduction)}}
 <script src="{{ $js.RelPermalink }}" defer></script>
+{{ end }}
