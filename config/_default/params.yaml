@@ -24,6 +24,10 @@ AdditionalImages:
 - name: "IMG_4597.jpeg"
 - name: "background.jpeg"
   position: "left center"
+- name: "IMG_0628.jpeg"
+- name: "IMG_0654.jpeg"
+- name: "IMG_7826.jpeg"
+- name: "IMG_9335.jpeg"
 
 links:
   - list1:
@@ -40,8 +44,8 @@ links:
   - list2:
       heading: Social
       link:
-        - text: Twitter
-          url: 'https://twitter.com/real_lefavorite'
+        - text: Bluesky
+          url: 'https://bsky.app/profile/louislef299.bsky.social'
           new_tab: true
         - text: LinkedIn
           url: 'https://linkedin.com/in/louislef299'
