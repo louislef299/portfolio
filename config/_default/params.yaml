@@ -7,22 +7,22 @@ description: "A portfolio website for Louis Lefebvre"
 madeWith: Made With ❤️
 hideReply: false
 
-links:
-  - list1:
-      heading: Connect
-      link:
-        - text: Email
-          url: 'mailto:louislefebvre1999@gmail.com'
-          new_tab: true
-        - text: Github
-          url: 'https://github.com/louislef299'
-          new_tab: true
-  - list2:
-      heading: Social
-      link:
-        - text: Bluesky
-          url: 'https://bsky.app/profile/louislef299.bsky.social'
-          new_tab: true
-        - text: LinkedIn
-          url: 'https://linkedin.com/in/louislef299'
-          new_tab: true
+# links:
+#   - list1:
+#       heading: Connect
+#       link:
+#         - text: Email
+#           url: 'mailto:louislefebvre1999@gmail.com'
+#           new_tab: true
+#         - text: Github
+#           url: 'https://github.com/louislef299'
+#           new_tab: true
+#   - list2:
+#       heading: Social
+#       link:
+#         - text: Bluesky
+#           url: 'https://bsky.app/profile/louislef299.bsky.social'
+#           new_tab: true
+#         - text: LinkedIn
+#           url: 'https://linkedin.com/in/louislef299'
+#           new_tab: true
