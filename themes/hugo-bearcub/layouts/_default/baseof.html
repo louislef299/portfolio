@@ -14,7 +14,7 @@
   {{ $style := print (default "original" .Site.Params.themeStyle) ".css" | resources.Get | minify }}
   <link href="{{ $style.RelPermalink }}" rel="stylesheet">
 
-  {{ if (.Page.Store.Get "hasCodeBlock") }}
+  {{ if .Params.hasCodeBlock }}
     {{ $syntax := resources.Get "syntax.css" | minify }}
     <link href="{{ $syntax.RelPermalink }}" rel="stylesheet">
   {{ end }}
