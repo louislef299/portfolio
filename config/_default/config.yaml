@@ -1,7 +1,9 @@
+---
 baseURL: https://louislefebvre.net/
 languageCode: en-us 
 title: Louis Portfolio 
-theme: hugo-split-theme
-enableEmoji: true
-enableGitInfo: true
-copyright: "&copy;2023 Louis Lefebvre"
+theme: hugo-bearcub
+copyright: "2023 Louis LeFebvre"
+enableRobotsTXT: true
+defaultContentLanguage: "en"
+sectionPagesMenu: main

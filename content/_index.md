@@ -23,4 +23,6 @@ been turning my attention to surfing, paddleboarding(prone), backpacking,
 lifting and boxing. I'd love to have the time to compete again, but life just
 got busy ever since I left college.
 
+![base-photo](/image/background.jpeg)
+
 Please feel free to reach out to me with any of the below links!

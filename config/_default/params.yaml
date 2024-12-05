@@ -1,87 +1,16 @@
-author: "Louis Lefebvre"
+---
+author: 
+  name: Louis Lefebvre
+  email: louislefebvre1999@gmail.com
 description: "A portfolio website for Louis Lefebvre"
-twitterHandle: "louislef299"
 
-custom:
-  css: 
-    enable: true
-
-visual:
-  image:
-    enable: true
-    file: "image/background.jpeg"
-    position: "left center"
-
-AdditionalImages:
-- name: "IMG_0417.jpeg"
-  position: "right center"
-- name: "IMG_1594.jpeg"
-- name: "4J8A0080.jpeg"
-- name: "IMG_2579.jpeg"
-  position: "right center"
-- name: "IMG_5260.jpeg"
-- name: "IMG_0057.jpeg"
-- name: "IMG_4597.jpeg"
-- name: "background.jpeg"
-  position: "left center"
-- name: "IMG_0628.jpeg"
-- name: "IMG_0654.jpeg"
-- name: "IMG_7826.jpeg"
-- name: "IMG_9335.jpeg"
-- name: IMG_0027.JPG
-- name: IMG_0059.JPG
-- name: IMG_0377.jpg
-- name: IMG_0399.jpg
-- name: IMG_0408.jpg
-- name: IMG_0458.jpg
-- name: IMG_1242.jpg
-- name: IMG_1595.JPG
-- name: IMG_1602.JPEG
-- name: IMG_1783.JPG
-- name: IMG_1810.JPG
-- name: IMG_2043.JPG
-- name: IMG_2152.JPG
-- name: IMG_2407.jpg
-- name: IMG_2472.JPG
-- name: IMG_2675.JPG
-- name: IMG_2697.PNG
-- name: IMG_3012.JPG
-- name: IMG_3144.JPG
-- name: IMG_3157 (1).jpg
-- name: IMG_3157.JPG
-- name: IMG_3182.jpg
-- name: IMG_3313.JPG
-- name: IMG_3370.jpg
-- name: IMG_3413.jpg
-- name: IMG_3465.jpg
-- name: IMG_3507.jpg
-- name: IMG_3534.jpg
-- name: IMG_3670.jpg
-- name: IMG_3781.JPG
-- name: IMG_3871.JPG
-- name: IMG_3935.JPG
-- name: IMG_4359.JPEG
-- name: IMG_4384.JPG
-- name: IMG_4653.JPG
-- name: IMG_4669.JPG
-- name: IMG_4773.jpg
-- name: IMG_4818.jpg
-- name: IMG_5173.jpg
-- name: IMG_5216.JPG
-- name: IMG_5319.jpg
-- name: IMG_6150.JPG
-- name: IMG_6243.jpg
-- name: IMG_6955.JPG
-- name: IMG_7820.jpg
-- name: IMG_8059.jpg
-- name: 4424558C-AA47-4E43-A7F1-DF6C2E1B63B2.JPG
+madeWith: Made With ❤️
+hideReply: false
 
 links:
   - list1:
       heading: Connect
       link:
-        # - text: Blog
-        #   url: '/blog'
         - text: Email
           url: 'mailto:louislefebvre1999@gmail.com'
           new_tab: true
