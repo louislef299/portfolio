@@ -1,6 +1,5 @@
 ---
 baseURL: https://louislefebvre.net/
-languageCode: en-us 
 title: Louis Portfolio 
 theme: hugo-bearcub
 copyright: "2023 Louis LeFebvre"
