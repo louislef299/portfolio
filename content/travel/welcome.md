@@ -1,6 +1,6 @@
 ---
 title: Welcome to Travel
+date: 2024-12-05
 ---
 
-Do I really do more than write code all day? I do! Hopefully will be able to get
-a map here to highlight all the places I've been.
+{{< js_map >}}
