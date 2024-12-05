@@ -1,7 +1,8 @@
 ---
 baseURL: https://louislefebvre.net/
-title: Louis Portfolio 
-theme: hugo-bearcub
 copyright: "2023 Louis LeFebvre"
 enableRobotsTXT: true
+languageCode: en-us
 sectionPagesMenu: main
+theme: hugo-bearcub
+title: Louis Portfolio 
