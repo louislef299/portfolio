@@ -1,0 +1,6 @@
+[build.environment]
+TZ = "America/Chicago"
+
+[build]
+publish = "public"
+command = "hugo --gc --minify"
