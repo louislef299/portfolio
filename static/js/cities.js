@@ -9,7 +9,7 @@ CITIES =
    {name: 'Seattle', latitude: 47.6062, longitude: -122.3321, radius: 3, fillKey: 'city', date: '2020-08'},
    {name: 'Daytona Beach', latitude: 29.2108, longitude: -81.0228, radius: 3, fillKey: 'city', date: '2017-03'},
    {name: 'Whitefish', latitude: 48.4117, longitude: -114.3350, radius: 3, fillKey: 'city', date: '2018-08'},
-   {name: 'Cloud Peak', latitude: 44.3844, longitude: -107.1739, radius: 3, fillKey: 'city', date: '2023-01'},
+   {name: 'Bighorn National Park', latitude: 44.54514977989654, longitude: -107.35783451847871, radius: 3, fillKey: 'city', date: '2023-01'},
    {name: 'Denver', latitude: 39.7392, longitude: -104.9903, radius: 3, fillKey: 'city', date: '2022-02'},
    {name: 'Cape Coral', latitude: 26.5629, longitude: -81.9495, radius: 3, fillKey: 'city', date: '2021-04'},
    {name: 'Cancun', latitude: 21.1619, longitude: -86.8515, radius: 3, fillKey: 'city', date: '2023-03'},
