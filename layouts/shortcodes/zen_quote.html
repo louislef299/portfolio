@@ -1,0 +1,13 @@
+<!-- Prime example of CORS here -->
+<div id="zen-quote"></div>
+<script>
+    fetch('https://zenquotes.io/api/today/')
+        .then(response => response.json())
+        .then(data => {
+            const quote = data[0].q; // Assuming 'q' is the key for the quote text
+            const author = data[0].a; // Assuming 'a' is the key for the author
+            const quoteElement = document.getElementById('zen-quote');
+            quoteElement.innerHTML = `"${quote}" - ${author}`;
+        })
+        .catch(error => console.error('Error fetching the quote:', error));
+</script>
