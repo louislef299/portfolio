@@ -22,4 +22,7 @@ CITIES =
    {name: 'Emo', latitude: 49.003179617088044, longitude: -93.71126630277345, radius: 3, fillKey: 'city', date: '2024-07'},
    {name: 'Chamonix', latitude: 45.9237, longitude: 6.8694, radius: 3, fillKey: 'city', date: '2019-12'},
    {name: 'Savannah', latitude: 32.0809, longitude: -81.0912, radius: 3, fillKey: 'city', date: '2024-03'},
+   {name: 'Arches National Park', latitude: 38.582601801374004, longitude: -109.48788377129287, radius: 3, fillKey: 'nationalPark', date: '2023-10'},
+   {name: 'Yellowstone National Park', latitude: 44.63669152508517, longitude: -110.41534491999062, radius: 3, fillKey: 'nationalPark', date: '2021-06'},
+   {name: 'Badlands National Park', latitude: 43.8722887541126, longitude: -102.29967718869023, radius: 3, fillKey: 'nationalPark', date: '2021-06'},
 ]
