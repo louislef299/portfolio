@@ -19,5 +19,6 @@ CITIES =
    {name: 'Montpellier', latitude: 43.6119, longitude: 3.8772, radius: 3, fillKey: 'city', date: '2019-09'},
    {name: 'Lagos', latitude: 37.1020, longitude: -8.6742, radius: 3, fillKey: 'city', date: '2022-03'},
    {name: 'Barcelona', latitude: 41.3851, longitude: 2.1734, radius: 3, fillKey: 'city', date: '2023-11'},
-   {name: 'Emo', latitude: 49.003179617088044, longitude: -93.71126630277345, radius: 3, fillKey: 'city', date: '2023-07'}
+   {name: 'Emo', latitude: 49.003179617088044, longitude: -93.71126630277345, radius: 3, fillKey: 'city', date: '2023-07'},
+   {name: 'Chamonix', latitude: 45.9237, longitude: 6.8694, radius: 3, fillKey: 'city', date: '2019-12'},
 ]
