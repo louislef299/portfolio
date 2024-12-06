@@ -1,5 +1,5 @@
 ---
-title: Welcome to Travel
+title: Travel
 date: 2024-12-05
 ---
 
