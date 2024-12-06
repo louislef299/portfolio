@@ -29,4 +29,6 @@ the best restaurants I hit or some things that I did. I'm not going to go over
 any of my previous trips more than marking them on the map, but I'll try to
 write about them a bit.
 
+![henry chillin](/image/henry-chillin-north-shore.jpg)
+
 [Cali2023]: https://maps.app.goo.gl/hqKRLNXjLXdGLLt17
