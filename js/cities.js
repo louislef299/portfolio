@@ -2,10 +2,10 @@ CITIES =
 [
    {name: 'Bozeman', latitude: 45.6770, longitude: -111.0429, radius: 3, fillKey: 'city', date: '2017-03'},
    {name: 'Santa Cruz', latitude: 36.9741, longitude: -122.0308, radius: 3, fillKey: 'city', date: '2023-11'},
-   {name: 'New York City', latitude: 40.7128, longitude: -74.0060, radius: 3, fillKey: 'city', date: '2023-01'},
+   {name: 'New York City', latitude: 40.7128, longitude: -74.0060, radius: 3, fillKey: 'city', date: '2024-09'},
    {name: 'Stoney Point', latitude: 46.92551345416876, longitude: -91.82165598465556, radius: 3, fillKey: 'city', date: '2024-11'},
    {name: 'San Diego', latitude: 32.7157, longitude: -117.1611, radius: 3, fillKey: 'city', date: '2022-07'},
-   {name: 'Washington, DC', latitude: 38.9072, longitude: -77.0369, radius: 3, fillKey: 'city', date: '2023-01'},
+   {name: 'Washington, DC', latitude: 38.9072, longitude: -77.0369, radius: 3, fillKey: 'city', date: '2024-09'},
    {name: 'Seattle', latitude: 47.6062, longitude: -122.3321, radius: 3, fillKey: 'city', date: '2020-08'},
    {name: 'Daytona Beach', latitude: 29.2108, longitude: -81.0228, radius: 3, fillKey: 'city', date: '2017-03'},
    {name: 'Whitefish', latitude: 48.4117, longitude: -114.3350, radius: 3, fillKey: 'city', date: '2018-08'},
