@@ -1,5 +1,5 @@
 ---
-title: "Louis Lefebvre -- Engineer"
+title: 🌲
 ---
 
 Hey, my name is Louis! I'm an endurance athlete that writes code and likes to
