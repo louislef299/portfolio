@@ -5,4 +5,32 @@ linear blog to keep track of everything I&amp;rsquo;ve been working on.&lt;/p>
 &lt;p>Currently working at Medtronic as a platform engineer and have slowly evolved
 into a jack-of-all-trades engineer with more of a pioneer&amp;rsquo;s mindset with
 innovation and business/customer buy-in before industrialization and
-stabilization.&lt;/p></description></item></channel></rss>
+stabilization.&lt;/p></description></item><item><title>Wireless Interface Information using nl80211</title><link>https://louislefebvre.net/tech/nl80211/</link><pubDate>Fri, 17 May 2024 00:00:00 +0000</pubDate><author>louislefebvre1999@gmail.com (Louis Lefebvre)</author><guid>https://louislefebvre.net/tech/nl80211/</guid><description>&lt;p>Just copying this over from one of my previous projects. It goes over my
+experience with low-level network programming using Linux network interfaces and
+Go. Along the way, I was having issues battling &lt;a href="https://fedoraproject.org/wiki/Tools/NetworkManager">Network Manager&lt;/a> when I had
+Fedora Linux installed, so I switched over to Arch and decided to just use
+&lt;a href="https://wiki.archlinux.org/title/Iwd">iwd&lt;/a> instead. It has proven to be must better in my experience and
+essentially remains out of the way.&lt;/p>
+&lt;hr>
+&lt;p>Guess what? Not a whole lot of documentation for nl80211! Yayyyyy :)&lt;/p></description></item><item><title>CCNA Journey - Introduction to TCP/IP Networking</title><link>https://louislefebvre.net/tech/ccna-chp1/</link><pubDate>Sun, 18 Feb 2024 14:17:49 -0600</pubDate><author>louislefebvre1999@gmail.com (Louis Lefebvre)</author><guid>https://louislefebvre.net/tech/ccna-chp1/</guid><description>&lt;p>Chapter 1 starts off with getting some initial perspectives on networking down
+as a general introduction. This was all really review as they just talked about
+the different ways and individual or enterprise connect to a network and through
+which mediums.&lt;/p>
+&lt;p>After an initial network introduction, the reading went into the TCP/IP
+networking model and the history of the initial battle between the OSI model and
+TCP/IP. The important historical value to note is that in the late 1970s and
+early 1980s, the OSI model looked to be the model that would win out. That is
+why you see lots of documentation still reference &amp;ldquo;Layer 7&amp;rdquo; protocols even
+though the TCP/IP model won out and only technically has 5 layers.&lt;/p></description></item><item><title>Playground for Network Interfaces</title><link>https://louislefebvre.net/tech/network-interfaces/</link><pubDate>Sat, 04 Nov 2023 00:00:00 +0000</pubDate><author>louislefebvre1999@gmail.com (Louis Lefebvre)</author><guid>https://louislefebvre.net/tech/network-interfaces/</guid><description>&lt;p>Just messing around with network interfaces in an attempt to understand
+some of the low-level OS fundamentals. I was led in this direction when
+looking at Wireguard&amp;rsquo;s packages and getting a fun,system-level example of
+how to run system calls and file descriptors to configure network interfaces
+in Go.&lt;/p>
+&lt;h2 id="wireguards-tun-interface">Wireguard&amp;rsquo;s TUN interface&lt;/h2>
+&lt;h3 id="setting-up">Setting Up&lt;/h3>
+&lt;p>The TUN interface is created at &lt;code>/dev/net/tun&lt;/code> and represents the tunnel
+used to communicate with the external service. When running through
+Cloudflare&amp;rsquo;s &lt;a href="https://blog.cloudflare.com/virtual-networking-101-understanding-tap/">Understanding TUN/TAP&lt;/a>, it made more sense that this TUN
+device represented a local point-to-point connection with the Wireguard
+service. Found this fun rhyme to remember the difference between the device
+types:&lt;/p></description></item></channel></rss>
