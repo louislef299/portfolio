@@ -13,7 +13,7 @@ grateful to have the opportunity to travel so much.&lt;/p>
 California trip last year(2023). It was just me that went, but I was pretty much
 in between San Francisco and Los Angeles the whole time bumming around and
 surfing. It was a blast! Luckily I got so bored that I started noting &lt;a href="https://maps.app.goo.gl/hqKRLNXjLXdGLLt17">where I
-went on Google Maps&lt;/a>.&lt;/p></description></item><item><title>Wireless Interface Information using nl80211</title><link>https://louislefebvre.net/tech/nl80211/</link><pubDate>Fri, 17 May 2024 00:00:00 +0000</pubDate><author>louislefebvre1999@gmail.com (Louis Lefebvre)</author><guid>https://louislefebvre.net/tech/nl80211/</guid><description>&lt;p>Just copying this over from one of my previous projects. It goes over my
+went on Google Maps&lt;/a>.&lt;/p></description></item><item><title>Wireless Interface Information using nl80211/Arch Install</title><link>https://louislefebvre.net/tech/nl80211/</link><pubDate>Fri, 17 May 2024 00:00:00 +0000</pubDate><author>louislefebvre1999@gmail.com (Louis Lefebvre)</author><guid>https://louislefebvre.net/tech/nl80211/</guid><description>&lt;p>Just copying this over from one of my previous projects. It goes over my
 experience with low-level network programming using Linux network interfaces and
 Go. Along the way, I was having issues battling &lt;a href="https://fedoraproject.org/wiki/Tools/NetworkManager">Network Manager&lt;/a> when I had
 Fedora Linux installed, so I switched over to Arch and decided to just use
