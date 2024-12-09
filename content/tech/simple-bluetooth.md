@@ -31,6 +31,24 @@ description and instead give this high-level diagram of what it does:
 The PiZero in this case was on my local network and I had it advertise bluetooth
 using [bluez][] and uploaded the Go binary with `scp`.
 
+### Notes on GATT
+
+The **Generic ATTribute(GATT)** Profile defines how BLE devices transfer data
+back and forth using concepts called Services and Characteristics. GATT is
+important to consider when a connection is established between two devices that
+have already gone through the advertising process governed by GAP.
+
+Only one peripheral device can be connected to a central at a time using GATT,
+meaning that any advertising that had happened prior to GATT will not continue.
+This connection then allows for two-way communication between devices.
+
+GATT Servers(Peripherals) and Clients(Centrals) negotiate a connection interval
+to transact data. This interval is just a recommendation, however, not a
+requirement. The GATT transactions contain nested objects called [Profiles][],
+[Services and Characteristics][].
+
 [basics of bluetooth]: https://learn.adafruit.com/introduction-to-bluetooth-low-energy/gap
 [ble-playground]: https://github.com/louislef299/ble-playground
 [bluez]: https://www.bluez.org/
+[Profiles]: https://www.bluetooth.com/specifications/specs/
+[Services and Characteristics]: https://www.bluetooth.com/specifications/assigned-numbers/
