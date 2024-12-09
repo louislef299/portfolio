@@ -11,6 +11,8 @@ in Go.
 
 ## Wireguard's TUN interface
 
+Referenced code can be found [here][TUN project].
+
 ### Setting Up
 
 The TUN interface is created at `/dev/net/tun` and represents the tunnel
@@ -74,3 +76,4 @@ should be able to pull references from there and Tailscale.
 [Understanding TUN/TAP]: https://blog.cloudflare.com/virtual-networking-101-understanding-tap/
 [File descriptor deep dive]: https://copyconstruct.medium.com/nonblocking-i-o-99948ad7c957
 [TUN/TAP Interface Tutorial]: https://backreference.org/2010/03/26/tuntap-interface-tutorial/
+[TUN Project]: https://github.com/louislef299/go-scripts/blob/main/projects/network-interfaces/main.go
