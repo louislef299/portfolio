@@ -1,5 +1,5 @@
 ---
-title: "Communicating Alternative Information Abusing Bluetooth in Go"
+title: "Communicating Information Abusing Bluetooth in Go"
 date: 2024-12-07T14:23:59-06:00
 draft: false
 ---
@@ -46,6 +46,8 @@ GATT Servers(Peripherals) and Clients(Centrals) negotiate a connection interval
 to transact data. This interval is just a recommendation, however, not a
 requirement. The GATT transactions contain nested objects called [Profiles][],
 [Services and Characteristics][].
+
+![Profiles, Services, and Chars](/image/microcontrollers_GattStructure.png)
 
 [basics of bluetooth]: https://learn.adafruit.com/introduction-to-bluetooth-low-energy/gap
 [ble-playground]: https://github.com/louislef299/ble-playground
