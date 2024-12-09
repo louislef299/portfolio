@@ -1,4 +1,11 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>🌲 on Louis Lefebvre</title><link>https://louislefebvre.net/</link><description>Recent content in 🌲 on Louis Lefebvre</description><generator>Hugo</generator><language>en-us</language><managingEditor>louislefebvre1999@gmail.com (Louis Lefebvre)</managingEditor><webMaster>louislefebvre1999@gmail.com (Louis Lefebvre)</webMaster><copyright>2023 Louis LeFebvre</copyright><lastBuildDate>Thu, 05 Dec 2024 00:00:00 +0000</lastBuildDate><atom:link href="https://louislefebvre.net/index.xml" rel="self" type="application/rss+xml"/><item><title>Welcome</title><link>https://louislefebvre.net/tech/welcome/</link><pubDate>Thu, 05 Dec 2024 00:00:00 +0000</pubDate><author>louislefebvre1999@gmail.com (Louis Lefebvre)</author><guid>https://louislefebvre.net/tech/welcome/</guid><description>&lt;p>Alright so I&amp;rsquo;ve slimmed things down. Going to focus more on just keeping some
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>🌲 on Louis Lefebvre</title><link>https://louislefebvre.net/</link><description>Recent content in 🌲 on Louis Lefebvre</description><generator>Hugo</generator><language>en-us</language><managingEditor>louislefebvre1999@gmail.com (Louis Lefebvre)</managingEditor><webMaster>louislefebvre1999@gmail.com (Louis Lefebvre)</webMaster><copyright>2023 Louis LeFebvre</copyright><lastBuildDate>Sat, 07 Dec 2024 14:23:59 -0600</lastBuildDate><atom:link href="https://louislefebvre.net/index.xml" rel="self" type="application/rss+xml"/><item><title>Communicating Information Abusing Bluetooth in Go</title><link>https://louislefebvre.net/tech/simple-bluetooth/</link><pubDate>Sat, 07 Dec 2024 14:23:59 -0600</pubDate><author>louislefebvre1999@gmail.com (Louis Lefebvre)</author><guid>https://louislefebvre.net/tech/simple-bluetooth/</guid><description>&lt;p>Just going to go over communicating over bluetooth in Go. Over the summer, I had
+spent some time learning the &lt;a href="https://learn.adafruit.com/introduction-to-bluetooth-low-energy/gap">basics of bluetooth&lt;/a> and made a super simple
+central and peripheral example in Go. Now, I am trying to encapsulate other
+packets into bluetooth packets, and I will cover that journey with this post.&lt;/p>
+&lt;h2 id="going-over-the-simple-example">Going over the simple example&lt;/h2>
+&lt;p>The central peripheral code can be found in my &lt;a href="https://github.com/louislef299/ble-playground">ble-playground&lt;/a> repository.
+It&amp;rsquo;s pretty simple and doesn&amp;rsquo;t do anything special, so I&amp;rsquo;ll skip an in-depth
+description and instead give this high-level diagram of what it does:&lt;/p></description></item><item><title>Welcome</title><link>https://louislefebvre.net/tech/welcome/</link><pubDate>Thu, 05 Dec 2024 00:00:00 +0000</pubDate><author>louislefebvre1999@gmail.com (Louis Lefebvre)</author><guid>https://louislefebvre.net/tech/welcome/</guid><description>&lt;p>Alright so I&amp;rsquo;ve slimmed things down. Going to focus more on just keeping some
 notes online about any research I do, travel and any other interests I have.
 I&amp;rsquo;ve never really been great at writing, but it would be great to just have a
 linear blog to keep track of everything I&amp;rsquo;ve been working on.&lt;/p>
@@ -35,6 +42,7 @@ looking at Wireguard&amp;rsquo;s packages and getting a fun,system-level example
 how to run system calls and file descriptors to configure network interfaces
 in Go.&lt;/p>
 &lt;h2 id="wireguards-tun-interface">Wireguard&amp;rsquo;s TUN interface&lt;/h2>
+&lt;p>Referenced code can be found &lt;a href="https://github.com/louislef299/go-scripts/blob/main/projects/network-interfaces/main.go">here&lt;/a>.&lt;/p>
 &lt;h3 id="setting-up">Setting Up&lt;/h3>
 &lt;p>The TUN interface is created at &lt;code>/dev/net/tun&lt;/code> and represents the tunnel
 used to communicate with the external service. When running through
