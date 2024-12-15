@@ -24,6 +24,8 @@ supported for personal repositories][Medium GH Actions].
 
 So, that changed up the approach a bit. Simplified things a little bit.
 
+## Implementation
+
 The action ended up looking a bit like the following:
 
 ```yaml
@@ -49,8 +51,33 @@ jobs:
       with:
         github-token: "${{ secrets.GITHUB_TOKEN }}"
     - name: Enable auto-merge for Dependabot PRs
-      run: gh pr merge --auto --merge "$PR_URL"
+      run: gh pr merge --auto --squash "$PR_URL"
 ```
+
+The one thing that I was concerned about when enabling this feature was if there
+would be any race conditions in merging. That's why I had hoped to try out Merge
+Queues a bit, but I think GitHub is smart enough to simply require the branch be
+updated to match the base branch and Dependabot should auto-rebase the branch.
+So far, it seems to work without a hitch, but the real test will be next week
+when new updates come up.
+
+For my project, I don't require any approvals since I'm the only contributor,
+but if you would need a PR approval, you can add one step to run before
+auto-merging:
+
+```yaml
+- name: Approve a PR
+  run: gh pr review --approve "$PR_URL"
+```
+
+## Conclusion
+
+That was super easy! Makes my life better as an open-source contributor and I
+can definitely see the benefits to bringing this back to the workplace. One
+requirement to have before enabling this would be thorough testing and
+integration testing as to not accidentally introduce bad code. With trunk-based
+development practices and release-please for manual releases, this is pretty
+safe automation and nothing but a positive imo.
 
 [automating dependabot updates]:  https://docs.github.com/en/code-security/dependabot/working-with-dependabot/automating-dependabot-with-github-actions
 [aws-sso]: https://github.com/louhttps://github.com/louislef299/aws-ssoislef299/aws-sso
