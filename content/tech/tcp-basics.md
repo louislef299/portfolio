@@ -171,7 +171,7 @@ containerizing that server. It seems like a simple, silly project, but this
 should help me get warmed up for my next experiment, [containerizing a bluetooth
 application][].
 
-[containerizing a bluetooth application]: https://medium.com/omi-uulm/how-to-run-containerized-bluetooth-applications-with-bluez-dced9ab767f6
+[containerizing a bluetooth application]: {{< ref "/tech/containerized-bluetooth.md" >}}
 [Docker check directive]: https://docs.docker.com/reference/dockerfile/#check
 [tcp server google]: https://www.google.com/search?client=firefox-b-1-d&q=how+to+create+a+simple+tcp+server+in+go
 [TCP/IP basics]: https://okanexe.medium.com/the-complete-guide-to-tcp-ip-connections-in-golang-1216dae27b5a
