@@ -1,6 +1,6 @@
 ---
 title: "TCP/IP Basics"
-date: 2024-12-15T19:18:58-06:00
+date: 2024-12-26T13:18:58-06:00
 draft: false
 ---
 
@@ -108,7 +108,6 @@ COPY ./tcp/$TCP_TARGET .
 RUN go build -v -o /usr/local/bin/app ./...
 
 EXPOSE 8080
-
 CMD ["app"]
 ```
 
