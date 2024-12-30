@@ -2,6 +2,11 @@
 title: "Simple Bluetooth Communication Using Go"
 date: 2024-12-07T14:23:59-06:00
 draft: false
+tags:
+- go
+- ble
+- linux
+- networking
 ---
 
 Just going to go over communicating over bluetooth in Go. Over the summer, I had

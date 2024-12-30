@@ -2,6 +2,9 @@
 title: "TCP/IP Basics"
 date: 2024-12-26T13:18:58-06:00
 draft: false
+tags:
+- go
+- tcp
 ---
 
 Just going over the [TCP/IP basics][] here to build out a good foundation as I
