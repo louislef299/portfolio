@@ -1,3 +1,5 @@
+{{- partial "custom_body.html" . -}}
+
 {{ range .Site.Menus.main.ByWeight }}
   <a href="{{ .URL }}">{{ .Name }}</a>
 {{ end }}

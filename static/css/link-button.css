@@ -1,0 +1,28 @@
+/* Styling the button */
+.social-button {
+    background-color: #1d1f27;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.social-icons {
+    display: none;
+}
+
+/* Styling each social icon link */
+.social-icons a {
+    align-items: center;
+    text-decoration: none;
+    color: white;
+    font-size: 16px;
+}
+
+.social-icons img {
+    width: 24px;
+    height: 24px;
+    margin-right: 10px;
+    filter: brightness(0) invert(1);
+}
