@@ -3,7 +3,7 @@ title: 'CCNA Journey - Introduction to TCP/IP Networking'
 date: 2024-02-18T14:17:49-06:00
 draft: false
 tags:
-- networking
+- net
 - tcp
 ---
 
