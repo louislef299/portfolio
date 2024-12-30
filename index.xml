@@ -1,4 +1,24 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>🌲 on Louis Lefebvre</title><link>https://louislefebvre.net/</link><description>Recent content in 🌲 on Louis Lefebvre</description><generator>Hugo</generator><language>en-us</language><managingEditor>louislefebvre1999@gmail.com (Louis Lefebvre)</managingEditor><webMaster>louislefebvre1999@gmail.com (Louis Lefebvre)</webMaster><copyright>2023 Louis LeFebvre</copyright><lastBuildDate>Sat, 28 Dec 2024 16:08:53 -0600</lastBuildDate><atom:link href="https://louislefebvre.net/index.xml" rel="self" type="application/rss+xml"/><item><title>Exploring Dual Bluetooth Roles on One Device</title><link>https://louislefebvre.net/tech/containerized-bluetooth/</link><pubDate>Sat, 28 Dec 2024 16:08:53 -0600</pubDate><author>louislefebvre1999@gmail.com (Louis Lefebvre)</author><guid>https://louislefebvre.net/tech/containerized-bluetooth/</guid><description>&lt;p>Today, I am going to attempt to &lt;a href="https://medium.com/omi-uulm/how-to-run-containerized-bluetooth-applications-with-bluez-dced9ab767f6">containerize a bluetooth application&lt;/a> using
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>🌲 on Louis Lefebvre</title><link>https://louislefebvre.net/</link><description>Recent content in 🌲 on Louis Lefebvre</description><generator>Hugo</generator><language>en-us</language><managingEditor>louislefebvre1999@gmail.com (Louis Lefebvre)</managingEditor><webMaster>louislefebvre1999@gmail.com (Louis Lefebvre)</webMaster><copyright>2023 Louis LeFebvre</copyright><lastBuildDate>Sun, 29 Dec 2024 23:34:32 -0600</lastBuildDate><atom:link href="https://louislefebvre.net/index.xml" rel="self" type="application/rss+xml"/><item><title>Research: Upcoming Travels 2025</title><link>https://louislefebvre.net/travel/research/upcoming-122924/</link><pubDate>Sun, 29 Dec 2024 23:34:32 -0600</pubDate><author>louislefebvre1999@gmail.com (Louis Lefebvre)</author><guid>https://louislefebvre.net/travel/research/upcoming-122924/</guid><description>&lt;p>Current list of possible and upcoming trips for 2025:&lt;/p>
+&lt;ul>
+&lt;li>&lt;a href="#san-diego-california--ocean-beach">San Diego&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#puerto-rico-family-trip">Puerto Rico&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#ski-lutsen">Ski Trip Lutsen&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#superior-hiking-trail-glamp">SHT =&amp;gt; week-long glamp&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#sailing-the-great-lakes">Bde Sailing(Grand Marais Sailing?)&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#voyageurs-national-park">Voyageurs Canoe&lt;/a>&lt;/li>
+&lt;li>&lt;a href="#boundary-waters-canoe-area-wilderness">Boundary Waters&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;p>I&amp;rsquo;ll want to do a little research on each place for any camp reservations,
+memberships, times of operation, suggested camping times or general
+information about the area.&lt;/p>
+&lt;h2 id="upcoming-trips">Upcoming Trips&lt;/h2>
+&lt;h3 id="san-diego-california--ocean-beach">San Diego, California =&amp;gt; Ocean Beach&lt;/h3>
+&lt;p>This January, Henry and I are flying out of MSP -&amp;gt; SAN and staying in a hostel
+for the first half of the trip. Hopefully just catching some waves and exploring
+the area a titch. One thing I should look into is if there are any paid/cheap
+services to visit &lt;a href="https://en.wikipedia.org/wiki/Anza-Borrego_Desert_State_Park">Anaz-Borrego State Park&lt;/a>, but looks like you drive through
+it similar to Arches. We&amp;rsquo;re not renting a car while we&amp;rsquo;re there so I&amp;rsquo;ll have to
+see if there is potentially a way to hop on a bus or something.&lt;/p></description></item><item><title>Exploring Dual Bluetooth Roles on One Device</title><link>https://louislefebvre.net/tech/containerized-bluetooth/</link><pubDate>Sat, 28 Dec 2024 16:08:53 -0600</pubDate><author>louislefebvre1999@gmail.com (Louis Lefebvre)</author><guid>https://louislefebvre.net/tech/containerized-bluetooth/</guid><description>&lt;p>Today, I am going to attempt to &lt;a href="https://medium.com/omi-uulm/how-to-run-containerized-bluetooth-applications-with-bluez-dced9ab767f6">containerize a bluetooth application&lt;/a> using
 Docker. I&amp;rsquo;ve been &lt;a href="https://louislefebvre.net/tech/simple-bluetooth/">learning about the bluetooth protocol using Go&lt;/a> and simply copy the Go Central code to my
 raspberry pi and run it with Go and Bluez. It works, but it&amp;rsquo;s not easy to
 transport since it typically requires the hard-coding of the wifi network into
