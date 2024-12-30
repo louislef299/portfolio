@@ -102,6 +102,42 @@ blockquote {
 footer {
   padding: 25px;
   text-align: center;
+
+  position: relative;
+  background-image: url('image/mountain-footer.jpg');
+  background-size: cover;
+  background-position: center;
+  /* width: 100%; */
+  color: #000000;
+
+  width: 100vw;
+  margin-left: calc(-50vw + 50%);
+  margin-right: calc(-50vw + 50%);
+  margin-bottom: calc(-50vw + 50%);
+}
+
+/* Style for footer content */
+footer .content-wrapper {
+  position: relative;
+  z-index: 2; /* Ensure text is above the overlay */
+}
+
+/* Hyperlink styling */
+footer a {
+  color: #000000; /* Bright blue for links */
+  text-decoration: none; /* Remove underline */
+  font-weight: bold;
+}
+
+footer a:hover {
+  color: #FF6347; /* Change link color to a reddish shade on hover */
+}
+
+/* Text Styling */
+footer p {
+  font-size: 1.2em;
+  line-height: 1.5;
+  margin: 10px 0;
 }
 
 .helptext {
