@@ -2,6 +2,9 @@
 title: 'CCNA Journey - Introduction to TCP/IP Networking'
 date: 2024-02-18T14:17:49-06:00
 draft: false
+tags:
+- networking
+- tcp
 ---
 
 Chapter 1 starts off with getting some initial perspectives on networking down

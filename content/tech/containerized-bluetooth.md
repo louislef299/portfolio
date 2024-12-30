@@ -2,6 +2,10 @@
 title: "Exploring Dual Bluetooth Roles on One Device"
 date: 2024-12-28T16:08:53-06:00
 draft: false
+tags:
+- networking
+- ble
+- linux
 ---
 
 Today, I am going to attempt to [containerize a bluetooth application][] using

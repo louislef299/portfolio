@@ -2,6 +2,8 @@
 title: "Dependabot Auto-Merge"
 date: 2024-12-15T09:32:18-06:00
 draft: false
+tags:
+- github
 ---
 
 In this post, I'm just going to go through [automating dependabot updates][] and

@@ -1,6 +1,9 @@
 ---
 title: Playground for Network Interfaces
 date: 2023-11-04
+tags:
+- networking
+- linux
 ---
 
 Just messing around with network interfaces in an attempt to understand
