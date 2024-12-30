@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Tcp on Louis Lefebvre</title><link>https://louislefebvre.net/tags/tcp/</link><description>Recent content in Tcp on Louis Lefebvre</description><generator>Hugo</generator><language>en-us</language><managingEditor>louislefebvre1999@gmail.com (Louis Lefebvre)</managingEditor><webMaster>louislefebvre1999@gmail.com (Louis Lefebvre)</webMaster><copyright>2023 Louis LeFebvre</copyright><lastBuildDate>Thu, 26 Dec 2024 13:18:58 -0600</lastBuildDate><atom:link href="https://louislefebvre.net/tags/tcp/index.xml" rel="self" type="application/rss+xml"/><item><title>TCP/IP Basics</title><link>https://louislefebvre.net/tech/tcp-basics/</link><pubDate>Thu, 26 Dec 2024 13:18:58 -0600</pubDate><author>louislefebvre1999@gmail.com (Louis Lefebvre)</author><guid>https://louislefebvre.net/tech/tcp-basics/</guid><description>&lt;p>Just going over the &lt;a href="https://okanexe.medium.com/the-complete-guide-to-tcp-ip-connections-in-golang-1216dae27b5a">TCP/IP basics&lt;/a> here to build out a good foundation as I
+continue my bluetooth journey. It never hurts to go over the basics, especially
+since there are so many tools and libraries that try to simplify that process
+for programmers.&lt;/p>
+&lt;h2 id="tcp-basics">TCP Basics&lt;/h2>
+&lt;p>A TCP server requires the following steps:&lt;/p>
+&lt;ol>
+&lt;li>Listen for Incoming Connections&lt;/li>
+&lt;li>Accept Incoming Connections&lt;/li>
+&lt;li>Handle Client Connections&lt;/li>
+&lt;li>Read and Write Data&lt;/li>
+&lt;li>Close the Connection&lt;/li>
+&lt;/ol>
+&lt;p>The client will:&lt;/p></description></item><item><title>CCNA Journey - Introduction to TCP/IP Networking</title><link>https://louislefebvre.net/tech/ccna-chp1/</link><pubDate>Sun, 18 Feb 2024 14:17:49 -0600</pubDate><author>louislefebvre1999@gmail.com (Louis Lefebvre)</author><guid>https://louislefebvre.net/tech/ccna-chp1/</guid><description>&lt;p>Chapter 1 starts off with getting some initial perspectives on networking down
+as a general introduction. This was all really review as they just talked about
+the different ways and individual or enterprise connect to a network and through
+which mediums.&lt;/p>
+&lt;p>After an initial network introduction, the reading went into the TCP/IP
+networking model and the history of the initial battle between the OSI model and
+TCP/IP. The important historical value to note is that in the late 1970s and
+early 1980s, the OSI model looked to be the model that would win out. That is
+why you see lots of documentation still reference &amp;ldquo;Layer 7&amp;rdquo; protocols even
+though the TCP/IP model won out and only technically has 5 layers.&lt;/p></description></item></channel></rss>

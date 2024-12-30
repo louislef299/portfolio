@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Ble on Louis Lefebvre</title><link>https://louislefebvre.net/tags/ble/</link><description>Recent content in Ble on Louis Lefebvre</description><generator>Hugo</generator><language>en-us</language><managingEditor>louislefebvre1999@gmail.com (Louis Lefebvre)</managingEditor><webMaster>louislefebvre1999@gmail.com (Louis Lefebvre)</webMaster><copyright>2023 Louis LeFebvre</copyright><lastBuildDate>Sat, 28 Dec 2024 16:08:53 -0600</lastBuildDate><atom:link href="https://louislefebvre.net/tags/ble/index.xml" rel="self" type="application/rss+xml"/><item><title>Exploring Dual Bluetooth Roles on One Device</title><link>https://louislefebvre.net/tech/containerized-bluetooth/</link><pubDate>Sat, 28 Dec 2024 16:08:53 -0600</pubDate><author>louislefebvre1999@gmail.com (Louis Lefebvre)</author><guid>https://louislefebvre.net/tech/containerized-bluetooth/</guid><description>&lt;p>Today, I am going to attempt to &lt;a href="https://medium.com/omi-uulm/how-to-run-containerized-bluetooth-applications-with-bluez-dced9ab767f6">containerize a bluetooth application&lt;/a> using
+Docker. I&amp;rsquo;ve been &lt;a href="https://louislefebvre.net/tech/simple-bluetooth/">learning about the bluetooth protocol using Go&lt;/a> and simply copy the Go Central code to my
+raspberry pi and run it with Go and Bluez. It works, but it&amp;rsquo;s not easy to
+transport since it typically requires the hard-coding of the wifi network into
+the pi image. Since I travel around a lot, this should be more flexible and
+allow me to publish the container so I can pull it down from any machine(that
+runs a container runtime).&lt;/p></description></item><item><title>Simple Bluetooth Communication Using Go</title><link>https://louislefebvre.net/tech/simple-bluetooth/</link><pubDate>Sat, 07 Dec 2024 14:23:59 -0600</pubDate><author>louislefebvre1999@gmail.com (Louis Lefebvre)</author><guid>https://louislefebvre.net/tech/simple-bluetooth/</guid><description>&lt;p>Just going to go over communicating over bluetooth in Go. Over the summer, I had
+spent some time learning the &lt;a href="https://learn.adafruit.com/introduction-to-bluetooth-low-energy/gap">basics of bluetooth&lt;/a> and made a super simple
+central and peripheral example in Go. Summarizing those learnings here.&lt;/p>
+&lt;p>Definitely go over the above link to help understand the rest of this quick
+summary. I seem to frequently mess with bluetooth a bit and then don&amp;rsquo;t touch it
+for an extended period of time, so this is mostly a reference document for me to
+get a quick refresher on the basics until I spend significant time at the
+embedded level. Honestly, I spend way more time at the infrastructure and server
+level, so that comes more naturally to me.&lt;/p></description></item></channel></rss>

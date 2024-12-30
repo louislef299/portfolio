@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Go on Louis Lefebvre</title><link>https://louislefebvre.net/tags/go/</link><description>Recent content in Go on Louis Lefebvre</description><generator>Hugo</generator><language>en-us</language><managingEditor>louislefebvre1999@gmail.com (Louis Lefebvre)</managingEditor><webMaster>louislefebvre1999@gmail.com (Louis Lefebvre)</webMaster><copyright>2023 Louis LeFebvre</copyright><lastBuildDate>Thu, 26 Dec 2024 13:18:58 -0600</lastBuildDate><atom:link href="https://louislefebvre.net/tags/go/index.xml" rel="self" type="application/rss+xml"/><item><title>TCP/IP Basics</title><link>https://louislefebvre.net/tech/tcp-basics/</link><pubDate>Thu, 26 Dec 2024 13:18:58 -0600</pubDate><author>louislefebvre1999@gmail.com (Louis Lefebvre)</author><guid>https://louislefebvre.net/tech/tcp-basics/</guid><description>&lt;p>Just going over the &lt;a href="https://okanexe.medium.com/the-complete-guide-to-tcp-ip-connections-in-golang-1216dae27b5a">TCP/IP basics&lt;/a> here to build out a good foundation as I
+continue my bluetooth journey. It never hurts to go over the basics, especially
+since there are so many tools and libraries that try to simplify that process
+for programmers.&lt;/p>
+&lt;h2 id="tcp-basics">TCP Basics&lt;/h2>
+&lt;p>A TCP server requires the following steps:&lt;/p>
+&lt;ol>
+&lt;li>Listen for Incoming Connections&lt;/li>
+&lt;li>Accept Incoming Connections&lt;/li>
+&lt;li>Handle Client Connections&lt;/li>
+&lt;li>Read and Write Data&lt;/li>
+&lt;li>Close the Connection&lt;/li>
+&lt;/ol>
+&lt;p>The client will:&lt;/p></description></item><item><title>Simple Bluetooth Communication Using Go</title><link>https://louislefebvre.net/tech/simple-bluetooth/</link><pubDate>Sat, 07 Dec 2024 14:23:59 -0600</pubDate><author>louislefebvre1999@gmail.com (Louis Lefebvre)</author><guid>https://louislefebvre.net/tech/simple-bluetooth/</guid><description>&lt;p>Just going to go over communicating over bluetooth in Go. Over the summer, I had
+spent some time learning the &lt;a href="https://learn.adafruit.com/introduction-to-bluetooth-low-energy/gap">basics of bluetooth&lt;/a> and made a super simple
+central and peripheral example in Go. Summarizing those learnings here.&lt;/p>
+&lt;p>Definitely go over the above link to help understand the rest of this quick
+summary. I seem to frequently mess with bluetooth a bit and then don&amp;rsquo;t touch it
+for an extended period of time, so this is mostly a reference document for me to
+get a quick refresher on the basics until I spend significant time at the
+embedded level. Honestly, I spend way more time at the infrastructure and server
+level, so that comes more naturally to me.&lt;/p></description></item></channel></rss>
