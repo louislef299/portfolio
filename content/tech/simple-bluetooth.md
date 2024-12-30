@@ -6,7 +6,7 @@ tags:
 - go
 - ble
 - linux
-- networking
+- net
 ---
 
 Just going to go over communicating over bluetooth in Go. Over the summer, I had
