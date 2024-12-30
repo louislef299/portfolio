@@ -6,7 +6,3 @@ languageCode: en-us
 sectionPagesMenu: main
 theme: hugo-bearcub
 title: Louis Lefebvre (✿◠‿◠)
-markup:
-  goldmark:
-    renderer:
-      unsafe: true
