@@ -9,7 +9,7 @@ CITIES =
    {name: 'Seattle', latitude: 47.6062, longitude: -122.3321, radius: 3, fillKey: 'city', date: '2020-08'},
    {name: 'Daytona Beach', latitude: 29.2108, longitude: -81.0228, radius: 3, fillKey: 'city', date: '2017-03'},
    {name: 'Whitefish', latitude: 48.4117, longitude: -114.3350, radius: 3, fillKey: 'city', date: '2018-08'},
-   {name: 'Bighorn National Park', latitude: 44.54514977989654, longitude: -107.35783451847871, radius: 3, fillKey: 'city', date: '2020-08'},
+   {name: 'Bighorn National Park', latitude: 44.54514977989654, longitude: -107.35783451847871, radius: 3, fillKey: 'nationalPark', date: '2020-08'},
    {name: 'Denver', latitude: 39.7392, longitude: -104.9903, radius: 3, fillKey: 'city', date: '2022-02'},
    {name: 'Cape Coral', latitude: 26.5629, longitude: -81.9495, radius: 3, fillKey: 'city', date: '2021-04'},
    {name: 'Cancun', latitude: 21.1619, longitude: -86.8515, radius: 3, fillKey: 'city', date: '2023-03'},
@@ -18,7 +18,7 @@ CITIES =
    {name: 'London', latitude: 51.5074, longitude: -0.1278, radius: 3, fillKey: 'city', date: '2019-11'},
    {name: 'Montpellier', latitude: 43.6119, longitude: 3.8772, radius: 3, fillKey: 'city', date: '2019-09'},
    {name: 'Lagos', latitude: 37.1020, longitude: -8.6742, radius: 3, fillKey: 'city', date: '2022-03'},
-   {name: 'Barcelona', latitude: 41.3851, longitude: 2.1734, radius: 3, fillKey: 'city', date: '2023-11'},
+   {name: 'Barcelona', latitude: 41.3851, longitude: 2.1734, radius: 3, fillKey: 'city', date: '2029-11'},
    {name: 'Emo', latitude: 49.003179617088044, longitude: -93.71126630277345, radius: 3, fillKey: 'city', date: '2024-07'},
    {name: 'Chamonix', latitude: 45.9237, longitude: 6.8694, radius: 3, fillKey: 'city', date: '2019-12'},
    {name: 'Savannah', latitude: 32.0809, longitude: -81.0912, radius: 3, fillKey: 'city', date: '2024-03'},
@@ -26,4 +26,5 @@ CITIES =
    {name: 'Yellowstone National Park', latitude: 44.63669152508517, longitude: -110.41534491999062, radius: 3, fillKey: 'nationalPark', date: '2021-06'},
    {name: 'Badlands National Park', latitude: 43.8722887541126, longitude: -102.29967718869023, radius: 3, fillKey: 'nationalPark', date: '2020-08'},
    {name: 'Devil\'s Tower', latitude: 44.59772676105159, longitude: -104.71802507936667, radius: 3, fillKey: 'nationalPark', date: '2020-08'},
+   {name: 'Portland', latitude: 45.51334109625246, longitude: -122.67603306167965, radius: 3, fillKey: 'city', date: '2020-08'},
 ]
