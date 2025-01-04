@@ -1,0 +1,65 @@
+<!doctype html><html lang=en-us><head><meta http-equiv=X-Clacks-Overhead content="GNU Terry Pratchett"><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><title>Minecraft Server | Louis Lefebvre (✿◠‿◠)</title>
+<meta name=title content="Minecraft Server"><meta name=description content="Alright, recently my friends and I wanted to start up a new Minecraft world, and
+I got challened to host my own server. It wound up being super easy and I&rsquo;m just
+going to go over how I configured the server and any other notes here.
+About the Setup
+To allow all of my friends to access the local server, I gave them access to my
+tailnet. It works super slick for now, but I had to upgrade to the personal
+plus plan and fork over the extra $6 for this first month. Long-term, I&rsquo;m
+going to setup an OpenVPN on my network so that I can get around this and
+surpass my 6 user limit."><meta name=author content><meta name=keywords content><meta property="og:url" content="https://louislefebvre.net/tech/minecraft-server/"><meta property="og:site_name" content="Louis Lefebvre (✿◠‿◠)"><meta property="og:title" content="Minecraft Server"><meta property="og:description" content="Alright, recently my friends and I wanted to start up a new Minecraft world, and I got challened to host my own server. It wound up being super easy and I’m just going to go over how I configured the server and any other notes here.
+About the Setup To allow all of my friends to access the local server, I gave them access to my tailnet. It works super slick for now, but I had to upgrade to the personal plus plan and fork over the extra $6 for this first month. Long-term, I’m going to setup an OpenVPN on my network so that I can get around this and surpass my 6 user limit."><meta property="og:locale" content="en_us"><meta property="og:type" content="article"><meta property="article:section" content="tech"><meta property="article:published_time" content="2025-01-04T12:52:04-06:00"><meta property="article:modified_time" content="2025-01-04T12:52:04-06:00"><meta name=twitter:card content="summary"><meta name=twitter:title content="Minecraft Server"><meta name=twitter:description content="Alright, recently my friends and I wanted to start up a new Minecraft world, and I got challened to host my own server. It wound up being super easy and I’m just going to go over how I configured the server and any other notes here.
+About the Setup To allow all of my friends to access the local server, I gave them access to my tailnet. It works super slick for now, but I had to upgrade to the personal plus plan and fork over the extra $6 for this first month. Long-term, I’m going to setup an OpenVPN on my network so that I can get around this and surpass my 6 user limit."><meta itemprop=name content="Minecraft Server"><meta itemprop=description content="Alright, recently my friends and I wanted to start up a new Minecraft world, and I got challened to host my own server. It wound up being super easy and I’m just going to go over how I configured the server and any other notes here.
+About the Setup To allow all of my friends to access the local server, I gave them access to my tailnet. It works super slick for now, but I had to upgrade to the personal plus plan and fork over the extra $6 for this first month. Long-term, I’m going to setup an OpenVPN on my network so that I can get around this and surpass my 6 user limit."><meta itemprop=datePublished content="2025-01-04T12:52:04-06:00"><meta itemprop=dateModified content="2025-01-04T12:52:04-06:00"><meta itemprop=wordCount content="616"><meta name=referrer content="no-referrer-when-downgrade"><link href=/original.min.css rel=stylesheet><script src=/js/d3.v3.min.js></script><script src=/js/topojson.v1.min.js></script><script src=/js/datamaps.world.min.js></script><script src=/js/familytree.js></script><link rel=stylesheet href=/css/link-button.css><link rel=stylesheet href=/css/family-tree.css></head><body><header><a class=skip-link href=#main-content>Skip to main content</a>
+<a href=/ class=title><h1>Louis Lefebvre (✿◠‿◠)</h1></a><nav><button class=social-button id=socialButton>🔗</button><div class=social-icons id=socialIcons><a href=https://linkedin.com/in/louislef299 target=_blank><img src=/image/svgs/brands/linkedin.svg alt=linkedin>
+</a><a href=https://github.com/louislef299 target=_blank><img src=/image/svgs/brands/github.svg alt=gitHub>
+</a><a href=https://vs.co/m62q8rob target=_blank><img src=/image/svgs/brands/vsco.svg alt=vsco>
+</a><a href=https://medium.com/@louislefebvre1999 target=_blank><img src=/image/svgs/brands/medium.svg alt=medium>
+</a><a href=https://bsky.app/profile/louislef299.bsky.social target=_blank><img src=/image/svgs/brands/bluesky.svg alt=bluesky></a></div><script>const socialButton=document.getElementById("socialButton"),socialIcons=document.getElementById("socialIcons");socialButton.addEventListener("click",()=>{socialIcons.style.display==="none"||socialIcons.style.display===""?socialIcons.style.display="flex":socialIcons.style.display="none"})</script><a href=/family/>History</a>
+<a href=/tech/>Tech</a>
+<a href=/travel/>Travel</a></nav></header><main id=main-content><h1>Minecraft Server</h1><p class=byline><time datetime=2025-01-04 pubdate>2025-01-04</time></p><content><p>Alright, recently my friends and I wanted to start up a new Minecraft world, and
+I got challened to host my own server. It wound up being super easy and I&rsquo;m just
+going to go over how I configured the server and any other notes here.</p><h2 id=about-the-setup>About the Setup</h2><p>To allow all of my friends to access the local server, I gave them access to my
+<a href=https://tailscale.com/kb/1136/tailnet>tailnet</a>. It works super slick for now, but I had to upgrade to the <a href="https://tailscale.com/pricing?plan=personal">personal
+plus plan</a> and fork over the extra $6 for this first month. Long-term, I&rsquo;m
+going to setup an OpenVPN on my network so that I can get around this and
+surpass my 6 user limit.</p><p>It will be pretty hard to ditch the tailnet, however, because it was stupid
+simple to setup and it&rsquo;s way less demanding as opposed to a VPN by only routing
+the necessary traffic over the tailnet. Getting my non-techy friends and
+technically-saavy friends to onboard to the tailnet was nice and easy by either
+emailing them a link or sending them an onboarding link. Then after adding my
+account, they were a part of my network!</p><p>After they successfully joined the tailnet, they just had to server name using
+my custom DNS domain and they were in.</p><h2 id=setting-up-the-minecraft-server>Setting up the Minecraft Server</h2><p>Luckily, there was a great doc in the <a href=https://wiki.archlinux.org/title/Minecraft/Java_Edition_server>Arch Wiki on Minecraft</a> that I could
+follow to configure the server. It was a pretty easy setup of configuring the
+<code>minecraft</code> user and group and then starting the service with systemd.</p><h3 id=permissions>Permissions</h3><h4 id=creating-the-minecraft-user-and-group>Creating the <code>minecraft</code> user and group</h4><p>Pretty simple to create the <a href=https://wiki.archlinux.org/title/Users_and_groups>user and group</a>, and just called them both
+<code>minecraft</code>. Here are the steps:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e># Create minecraft group</span>
+</span></span><span style=display:flex><span>sudo groupadd minecraft
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># Create minecraft user, assign it to the minecraft group, and create a home directory</span>
+</span></span><span style=display:flex><span>sudo useradd -m -g minecraft minecraft</span></span></code></pre></div><p>Since I am running the Minecraft server with systemd, I just validated that the
+Minecraft service was running with the correct user and group(located at
+<code>/lib/systemd/system/minecraftd.service</code>):</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-ini data-lang=ini><span style=display:flex><span><span style=color:#66d9ef>[Service]</span>
+</span></span><span style=display:flex><span><span style=color:#a6e22e>Type</span><span style=color:#f92672>=</span><span style=color:#e6db74>forking</span>
+</span></span><span style=display:flex><span><span style=color:#a6e22e>ExecStart</span><span style=color:#f92672>=</span><span style=color:#e6db74>/usr/bin/minecraftd start</span>
+</span></span><span style=display:flex><span><span style=color:#a6e22e>ExecStop</span><span style=color:#f92672>=</span><span style=color:#e6db74>/usr/bin/minecraftd stop</span>
+</span></span><span style=display:flex><span><span style=color:#a6e22e>User</span><span style=color:#f92672>=</span><span style=color:#e6db74>minecraft</span>
+</span></span><span style=display:flex><span><span style=color:#a6e22e>Group</span><span style=color:#f92672>=</span><span style=color:#e6db74>minecraft</span></span></span></code></pre></div><h4 id=set-permissions-for-the-minecraft-directory>Set permissions for the Minecraft directory</h4><p>In order to ensure that the <code>minecraft</code> user has the appropriate permissions to
+access and modify files in the <code>/srv/minecraft</code> directory, I made sure to
+provided the user and group ownership:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e># Change ownership of the /srv/minecraft directory to the minecraft user and group</span>
+</span></span><span style=display:flex><span>sudo chown -R minecraft:minecraft /srv/minecraft
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># Set the appropriate permissions</span>
+</span></span><span style=display:flex><span>sudo chmod -R <span style=color:#ae81ff>755</span> /srv/minecraft</span></span></code></pre></div><h4 id=add-my-user-to-the-minecraft-group>Add my user to the <code>minecraft</code> group</h4><p>Finally, to make sure I had all the necessary permissions to the directory, I
+made sure to add myself to the group as well:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e># Add an existing user to the minecraft group</span>
+</span></span><span style=display:flex><span>sudo usermod -aG minecraft louis</span></span></code></pre></div><h3 id=running-the-server>Running the Server</h3><p>First, needed to accept the EULA by modifying <code>/srv/minecraft/eula.txt</code>. We also
+wanted a solid spawn point, so I configured <code>level-seed</code> of the
+<code>server.properties</code> file to have the <a href=https://www.rockpapershotgun.com/best-minecraft-seeds-java-survival-seeds>cherry blossom
+value</a>(-5584399987456711267). Then, just a super simple <code>systemctl start minecraftd</code> was needed. I also made sure to <code>enable</code> the service so that is runs
+on reboot.</p><h2 id=monitoring>Monitoring</h2><p>Since there are people that rely on this server now and I want to make sure they
+know when the server is healthy and when it isn&rsquo;t, I was thinking I could
+monitor the server with Prometheus from my RaspberryPi. It would be a pretty
+simple setup of running a node-exporter for general server information, the <a href=https://github.com/sladkoff/minecraft-prometheus-exporter>JVM
+and more system-specific minecraft-prometheus-exporter</a> and maybe
+even the more <a href=https://github.com/dirien/minecraft-prometheus-exporter>gameplay-specific minecraft-prometheus-exporter</a>.</p><p>I&rsquo;ll have to make a post about that later, I haven&rsquo;t had time to finish
+configuring that monitoring, but would be simple to first get it monitoring and
+then later to get alerting setup to the minecraft slack channel.</p></content><p></p><p><a href='mailto:louislefebvre1999@gmail.com?subject=Reply%20to%20"Minecraft%20Server"'>Reply to this post by email ↪</a></p></main><footer><small>2023 Louis LeFebvre | Made With ❤️ and <a href=https://clente.github.io/hugo-bearcub/>ᕦʕ •ᴥ•ʔᕤ</a></small></footer></body></html>
