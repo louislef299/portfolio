@@ -1,5 +1,5 @@
 ---
-title: "Learning DBus"
+title: "Getting Started with DBus"
 date: 2025-01-05T12:26:41-06:00
 draft: false
 tags:
@@ -8,13 +8,16 @@ tags:
 
 Alright, so in the past, I had gotten low enough to the system level with BlueZ
 that I had pondered learning the basics of DBus([containerized ble]({{< ref
-"/tech/containerized-bluetooth.md" >}})).
+"/tech/containerized-bluetooth.md" >}})). After working a bit with the popular
+Go bluetooth pkg from tinygo, I was having some problems with it and not getting
+quite getting it to work how I wanted it to, so looks like I get to learn about
+DBus to help with debugging and potentially reimplement my own bluetooth Go pkg.
 
 ## What is DBus?
 
 In short, it is a generic Inter-Process Communication(IPC) used by Linux and
-other operating systems and leveraging Unix domain sockets(AF_UNIX), but can
-also be used over TCP/IP(AF_INET), though not recommended.
+other operating systems and leveraging Unix domain sockets(AF_UNIX) or
+TCP/IP(AF_INET).
 
 ![Linux DBus Architecture](/image/linux-dbus.jpg)
 
@@ -27,10 +30,10 @@ From [Pid Eins][] on why DBus even exists:
 
 [Pid Eins][] offers a super helpful introduction to DBus concepts & terms, so I
 would recommend running over there quickly to review the terms if you are
-unfamiliar. One thing to note on interfaces is when creating services on DBus,
-it is good to reference some of the [standard interfaces][] DBus provides.
+unfamiliar. Here is a reference to some of the [standard interfaces][] DBus
+provides.
 
-## Interacting the DBus through the CLI
+## Interacting with DBus through the CLI
 
 Interacting with DBus is nice and easy with `busctl`. However, in order to
 fully understand DBus, I'm going to try and use the native [dbus-send][] cli.
@@ -64,68 +67,44 @@ on the correct bus. For instance, BlueZ will typically be using the system bus.
 
 ### Introspection
 
-While the `dbus-send` tool is powerful, I've found that it isn't super ideal for
-introspection. Just to make things easier, I'm using `busctl` here:
+DBus comes with the [ability to analyze][] their published interfaces, methods,
+signals and properties at runtime using introspection. While the `dbus-send`
+tool is powerful, I've found it's easier to start with `busctl`. Here's how to
+list all of the objects and introspect a BlueZ service:
 
 ```bash
-[louis@louarch1 ~]$ busctl introspect org.bluez /org/bluez/hci0
+$ busctl tree org.bluez
+└─ /org
+  └─ /org/bluez
+    └─ /org/bluez/hci0
+$ busctl introspect org.bluez /org/bluez/hci0
 NAME                                TYPE      SIGNATURE RESULT/VALUE                             FLAGS
 org.bluez.Adapter1                  interface -         -                                        -
-.GetDiscoveryFilters                method    -         as                                       -
-.RemoveDevice                       method    o         -                                        -
 .SetDiscoveryFilter                 method    a{sv}     -                                        -
 .StartDiscovery                     method    -         -                                        -
 .StopDiscovery                      method    -         -                                        -
 ...
-org.bluez.NetworkServer1            interface -         -                                        -
-.Register                           method    ss        -                                        -
-.Unregister                         method    s         -                                        -
 org.freedesktop.DBus.Introspectable interface -         -                                        -
 .Introspect                         method    -         s                                        -
 org.freedesktop.DBus.Properties     interface -         -                                        -
 .Get                                method    ss        v                                        -
 .GetAll                             method    s         a{sv}                                    -
-.Set                                method    ssv       -                                        -
-.PropertiesChanged                  signal    sa{sv}as  -                                        -
 ```
 
 This command returns the methods, properties and signals of the bluetooth
 service. The specific type notation can be found [here][dbus sigs], but here are
-the signatures:
+the [signatures](#reference-dbus-signatures).
 
-Character | Code Data Type
---- | ---
-y | 8-bit unsigned integer
-b | boolean value
-n |16-bit signed integer
-q | 16-bit unsigned integer
-i | 32-bit signed integer
-u | 32-bit unsigned integer
-x | 64-bit signed integer
-t | 64-bit unsigned integer
-d | double-precision floating point (IEEE 754)
-s | UTF-8 string (no embedded nul characters)
-o | DBus Object Path string
-g | DBus Signature string
-a | Array
-( | Structure start
-) | Structure end
-v | Variant type (described below)
-{ | Dictionary/Map begin
-} | Dictionary/Map end
-h | Unix file descriptor
-
-If you really want to use `dbus-send` and parse through the returned xml, just
-run :
+Using `dbus-send` provides some helpful insight into the arguments that are
+passed to the methods. For instance, here is the xml data for the
+`SetDiscoveryFilter` method:
 
 ```bash
 dbus-send --system --dest=org.bluez --type=method_call --print-reply \
     /org/bluez/hci0 org.freedesktop.DBus.Introspectable.Introspect
 ```
 
-I've found it to be helpful when figuring out how to implement the arguments
-that are passed to the methods. For instance, here is the xml data for the
-`SetDiscoveryFilter` method:
+returns:
 
 ```xml
 <method name="SetDiscoveryFilter">
@@ -170,6 +149,31 @@ own DBus service][] and monitoring for signals.
 This article is getting a bit large, however, so I'm going to work with DBus in
 Go in a different article.
 
+## Reference: DBus Signatures
+
+Character | Code Data Type
+--- | ---
+y | 8-bit unsigned integer
+b | boolean value
+n |16-bit signed integer
+q | 16-bit unsigned integer
+i | 32-bit signed integer
+u | 32-bit unsigned integer
+x | 64-bit signed integer
+t | 64-bit unsigned integer
+d | double-precision floating point (IEEE 754)
+s | UTF-8 string (no embedded nul characters)
+o | DBus Object Path string
+g | DBus Signature string
+a | Array
+( | Structure start
+) | Structure end
+v | Variant type (described below)
+{ | Dictionary/Map begin
+} | Dictionary/Map end
+h | Unix file descriptor
+
+[ability to analyze]: https://www.gnu.org/software/emacs/manual/html_node/dbus/Introspection.html
 [dbus-send]: https://linux.die.net/man/1/dbus-send
 [dbus sigs]: https://pythonhosted.org/txdbus/dbus_overview.html
 [Go DBus pkg]: https://pkg.go.dev/github.com/godbus/dbus
