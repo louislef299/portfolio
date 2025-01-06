@@ -2,6 +2,8 @@
 title: "Learning DBus"
 date: 2025-01-05T12:26:41-06:00
 draft: false
+tags:
+- linux
 ---
 
 Alright, so in the past, I had gotten low enough to the system level with BlueZ
