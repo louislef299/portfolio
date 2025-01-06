@@ -45,7 +45,7 @@ jobs:
     if: github.event.pull_request.user.login == 'dependabot[bot]'
     env:
       PR_URL: ${{ github.event.pull_request.html_url }}
-      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      GH_TOKEN: ${{ secrets.DEPENDABOT_TOKEN }}
     steps:
     - name: Dependabot metadata
       id: metadata
@@ -53,7 +53,9 @@ jobs:
       with:
         github-token: "${{ secrets.GITHUB_TOKEN }}"
     - name: Enable auto-merge for Dependabot PRs
-      run: gh pr merge --auto --squash "$PR_URL"
+      run: |
+        gh pr review --approve "$PR_URL"
+        gh pr merge --auto --squash "$PR_URL"
 ```
 
 The one thing that I was concerned about when enabling this feature was if there
@@ -81,7 +83,17 @@ integration testing as to not accidentally introduce bad code. With trunk-based
 development practices and release-please for manual releases, this is pretty
 safe automation and nothing but a positive imo.
 
+## A Note on Release-Please
+
+When managing releases with [release-please][], make sure to create a PAT to
+trigger workflows that would usually run when merged to main as the default
+`GITHUB_TOKEN` [will not work][]. After creating the token, I updated the
+action(above) to use `GH_TOKEN: ${{ secrets.DEPENDABOT_TOKEN }}` as the default
+token for the cli.
+
 [automating dependabot updates]:  https://docs.github.com/en/code-security/dependabot/working-with-dependabot/automating-dependabot-with-github-actions
 [aws-sso]: https://github.com/louhttps://github.com/louislef299/aws-ssoislef299/aws-sso
 [Medium GH Actions]: https://medium.com/@kojoru/how-to-set-up-merge-queues-in-github-actions-59381e5f435a
 [merge queue]: https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/configuring-pull-request-merges/managing-a-merge-queue
+[release-please]: https://github.com/googleapis/release-please
+[will not work]: https://gist.github.com/xt0rted/46475099dc0a70ba63e16e3177407872
