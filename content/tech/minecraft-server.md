@@ -2,6 +2,9 @@
 title: "Minecraft Server"
 date: 2025-01-04T12:52:04-06:00
 draft: false
+tags:
+- linux
+- sysadmin
 ---
 
 Alright, recently my friends and I wanted to start up a new Minecraft world, and
