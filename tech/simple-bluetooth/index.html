@@ -25,8 +25,8 @@ for an extended period of time, so this is mostly a reference document for me to
 get a quick refresher on the basics until I spend significant time at the
 embedded level. Honestly, I spend way more time at the infrastructure and server
 level, so that comes more naturally to me.</p><h3 id=notes-on-gatt>Notes on GATT</h3><p>GAP is covered first, but mostly just goes over the advertisement protocol for
-bluetooth. Here is a Go snippet that summarizes the basics of GAP:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#75715e>// Define the peripheral device info.
-</span></span></span><span style=display:flex><span><span style=color:#75715e></span><span style=color:#a6e22e>adv</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>adapter</span>.<span style=color:#a6e22e>DefaultAdvertisement</span>()
+bluetooth. Here is a Go snippet that summarizes the basics of GAP:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-go data-lang=go><span style=display:flex><span><span style=color:#75715e>// Define the peripheral device info.</span>
+</span></span><span style=display:flex><span><span style=color:#a6e22e>adv</span> <span style=color:#f92672>:=</span> <span style=color:#a6e22e>adapter</span>.<span style=color:#a6e22e>DefaultAdvertisement</span>()
 </span></span><span style=display:flex><span><span style=color:#a6e22e>err</span> = <span style=color:#a6e22e>adv</span>.<span style=color:#a6e22e>Configure</span>(<span style=color:#a6e22e>bluetooth</span>.<span style=color:#a6e22e>AdvertisementOptions</span>{
 </span></span><span style=display:flex><span>    <span style=color:#a6e22e>LocalName</span>: <span style=color:#e6db74>&#34;loupi5&#34;</span>,
 </span></span><span style=display:flex><span>    <span style=color:#a6e22e>Interval</span>:  <span style=color:#a6e22e>bluetooth</span>.<span style=color:#a6e22e>Duration</span>(<span style=color:#ae81ff>20000</span>),
