@@ -1,9 +1,13 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>🌲 on Louis Lefebvre (✿◠‿◠)</title><link>https://louislefebvre.net/</link><description>Recent content in 🌲 on Louis Lefebvre (✿◠‿◠)</description><generator>Hugo</generator><language>en-us</language><managingEditor>louislefebvre1999@gmail.com (Louis Lefebvre)</managingEditor><webMaster>louislefebvre1999@gmail.com (Louis Lefebvre)</webMaster><copyright>2023 Louis LeFebvre</copyright><lastBuildDate>Tue, 06 May 2025 14:14:51 -0500</lastBuildDate><atom:link href="https://louislefebvre.net/index.xml" rel="self" type="application/rss+xml"/><item><title>May Update</title><link>https://louislefebvre.net/tech/may-update/</link><pubDate>Tue, 06 May 2025 14:14:51 -0500</pubDate><author>louislefebvre1999@gmail.com (Louis Lefebvre)</author><guid>https://louislefebvre.net/tech/may-update/</guid><description>&lt;p>Just a small update. At work, things have been a little hectic with trying to
-balance getting actual work done while massaging different egos to win political
-favor. Anyways, most of the work that I&amp;rsquo;ve laid down is ready for somebody to
-take action on, but I&amp;rsquo;ve decided to focus more on my side projects in my free
-time for now as long as my company doesn&amp;rsquo;t think my efforts are worth their
-time.&lt;/p></description></item><item><title>Getting Started with DBus</title><link>https://louislefebvre.net/tech/learn-dbus/</link><pubDate>Sun, 05 Jan 2025 12:26:41 -0600</pubDate><author>louislefebvre1999@gmail.com (Louis Lefebvre)</author><guid>https://louislefebvre.net/tech/learn-dbus/</guid><description>&lt;p>Alright, so in the past, I had gotten low enough to the system level with BlueZ
+balance getting actual work done while massaging different egos. Anyways, most
+of the work that I&amp;rsquo;ve laid down is ready for somebody to take action on, but
+I&amp;rsquo;ve decided to focus more on my side projects in my free time for now.&lt;/p>
+&lt;p>So, an update on some of my bluetooth programming: since the Go DBus programming
+has been a grind and I would have to basically invent a whole new library just
+to work with it, I&amp;rsquo;ve decided that I should move back to a more naturally
+embedded language. This decision came with the realization that I would likely
+want more control over my application code when working with bluetooth to make
+it more performant and reliable.&lt;/p></description></item><item><title>Getting Started with DBus</title><link>https://louislefebvre.net/tech/learn-dbus/</link><pubDate>Sun, 05 Jan 2025 12:26:41 -0600</pubDate><author>louislefebvre1999@gmail.com (Louis Lefebvre)</author><guid>https://louislefebvre.net/tech/learn-dbus/</guid><description>&lt;p>Alright, so in the past, I had gotten low enough to the system level with BlueZ
 that I had pondered learning the basics of DBus(&lt;a href="https://louislefebvre.net/tech/containerized-bluetooth/">containerized ble&lt;/a>). After working a bit with the popular
 Go bluetooth pkg from tinygo, I was having some problems with it and not getting
 quite getting it to work how I wanted it to, so looks like I get to learn about
