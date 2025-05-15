@@ -27,4 +27,5 @@ CITIES =
    {name: 'Badlands National Park', latitude: 43.8722887541126, longitude: -102.29967718869023, radius: 3, fillKey: 'nationalPark', date: '2020-08'},
    {name: 'Devil\'s Tower', latitude: 44.59772676105159, longitude: -104.71802507936667, radius: 3, fillKey: 'nationalPark', date: '2020-08'},
    {name: 'George Town', latitude: 19.296808085806397, longitude: -81.38101632162923, radius: 3, fillKey: 'city', date: '2009-03'},
+   {name: 'Rincón', latitude: 18.34214496196399, longitude: -67.25145549977067, radius: 3, fillKey: 'city', date: '2025-03'},
 ]
