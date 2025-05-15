@@ -5,11 +5,9 @@ draft: false
 ---
 
 Just a small update. At work, things have been a little hectic with trying to
-balance getting actual work done while massaging different egos to win political
-favor. Anyways, most of the work that I've laid down is ready for somebody to
-take action on, but I've decided to focus more on my side projects in my free
-time for now as long as my company doesn't think my efforts are worth their
-time.
+balance getting actual work done while massaging different egos. Anyways, most
+of the work that I've laid down is ready for somebody to take action on, but
+I've decided to focus more on my side projects in my free time for now.
 
 So, an update on some of my bluetooth programming: since the Go DBus programming
 has been a grind and I would have to basically invent a whole new library just
