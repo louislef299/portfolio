@@ -1,0 +1,86 @@
+<!doctype html><html lang=en-us><head><meta http-equiv=X-Clacks-Overhead content="GNU Terry Pratchett"><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><title>An Introduction to Modern LLMs | Louis Lefebvre (✿◠‿◠)</title>
+<meta name=title content="An Introduction to Modern LLMs"><meta name=description content="Alright, I&rsquo;ve been putting this off for a while now, mostly because I believe
+that a lot of the AI hype is over-blown, but because I am a part of the
+proletariat, I do need to keep my skills sharp according to the industry. Not
+necessarily what I believe. This will be a part of a series where I will be
+going over LLMs, CSI Block Projection and RAFT.
+Conceptually, I understand each from a high level, but my goal is to get from
+theoretical and conceptual knowledge to more practical and hands-on knowledge as
+this is the true path to learning. Before I can get to practical knowledge,
+however, I need to lay a solid foundation of understanding, so today I am
+starting off with understanding modern LLMs."><meta name=author content><meta name=keywords content="llm,"><meta property="og:url" content="https://louislefebvre.net/tech/llm-learning/"><meta property="og:site_name" content="Louis Lefebvre (✿◠‿◠)"><meta property="og:title" content="An Introduction to Modern LLMs"><meta property="og:description" content="Alright, I’ve been putting this off for a while now, mostly because I believe that a lot of the AI hype is over-blown, but because I am a part of the proletariat, I do need to keep my skills sharp according to the industry. Not necessarily what I believe. This will be a part of a series where I will be going over LLMs, CSI Block Projection and RAFT.
+Conceptually, I understand each from a high level, but my goal is to get from theoretical and conceptual knowledge to more practical and hands-on knowledge as this is the true path to learning. Before I can get to practical knowledge, however, I need to lay a solid foundation of understanding, so today I am starting off with understanding modern LLMs."><meta property="og:locale" content="en_us"><meta property="og:type" content="article"><meta property="article:section" content="tech"><meta property="article:published_time" content="2025-05-17T11:09:21-05:00"><meta property="article:modified_time" content="2025-05-17T11:09:21-05:00"><meta property="article:tag" content="Llm"><meta name=twitter:card content="summary"><meta name=twitter:title content="An Introduction to Modern LLMs"><meta name=twitter:description content="Alright, I’ve been putting this off for a while now, mostly because I believe that a lot of the AI hype is over-blown, but because I am a part of the proletariat, I do need to keep my skills sharp according to the industry. Not necessarily what I believe. This will be a part of a series where I will be going over LLMs, CSI Block Projection and RAFT.
+Conceptually, I understand each from a high level, but my goal is to get from theoretical and conceptual knowledge to more practical and hands-on knowledge as this is the true path to learning. Before I can get to practical knowledge, however, I need to lay a solid foundation of understanding, so today I am starting off with understanding modern LLMs."><meta itemprop=name content="An Introduction to Modern LLMs"><meta itemprop=description content="Alright, I’ve been putting this off for a while now, mostly because I believe that a lot of the AI hype is over-blown, but because I am a part of the proletariat, I do need to keep my skills sharp according to the industry. Not necessarily what I believe. This will be a part of a series where I will be going over LLMs, CSI Block Projection and RAFT.
+Conceptually, I understand each from a high level, but my goal is to get from theoretical and conceptual knowledge to more practical and hands-on knowledge as this is the true path to learning. Before I can get to practical knowledge, however, I need to lay a solid foundation of understanding, so today I am starting off with understanding modern LLMs."><meta itemprop=datePublished content="2025-05-17T11:09:21-05:00"><meta itemprop=dateModified content="2025-05-17T11:09:21-05:00"><meta itemprop=wordCount content="1004"><meta itemprop=keywords content="Llm"><meta name=referrer content="no-referrer-when-downgrade"><link href=/original.min.css rel=stylesheet><script src=/js/d3.v3.min.js></script><script src=/js/topojson.v1.min.js></script><script src=/js/datamaps.world.min.js></script><script src=/js/familytree.js></script><link rel=stylesheet href=/css/link-button.css><link rel=stylesheet href=/css/family-tree.css></head><body><header><a class=skip-link href=#main-content>Skip to main content</a>
+<a href=/ class=title><h1>Louis Lefebvre (✿◠‿◠)</h1></a><nav><button class=social-button id=socialButton>🔗</button><div class=social-icons id=socialIcons><a href=https://linkedin.com/in/louislef299 target=_blank><img src=/image/svgs/brands/linkedin.svg alt=linkedin>
+</a><a href=https://github.com/louislef299 target=_blank><img src=/image/svgs/brands/github.svg alt=gitHub>
+</a><a href=https://vs.co/m62q8rob target=_blank><img src=/image/svgs/brands/vsco.svg alt=vsco>
+</a><a href=https://medium.com/@louislefebvre1999 target=_blank><img src=/image/svgs/brands/medium.svg alt=medium>
+</a><a href=https://bsky.app/profile/louislef299.bsky.social target=_blank><img src=/image/svgs/brands/bluesky.svg alt=bluesky></a></div><script>const socialButton=document.getElementById("socialButton"),socialIcons=document.getElementById("socialIcons");socialButton.addEventListener("click",()=>{socialIcons.style.display==="none"||socialIcons.style.display===""?socialIcons.style.display="flex":socialIcons.style.display="none"})</script><a href=/family/>History</a>
+<a href=/tech/>Tech</a>
+<a href=/travel/>Travel</a></nav></header><main id=main-content><h1>An Introduction to Modern LLMs</h1><p class=byline><time datetime=2025-05-17 pubdate>2025-05-17</time></p><content><p>Alright, I&rsquo;ve been putting this off for a while now, mostly because I believe
+that a lot of the AI hype is over-blown, but because I am a part of the
+proletariat, I do need to keep my skills sharp according to the industry. Not
+necessarily what I believe. This will be a part of a series where I will be
+going over LLMs, CSI Block Projection and RAFT.</p><p>Conceptually, I understand each from a high level, but my goal is to get from
+theoretical and conceptual knowledge to more practical and hands-on knowledge as
+this is the true path to learning. Before I can get to practical knowledge,
+however, I need to lay a solid foundation of understanding, so today I am
+starting off with understanding modern LLMs.</p><h2 id=current-state>Current State</h2><p>My current knowledge in this area is at best conversational. Currently, I
+understand that they have a similar architecture to any machine learning neural
+network and can be trained with different weights and a lot of compute power.
+These weights are automatically adjusted based on the training requirements and
+the outputted algorithm is able to do whatever job you theoretically trained it
+for(without the trainers really understanding why or how it does this so well).</p><p>Although the architecture of these algorithms are similar, I believe the actual
+function of the code is what separates LLMs from general machine learning. It
+would make sense that machine learning is the mechanism used to <em>train</em> the
+algorithm, but the LLM itself is just a probabilistic language program and is
+trained to guess the correct next word purely based on weights, which, when
+you think about it, may just be how we are able to form language ourselves.</p><p>Anyways, let&rsquo;s put my current understanding to the test!</p><h2 id=machine-learning-vs-deep-learning>Machine Learning vs Deep Learning</h2><p><img src=/image/learning-model-vd.png alt="Learning Model Venn Diagram"></p><p>In some preliminary research just on <a href=https://aws.amazon.com/what-is/neural-network/>neural networks</a>, I was able to
+understand the true difference between Machine Learning and Deep Learning:</p><blockquote><p>Traditional machine learning methods require human input for the machine
+learning software to work sufficiently well. A data scientist manually
+determines the set of relevant features that the software must analyze. This
+limits the software’s ability, which makes it tedious to create and manage.</p><p>On the other hand, in deep learning, the data scientist gives only raw data to
+the software. The deep learning network derives the features by itself and
+learns more independently. It can analyze unstructured datasets like text
+documents, identify which data attributes to prioritize, and solve more
+complex problems.</p></blockquote><p>Without additional context, that in and of itself is a little confusing. How
+would a deep learning model know if it is correctly identifying what needs to
+analyzed and trained given a dataset? But, these deep learning models rely on
+<a href="https://www.youtube.com/watch?v=oYm66fHqHUM">Foundational Models</a> for efficient processing of unstructured data and hidden
+relationship and pattern discovery. Basically, unsupervised/self-supervised
+learning.</p><p>Naturally, this leads us to AI and ultimately, Transformers:</p><blockquote><p>While machine learning and deep learning focus on prediction and pattern
+recognition, generative AI produces unique outputs based on the patterns it
+detects. Generative AI technology is built on transformer architecture that
+combines several different neural networks to combine data patterns in unique
+ways.</p></blockquote><h3 id=a-quick-note-on-neural-networks>A Quick Note on Neural Networks</h3><p>The foundation of LLMs is built and trained leveraging neural networks. There is
+a great series on neural networks by <a href=https://www.3blue1brown.com/topics/neural-networks>3Blue1Brown</a> that I would recommend.</p><h2 id=transformers>Transformers</h2><p><img src=/image/transformer-transparent.gif alt=Transformers></p><p><a href=https://arxiv.org/abs/1706.03762>Transformers</a> are a type of neural network architecture that transforms or
+changes an input sequence into an output sequence, computing hidden
+representations in parallel for all input and output positions, leveraging
+multi-head attention. It is important to note that transformers are an
+improvement and evolution on the shortcomings of a <a href=https://aws.amazon.com/what-is/recurrent-neural-network/>Recurrent Neural
+Network</a>(RNN).</p><p>RNN requires sequential processing of inputs, where order matters. This limits
+the amount of data that can be processed by the amount of memory on the node
+when batching large pieces of data(books and papers). For example, <em>Tom is a
+cat. Tom’s favorite food is fish.</em>. RNN has strategies for remembering useful
+information, like Tom being a cat, but the ability to remember is ultimately
+limited and RNNs eventually have to forget information.</p><p>With the introduction of self-attention, transformers are able to process data
+sequences in parallel, overcoming the memory limitations and sequence
+interdependencies of RNNs.</p><blockquote><p>Self-attention, sometimes called intra-attention is an attention mechanism
+relating different positions of a single sequence in order to compute a
+representation of the sequence. &ndash; <a href=https://arxiv.org/abs/1706.03762>Attention Is All You Need</a></p></blockquote><p>The transformer&rsquo;s self-attention layer is able to compute and store the
+relationships between words using embeddings, which are numerical vectors that
+capture their semantic meaning. The core of self-attention involves calculating
+attention scores. For each query, the model computes the <a href=https://www.khanacademy.org/math/multivariable-calculus/thinking-about-multivariable-function/x786f2022:vectors-and-matrices/a/dot-products-mvc>dot product</a> with
+all the keys and then applies a softmax function to normalize the results. These
+scores represent the relevance of each key to the current query.</p><p><img src=/image/attention-algorithm.webp alt="Attention Algorithm"></p><p>More information on how transformers work under-the-hood can be found
+<a href=https://towardsdatascience.com/transformers-explained-visually-part-2-how-it-works-step-by-step-b49fa4a64f34/>here</a></p><h2 id=modern-llms>Modern LLMs</h2><p>Modern LLMs are advanced neural networks that adhere to the transformer
+architecture and are trained on huge amounts of datasets using self-supervised
+learning during pre-training. When fine-tuning a model, Reinforcement Learning
+from Human Feedback (RLHF) is leveraged to ensure proper results. It is
+important to understand that these models are <em>huge</em>, often ranging from a
+billion to over a trillion different parameters.</p><h2 id=where-to-next>Where to Next?</h2><p>With a solid foundation around understanding the state of modern LLMs, there are
+a few different routes that could be taken to further learning. The practical
+side and the theoretical side.</p><p>For more practical, hands-on learning, check out:</p><ul><li><a href=https://course.fast.ai/>Practical Deep Learning for Coders</a></li><li><a href=https://huggingface.co/learn/llm-course/chapter1/1>Hugging Face LLM Course</a></li><li><a href=https://docs.pytorch.org/tutorials/beginner/basics/intro>Getting Started with PyTorch</a></li></ul><p>To get a more in-depth understanding of the theoretical side of LLMs, check out:</p><ul><li><a href=https://arxiv.org/abs/1706.03762>Attention Is All You Need</a></li><li><a href=https://medium.com/@ikim1994914/understanding-the-modern-llm-part-1-source-and-target-masks-in-transformers-and-example-use-5fb72af3bd57>Understanding the Modern LLM</a></li><li><a href=https://sidecar.ai/blog/demystifying-vectors-and-embeddings-in-ai-a-beginners-guide>Demystifying Vectors and Embeddings</a></li><li><a href=https://medium.com/@touhid3.1416/the-surprisingly-simple-math-behind-transformer-attention-mechanism-d354fbb4fef6>The Math Behind Transformers</a></li><li>any other links that were included in this article!</li></ul><p>That wraps up my learnings for modern LLMs! I just barely scratched the surface
+here, but to go more in-depth will take some time and I&rsquo;ll be sure to include
+follow-up articles.</p></content><p><a class=blog-tags href=/tags/llm/>#llm</a></p><p><a href='mailto:louislefebvre1999@gmail.com?subject=Reply%20to%20"An%20Introduction%20to%20Modern%20LLMs"'>Reply to this post by email ↪</a></p></main><footer><small>2023 Louis LeFebvre | Made With ❤️ and <a href=https://clente.github.io/hugo-bearcub/>ᕦʕ •ᴥ•ʔᕤ</a></small></footer></body></html>
