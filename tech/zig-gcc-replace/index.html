@@ -1,0 +1,129 @@
+<!doctype html><html lang=en-us><head><meta http-equiv=X-Clacks-Overhead content="GNU Terry Pratchett"><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><title>Improving My C Build System with Zig | Louis Lefebvre (✿◠‿◠)</title>
+<meta name=title content="Improving My C Build System with Zig"><meta name=description content="Since I&rsquo;ve been messing around with zig recently, I decided one of the
+simplest ways for me to work with zig is to integrate it into one of my existing
+C project by replacing gcc/clang with zig. Even though zig has a bunch of
+additional features that clang does not, we will keep it simple and just
+restructure clang as-is and work on improvements later.
+Current Sitch
+The C project I&rsquo;ll be improving is my custom shell that I wrote in college.
+It uses memory emulation, so it isn&rsquo;t fully functional, but it definitely could
+use the improvement!"><meta name=author content><meta name=keywords content="zig,sysprog,"><meta property="og:url" content="https://louislefebvre.net/tech/zig-gcc-replace/"><meta property="og:site_name" content="Louis Lefebvre (✿◠‿◠)"><meta property="og:title" content="Improving My C Build System with Zig"><meta property="og:description" content="Since I’ve been messing around with zig recently, I decided one of the simplest ways for me to work with zig is to integrate it into one of my existing C project by replacing gcc/clang with zig. Even though zig has a bunch of additional features that clang does not, we will keep it simple and just restructure clang as-is and work on improvements later.
+Current Sitch The C project I’ll be improving is my custom shell that I wrote in college. It uses memory emulation, so it isn’t fully functional, but it definitely could use the improvement!"><meta property="og:locale" content="en_us"><meta property="og:type" content="article"><meta property="article:section" content="tech"><meta property="article:published_time" content="2025-05-20T10:18:34-05:00"><meta property="article:modified_time" content="2025-05-20T10:18:34-05:00"><meta property="article:tag" content="Zig"><meta property="article:tag" content="Sysprog"><meta name=twitter:card content="summary"><meta name=twitter:title content="Improving My C Build System with Zig"><meta name=twitter:description content="Since I’ve been messing around with zig recently, I decided one of the simplest ways for me to work with zig is to integrate it into one of my existing C project by replacing gcc/clang with zig. Even though zig has a bunch of additional features that clang does not, we will keep it simple and just restructure clang as-is and work on improvements later.
+Current Sitch The C project I’ll be improving is my custom shell that I wrote in college. It uses memory emulation, so it isn’t fully functional, but it definitely could use the improvement!"><meta itemprop=name content="Improving My C Build System with Zig"><meta itemprop=description content="Since I’ve been messing around with zig recently, I decided one of the simplest ways for me to work with zig is to integrate it into one of my existing C project by replacing gcc/clang with zig. Even though zig has a bunch of additional features that clang does not, we will keep it simple and just restructure clang as-is and work on improvements later.
+Current Sitch The C project I’ll be improving is my custom shell that I wrote in college. It uses memory emulation, so it isn’t fully functional, but it definitely could use the improvement!"><meta itemprop=datePublished content="2025-05-20T10:18:34-05:00"><meta itemprop=dateModified content="2025-05-20T10:18:34-05:00"><meta itemprop=wordCount content="935"><meta itemprop=keywords content="Zig,Sysprog"><meta name=referrer content="no-referrer-when-downgrade"><link href=/original.min.css rel=stylesheet><script src=/js/d3.v3.min.js></script><script src=/js/topojson.v1.min.js></script><script src=/js/datamaps.world.min.js></script><script src=/js/familytree.js></script><link rel=stylesheet href=/css/link-button.css><link rel=stylesheet href=/css/family-tree.css></head><body><header><a class=skip-link href=#main-content>Skip to main content</a>
+<a href=/ class=title><h1>Louis Lefebvre (✿◠‿◠)</h1></a><nav><button class=social-button id=socialButton>🔗</button><div class=social-icons id=socialIcons><a href=https://linkedin.com/in/louislef299 target=_blank><img src=/image/svgs/brands/linkedin.svg alt=linkedin>
+</a><a href=https://github.com/louislef299 target=_blank><img src=/image/svgs/brands/github.svg alt=gitHub>
+</a><a href=https://vs.co/m62q8rob target=_blank><img src=/image/svgs/brands/vsco.svg alt=vsco>
+</a><a href=https://medium.com/@louislefebvre1999 target=_blank><img src=/image/svgs/brands/medium.svg alt=medium>
+</a><a href=https://bsky.app/profile/louislef299.bsky.social target=_blank><img src=/image/svgs/brands/bluesky.svg alt=bluesky></a></div><script>const socialButton=document.getElementById("socialButton"),socialIcons=document.getElementById("socialIcons");socialButton.addEventListener("click",()=>{socialIcons.style.display==="none"||socialIcons.style.display===""?socialIcons.style.display="flex":socialIcons.style.display="none"})</script><a href=/family/>History</a>
+<a href=/tech/>Tech</a>
+<a href=/travel/>Travel</a></nav></header><main id=main-content><h1>Improving My C Build System with Zig</h1><p class=byline><time datetime=2025-05-20 pubdate>2025-05-20</time></p><content><p>Since I&rsquo;ve been messing around with <a href=https://ziglang.org/>zig</a> recently, I decided one of the
+simplest ways for me to work with zig is to integrate it into one of my existing
+C project by <a href=https://andrewkelley.me/post/zig-cc-powerful-drop-in-replacement-gcc-clang.html>replacing gcc/clang with zig</a>. Even though zig has a bunch of
+additional features that clang does not, we will keep it simple and just
+restructure clang as-is and work on improvements later.</p><h2 id=current-sitch>Current Sitch</h2><p>The C project I&rsquo;ll be improving is my <a href=https://github.com/louislef299/shell>custom shell</a> that I wrote in college.
+It uses memory emulation, so it isn&rsquo;t fully functional, but it definitely could
+use the improvement!</p><p>Since I will likely have the new code merged by the time you, random nerd, are
+reading this, here is my current file structure:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>louis<span style=color:#f92672>[</span>shell<span style=color:#f92672>]</span>@main &gt; tree
+</span></span><span style=display:flex><span>.
+</span></span><span style=display:flex><span>├── disk.c
+</span></span><span style=display:flex><span>├── disk.h
+</span></span><span style=display:flex><span>├── Dockerfile
+</span></span><span style=display:flex><span>├── fs.c
+</span></span><span style=display:flex><span>├── fs.h
+</span></span><span style=display:flex><span>├── LICENSE
+</span></span><span style=display:flex><span>├── main.c
+</span></span><span style=display:flex><span>├── Makefile
+</span></span><span style=display:flex><span>├── README.md
+</span></span><span style=display:flex><span>├── shell.c
+</span></span><span style=display:flex><span>└── shell.h
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#ae81ff>1</span> directory, <span style=color:#ae81ff>11</span> files</span></span></code></pre></div><p>with a <code>Makefile</code> that looks like:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-make data-lang=make><span style=display:flex><span>.DEFAULT_GOAL <span style=color:#f92672>:=</span> default
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>GCC <span style=color:#f92672>?=</span> /usr/bin/gcc
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#a6e22e>default</span><span style=color:#f92672>:</span> shell.o fs.o disk.o
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>$(</span>GCC<span style=color:#66d9ef>)</span> -Wall main.c shell.o disk.o fs.o -o lsh -g
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#a6e22e>shell.o</span><span style=color:#f92672>:</span> shell.c shell.h
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>$(</span>GCC<span style=color:#66d9ef>)</span> -Wall shell.c -c -o shell.o -g
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#a6e22e>fs.o</span><span style=color:#f92672>:</span> fs.c fs.h
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>$(</span>GCC<span style=color:#66d9ef>)</span> -Wall fs.c -c -o fs.o -g
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#a6e22e>disk.o</span><span style=color:#f92672>:</span> disk.c disk.h
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>$(</span>GCC<span style=color:#66d9ef>)</span> -Wall disk.c -c -o disk.o -g
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#a6e22e>container</span><span style=color:#f92672>:</span>
+</span></span><span style=display:flex><span>    docker build -t lsh .
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#a6e22e>clean</span><span style=color:#f92672>:</span>
+</span></span><span style=display:flex><span>    rm -rf *.o lsh lsh.*
+</span></span><span style=display:flex><span>    docker container prune -f <span style=color:#f92672>&amp;&amp;</span> docker image prune -f
+</span></span></code></pre></div><h2 id=replace-gcc-with-zig>Replace gcc with zig</h2><p>One of the first things I did was actually place all of my C files into a <code>src/</code>
+folder similar to other zig project structures. That just required fixing all of
+the file references to include the <code>src/</code> prefix.</p><p>Next, I simply had to replace <code>gcc</code> with <code>zig cc</code>:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>louis<span style=color:#f92672>[</span>shell<span style=color:#f92672>]</span>@replace-make &gt; git diff 41f97f4
+</span></span><span style=display:flex><span>diff --git a/Makefile b/Makefile
+</span></span><span style=display:flex><span>index be25833..4a36c04 <span style=color:#ae81ff>100644</span>
+</span></span><span style=display:flex><span>--- a/Makefile
+</span></span><span style=display:flex><span>+++ b/Makefile
+</span></span><span style=display:flex><span>@@ -1,7 +1,7 @@
+</span></span><span style=display:flex><span> .DEFAULT_GOAL :<span style=color:#f92672>=</span> default
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>-GCC ?<span style=color:#f92672>=</span> /usr/bin/gcc
+</span></span><span style=display:flex><span>+GCC ?<span style=color:#f92672>=</span> zig cc</span></span></code></pre></div><p>and that was literally it! Everything compiled properly! That was so darn simple
+that in this post, I&rsquo;ll also be migrating from using <code>make</code> as my build system
+to fully migrating to <code>zig build</code>.</p><h2 id=replace-make-with-zig-build>Replace make with zig build</h2><p>First, just going over the benefits of migrating away from <code>make</code>:</p><ul><li>Dependency-Free Builds(other than zig itself)</li><li>Cross-Compilation</li><li>Package Management</li><li>Improved Performance(logical concurrency defaults and caching)</li><li>Declarative Syntax</li></ul><p>The zig project has an official <a href=https://ziglang.org/learn/build-system/>Zig Build System</a> document, but I will also
+be running through <a href=https://zig.news/xq/zig-build-explained-part-1-59lf>Zig Build Explained</a>, which may be a bit older, but might
+give me some good insight into some of the newer and more complex build options.</p><h3 id=just-port-make>Just Port Make</h3><p>Without removing the dependency on <code>make</code>, we <em>can</em> just run a system command
+within the zig build system. Although this doesn&rsquo;t actually solve any of our
+problems, it gets us comfortable with some of the zig syntax and <a href=https://ziglang.org/documentation/master/std/#std.Build.Step>build
+<code>Step</code></a>:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c data-lang=c><span style=display:flex><span><span style=color:#66d9ef>const</span> std <span style=color:#f92672>=</span> <span style=color:#960050;background-color:#1e0010>@</span><span style=color:#a6e22e>import</span>(<span style=color:#e6db74>&#34;std&#34;</span>);
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>pub fn <span style=color:#a6e22e>build</span>(b: <span style=color:#f92672>*</span>std.Build) <span style=color:#66d9ef>void</span> {
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>const</span> make_step <span style=color:#f92672>=</span> b.<span style=color:#a6e22e>addSystemCommand</span>(<span style=color:#f92672>&amp;</span>[_][]<span style=color:#66d9ef>const</span> u8{
+</span></span><span style=display:flex><span>        <span style=color:#e6db74>&#34;make&#34;</span>, <span style=color:#e6db74>&#34;default&#34;</span>,
+</span></span><span style=display:flex><span>    });
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>const</span> <span style=color:#66d9ef>default</span> <span style=color:#f92672>=</span> b.<span style=color:#a6e22e>step</span>(<span style=color:#e6db74>&#34;default&#34;</span>, <span style=color:#e6db74>&#34;Run the default make step&#34;</span>);
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>default</span>.<span style=color:#a6e22e>dependOn</span>(<span style=color:#f92672>&amp;</span>make_step.step);
+</span></span><span style=display:flex><span>}</span></span></code></pre></div><p>By running <code>zig build default</code>, we get the exact same output we would expect if
+we ran <code>make</code>.</p><h3 id=maintain-it-with-zig>Maintain it with zig</h3><p>Next, let&rsquo;s update the build step in the <code>Makefile</code> to ziglang.</p><h4 id=standard-build-options>Standard Build Options</h4><p>First, we have to setup some default values in the zig build process:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c data-lang=c><span style=display:flex><span><span style=color:#66d9ef>const</span> target <span style=color:#f92672>=</span> b.<span style=color:#a6e22e>standardTargetOptions</span>(.{});
+</span></span><span style=display:flex><span><span style=color:#66d9ef>const</span> optimize <span style=color:#f92672>=</span> b.<span style=color:#a6e22e>standardOptimizeOption</span>(.{});</span></span></code></pre></div><p>I&rsquo;m just going to quote the official <a href=https://ziglang.org/learn/build-system/#standard-options>Zig docs</a> here:</p><blockquote><p>Standard target options allows the person running zig build to choose what
+target to build for. By default, any target is allowed, and no choice means to
+target the host system. Other options for restricting supported target set are
+available.</p><p>Standard optimization options allow the person running zig build to select
+between Debug, ReleaseSafe, ReleaseFast, and ReleaseSmall. By default none of
+the release options are considered the preferable choice by the build script,
+and the user must make a decision in order to create a release build.</p></blockquote><h4 id=building-the-c-executable>Building the C Executable</h4><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c data-lang=c><span style=display:flex><span><span style=color:#66d9ef>const</span> lsh <span style=color:#f92672>=</span> b.<span style=color:#a6e22e>addExecutable</span>(.{
+</span></span><span style=display:flex><span>    .name <span style=color:#f92672>=</span> <span style=color:#e6db74>&#34;lsh&#34;</span>,
+</span></span><span style=display:flex><span>    .root_module <span style=color:#f92672>=</span> b.<span style=color:#a6e22e>createModule</span>(.{
+</span></span><span style=display:flex><span>        .target <span style=color:#f92672>=</span> target,
+</span></span><span style=display:flex><span>        .optimize <span style=color:#f92672>=</span> optimize,
+</span></span><span style=display:flex><span>        .link_libc <span style=color:#f92672>=</span> true,
+</span></span><span style=display:flex><span>    }),
+</span></span><span style=display:flex><span>});</span></span></code></pre></div><p>The above creates an executable for the build process. The docs weren&rsquo;t <em>quite</em>
+up-to-date as they didn&rsquo;t yet use the <code>.root_module</code> pattern. At first, I was
+confused on what a module even was, but <a href=https://github.com/ziglang/zig/issues/14307>according to Andrew</a>, it is:</p><blockquote><p>A module is a directory of files, along with a root source file that
+identifies the file referred to when the module is used with @import</p></blockquote><p>So, pretty simple syntax, the above will create an executable named <code>lsh</code> and I
+pass along the <code>target</code> and <code>optimize</code> flags from the <code>build</code> command. Since
+<code>shell</code> uses standard C library functions(like <code>printf</code>, <code>malloc</code>, <code>free</code>, etc),
+I also need to set <code>.link_libc = true</code> to ensure that those functions are
+available at runtime.</p><p>Next, I just have to add all of my C source files and the standard flags to run.
+Super easy to do:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c data-lang=c><span style=display:flex><span>lsh.<span style=color:#a6e22e>addCSourceFiles</span>(.{ .files <span style=color:#f92672>=</span> <span style=color:#f92672>&amp;</span>.{
+</span></span><span style=display:flex><span>    <span style=color:#e6db74>&#34;src/disk.c&#34;</span>,
+</span></span><span style=display:flex><span>    <span style=color:#e6db74>&#34;src/fs.c&#34;</span>,
+</span></span><span style=display:flex><span>    <span style=color:#e6db74>&#34;src/main.c&#34;</span>,
+</span></span><span style=display:flex><span>    <span style=color:#e6db74>&#34;src/shell.c&#34;</span>,
+</span></span><span style=display:flex><span>}, .flags <span style=color:#f92672>=</span> <span style=color:#f92672>&amp;</span>.{
+</span></span><span style=display:flex><span>    <span style=color:#e6db74>&#34;-Wall&#34;</span>,
+</span></span><span style=display:flex><span>    <span style=color:#e6db74>&#34;-c&#34;</span>,
+</span></span><span style=display:flex><span>    <span style=color:#e6db74>&#34;-g&#34;</span>,
+</span></span><span style=display:flex><span>} });</span></span></code></pre></div><p>and finally, to ensure that this gets executed with <code>zig build</code>, I have to
+finish with:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c data-lang=c><span style=display:flex><span>b.<span style=color:#a6e22e>installArtifact</span>(lsh);</span></span></code></pre></div><p>For builds that a slightly more complex, I&rsquo;d recommend checking out the <a href=https://ziggit.dev/t/build-system-tricks/3531#p-12644-h-6-add-build-artifacts-to-depend-on-7>Build
+System Tricks</a> to see an example of when to use <code>addInstallArtifact</code>.</p><h2 id=conclusion>Conclusion</h2><p>Zig is a fantastic language and has been super fun learning. To see the full
+working code, check out the <a href=https://github.com/louislef299/shell>custom shell</a>(no promises on the app working or
+anything). Since zig is still super young, there are some quirks here and there,
+but part of the enjoyment of learning the language has been searching through
+their many community pages or just their git repository. Hoping to post more as
+I explore further!</p></content><p><a class=blog-tags href=/tags/zig/>#zig</a>
+<a class=blog-tags href=/tags/sysprog/>#sysprog</a></p><p><a href='mailto:louislefebvre1999@gmail.com?subject=Reply%20to%20"Improving%20My%20C%20Build%20System%20with%20Zig"'>Reply to this post by email ↪</a></p></main><footer><small>2023 Louis LeFebvre | Made With ❤️ and <a href=https://clente.github.io/hugo-bearcub/>ᕦʕ •ᴥ•ʔᕤ</a></small></footer></body></html>

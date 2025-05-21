@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Zig on Louis Lefebvre (✿◠‿◠)</title><link>https://louislefebvre.net/tags/zig/</link><description>Recent content in Zig on Louis Lefebvre (✿◠‿◠)</description><generator>Hugo</generator><language>en-us</language><managingEditor>louislefebvre1999@gmail.com (Louis Lefebvre)</managingEditor><webMaster>louislefebvre1999@gmail.com (Louis Lefebvre)</webMaster><copyright>2023 Louis LeFebvre</copyright><lastBuildDate>Tue, 20 May 2025 10:18:34 -0500</lastBuildDate><atom:link href="https://louislefebvre.net/tags/zig/index.xml" rel="self" type="application/rss+xml"/><item><title>Improving My C Build System with Zig</title><link>https://louislefebvre.net/tech/zig-gcc-replace/</link><pubDate>Tue, 20 May 2025 10:18:34 -0500</pubDate><author>louislefebvre1999@gmail.com (Louis Lefebvre)</author><guid>https://louislefebvre.net/tech/zig-gcc-replace/</guid><description>&lt;p>Since I&amp;rsquo;ve been messing around with &lt;a href="https://ziglang.org/">zig&lt;/a> recently, I decided one of the
+simplest ways for me to work with zig is to integrate it into one of my existing
+C project by &lt;a href="https://andrewkelley.me/post/zig-cc-powerful-drop-in-replacement-gcc-clang.html">replacing gcc/clang with zig&lt;/a>. Even though zig has a bunch of
+additional features that clang does not, we will keep it simple and just
+restructure clang as-is and work on improvements later.&lt;/p>
+&lt;h2 id="current-sitch">Current Sitch&lt;/h2>
+&lt;p>The C project I&amp;rsquo;ll be improving is my &lt;a href="https://github.com/louislef299/shell">custom shell&lt;/a> that I wrote in college.
+It uses memory emulation, so it isn&amp;rsquo;t fully functional, but it definitely could
+use the improvement!&lt;/p></description></item></channel></rss>
