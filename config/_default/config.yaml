@@ -1,6 +1,6 @@
 ---
 baseURL: https://louislefebvre.net/
-copyright: "2023 Louis LeFebvre"
+copyright: "2025 Louis LeFebvre"
 enableRobotsTXT: true
 languageCode: en-us
 sectionPagesMenu: main
@@ -10,3 +10,8 @@ markup:
   goldmark:
     renderer:
       unsafe: true
+menu:
+  main:
+  - name: "GPG"
+    url: "/public-key.txt"
+    weight: 10

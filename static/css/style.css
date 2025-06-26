@@ -15,7 +15,14 @@
 
 body.page-template-page-fullsingle-split {
   background-color: #403d39;
-  font-family: "Gill Sans", sans-serif;
+  font-family: 
+    'Georgia', 
+    'Garamond', 
+    'Libre Baskerville', 
+    'Charter', 
+    'Times New Roman', 
+    Times, 
+    serif;
   font-weight: 400;
   font-size: 16px;
   line-height: 33px;
