@@ -1,3 +1,2 @@
 User-agent: *
-Allow: /
-Sitemap: https://louislefebvre.net/sitemap.xml
+Disallow: /
