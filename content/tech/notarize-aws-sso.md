@@ -43,6 +43,7 @@ Since I don't yet *love* the idea of giving Apple even more money just
 to run software on their system, I decided to go the route of hacking
 my way through with a post-install script:
 
+<!-- markdownlint-disable MD013 -->
 ```yaml
 homebrew_casks:
   - name: foo
@@ -54,6 +55,7 @@ homebrew_casks:
             system_command "/usr/bin/xattr", args: ["-dr", "com.apple.quarantine", "#{staged_path}/aws-sso"]
           end
 ```
+<!-- markdownlint-enable MD013 -->
 
 It's nice to know that this runtime protection exists, though. And it
 got me thinking that even if I don't want to pay Apple $99/year, I
