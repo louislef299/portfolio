@@ -74,9 +74,34 @@ key-pair, I'd recommend running through the [Arch Wiki docs][]. But, after
 running through that process, I was able to get my public key uploaded at
 [louislefebvre.net/public-key.txt](/public-key.txt).
 
+### Quickstart GPG
+
+This section will just go over some useful GPG tips so that I can
+reference this later. It specifically signs a `doc` with a [detached
+signature][] because I am mostly using GPG to sign a distribute
+software.
+
+```bash
+# List keys on your public key ring
+gpg --list-keys
+
+# Export a public key to stdout(--output to write to file)
+gpg --armor --export <keyID/userID>
+
+# Check key expiration date
+gpg -k <keyID>
+
+# Detached signature on a doc with a specific key(--default-key)
+gpg --default-key <keyID> --detach-sig --output doc.sig --sign doc
+
+# Verify the signature
+gpg --verify doc.sig doc
+```
+
 [Apple Developer Account]: https://developer.apple.com/
 [Arch Wiki docs]: https://wiki.archlinux.org/title/GnuPG#Create_a_key_pair
 [aws-sso]: https://github.com/louislef299/aws-sso
+[detached signature]: https://www.gnupg.org/gph/en/manual/r622.html
 [GnuPG]: https://www.openpgp.org/about/
 [PR#480]: https://github.com/louislef299/aws-sso/pull/480
 [RFC4880]: https://www.ietf.org/rfc/rfc4880.txt
