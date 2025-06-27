@@ -17,7 +17,6 @@ Current list of possible and upcoming trips for 2025:
 - [Voyageurs Canoe](#voyageurs-national-park)
 - [Boundary Waters](#boundary-waters-canoe-area-wilderness)
 
-
 I'll want to do a little research on each place for any camp reservations,
 memberships, times of operation, suggested camping times or general
 information about the area.
@@ -48,7 +47,9 @@ we'll be able to surf, so I'll be sure to bring my wetsuit.
 
 ## Possible: Roadtrip the Great Lakes
 
+<!-- markdownlint-disable MD033 MD013 -->
 <iframe src="https://www.google.com/maps/d/embed?mid=1vHWUyCcXoXI_7KsW8sTR67b0i63tUdI&ehbc=2E312F" width="640" height="480"></iframe>
+<!-- markdownlint-enable MD033 MD013 -->
 
 ### Ski Lutsen
 
@@ -73,7 +74,9 @@ with Elise ASAP. That way I can shake the rust off for sailing and give me a bit
 more practice on boat control with the smaller boats. If I get confident enough,
 the goal would be to potentially rent a sail boat up north.
 
+<!-- markdownlint-disable MD033 MD013 -->
 <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3923812.402536819!2d-89.7011060847916!3d44.325921255783584!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x881e32b2d7da29dd%3A0x47bfdc3f3f745621!2sTraverse%20City%2C%20MI!5e0!3m2!1sen!2sus!4v1735540579052!5m2!1sen!2sus" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+<!-- markdownlint-enable MD033 MD013 -->
 
 It looks like there are charters in Traverse City, Michigan given by [Great Lakes
 Sailing Co][], that would be a bit expensive of a trip, but could be a super

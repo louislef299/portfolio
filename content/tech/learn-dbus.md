@@ -72,6 +72,7 @@ signals and properties at runtime using introspection. While the `dbus-send`
 tool is powerful, I've found it's easier to start with `busctl`. Here's how to
 list all of the objects and introspect a BlueZ service:
 
+<!-- markdownlint-disable MD013 -->
 ```bash
 $ busctl tree org.bluez
 └─ /org
@@ -90,7 +91,9 @@ org.freedesktop.DBus.Properties     interface -         -                       
 .Get                                method    ss        v                                        -
 .GetAll                             method    s         a{sv}                                    -
 ```
+<!-- markdownlint-enable MD013 -->
 
+<!-- markdownlint-disable MD059 -->
 This command returns the methods, properties and signals of the bluetooth
 service. The specific type notation can be found [here][dbus sigs], but here are
 the [signatures](#reference-dbus-signatures).
@@ -123,15 +126,18 @@ busctl call org.bluez /org/bluez/hci0 org.bluez.Adapter1 StartDiscovery
 
 or with `dbus-send`:
 
+<!-- markdownlint-disable MD013 -->
 ```bash
 dbus-send --system --dest=org.bluez --type=method_call --print-reply \
     /org/bluez/hci0 org.bluez.Adapter1.StartDiscovery
 method return time=1736121400.427641 sender=:1.4 -> destination=:1.368 serial=1054 reply_serial=2 
 ```
+<!-- markdownlint-enable MD013 -->
 
 Here is how you can access a DBus property, in this example, getting the
 bluetooth adapter name:
 
+<!-- markdownlint-disable MD013 -->
 ```bash
 dbus-send --system --dest=org.bluez --type=method_call --print-reply \
     /org/bluez/hci0 org.freedesktop.DBus.Properties.Get \
@@ -139,6 +145,7 @@ dbus-send --system --dest=org.bluez --type=method_call --print-reply \
 method return time=1736121705.000813 sender=:1.4 -> destination=:1.370 serial=1059 reply_serial=2
    variant       string "louarch"
 ```
+<!-- markdownlint-enable MD013 -->
 
 ## Signal Example in Go
 

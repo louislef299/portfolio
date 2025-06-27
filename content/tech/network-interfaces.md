@@ -14,7 +14,7 @@ in Go.
 
 ## Wireguard's TUN interface
 
-Referenced code can be found [here][TUN project].
+Referenced code can be found in the [TUN project][].
 
 ### Setting Up
 
@@ -54,7 +54,8 @@ stages:
 3. Send `ioctl()` device request
 4. Set file descriptor to non-blocking
 5. Create a new file from fd to `/dev/net/tun`??
-6. Create the TUN from the generated file => the NativeTun is the software interface used to interact with the application
+6. Create the TUN from the generated file => the NativeTun is the software
+   interface used to interact with the application
 
 ### Understanding NativeTun
 

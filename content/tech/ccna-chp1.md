@@ -31,10 +31,12 @@ below.
 Adjacent-layer communication and same-layer communication are two important
 concepts when thinking about the TCP/IP model(verbatim from the book):
 
+<!-- markdownlint-disable MD033 MD013 -->
 Concept | Description
  --- | ---
  Same-layer interation on different computers | The two computers use a protocol to communicate with the same layer on another computer. The protocol defines a header that communicates what each computer wants to do.
  Adjacent-layer interation on the same computer | On a single computer, one lower layer provides a service to the layer just above. The software or hardware that implements the higher layer requests that the next lower later perform the needed function.
+<!-- markdownlint-enable MD033 MD013 -->
 
 ## Application Layer(L7-L5)
 
