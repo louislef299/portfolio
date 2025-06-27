@@ -78,7 +78,6 @@ a great series on neural networks by [3Blue1Brown][] that I would recommend.
 
 ![Transformers](/image/transformer-transparent.gif)
 
-<!-- need to fix this for copy-right reasons... put in your own words! -->
 [Transformers][] are a type of neural network architecture that transforms or
 changes an input sequence into an output sequence, computing hidden
 representations in parallel for all input and output positions, leveraging
