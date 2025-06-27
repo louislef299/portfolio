@@ -110,8 +110,8 @@ scores represent the relevance of each key to the current query.
 
 ![Attention Algorithm](/image/attention-algorithm.webp)
 
-More information on how transformers work under-the-hood can be found
-[here][Transformers Explained Visually]
+More information on how transformers work under-the-hood can be found at
+[Transformers Explained Visually][]
 
 ## Modern LLMs
 

@@ -7,6 +7,8 @@ tags:
 - ble
 ---
 
+<!-- markdownlint-disable MD013 MD052 MD034 -->
+
 In this article we will be creating a custom Bluetooth Service in Go. I'll be
 walking through the [NovelBits article][NovelBits] and use the [tinygo pkg][].
 The requirements I have for my current project require a custom Bluetooth

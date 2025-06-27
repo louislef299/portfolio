@@ -7,6 +7,8 @@ tags:
 - tcp
 ---
 
+<!-- markdownlint-disable MD013 MD052 MD034 -->
+
 Just going over the [TCP/IP basics][] here to build out a good foundation as I
 continue my bluetooth journey. It never hurts to go over the basics, especially
 since there are so many tools and libraries that try to simplify that process
@@ -174,6 +176,6 @@ should help me get warmed up for my next experiment, [containerizing a bluetooth
 application][].
 
 [containerizing a bluetooth application]: {{< ref "/tech/containerized-bluetooth.md" >}}
-[Docker check directive]: https://docs.docker.com/reference/dockerfile/#check
-[tcp server google]: https://www.google.com/search?client=firefox-b-1-d&q=how+to+create+a+simple+tcp+server+in+go
-[TCP/IP basics]: https://okanexe.medium.com/the-complete-guide-to-tcp-ip-connections-in-golang-1216dae27b5a
+[Docker check directive]: <https://docs.docker.com/reference/dockerfile/#check>
+[tcp server google]: <https://www.google.com/search?client=firefox-b-1-d&q=how+to+create+a+simple+tcp+server+in+go>
+[TCP/IP basics]: <https://okanexe.medium.com/the-complete-guide-to-tcp-ip-connections-in-golang-1216dae27b5a>

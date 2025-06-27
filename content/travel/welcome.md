@@ -14,7 +14,9 @@ in between San Francisco and Los Angeles the whole time bumming around and
 surfing. It was a blast! Luckily I got so bored that I started noting [where I
 went on Google Maps][Cali2023].
 
+<!-- markdownlint-disable MD033 MD013 -->
 <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d3305052.3967116196!2d-123.45765684999998!3d36.005877678075464!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2sus!4v1735578692655!5m2!1sen!2sus" width="400" height="300" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+<!-- markdownlint-enable MD033 MD013 -->
 
 Other than that, some spring breaks, family trips and a study abroad were all
 sprinkled in there. Currently, I've been watching Stoney Point up in the North
