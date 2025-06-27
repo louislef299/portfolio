@@ -14,7 +14,7 @@ flags every time I ran a command.
 
 For those of you who don't want to read a shitty README and aren't
 able to get a personal 1:1 video with me, the skinny of the tool is
-that I disliked the was AWS had setup their `aws sso login` as I
+that I disliked the way AWS had setup their `aws sso login` as I
 thought it was not intuitive and led to people re-authing and sort of
 fumbling around with it. Not only was that piece annoying, it wouldn't
 automatically authenticate you to ECR or EKS, which I was constantly
@@ -46,10 +46,9 @@ my way through with a post-install script:
 <!-- markdownlint-disable MD013 -->
 ```yaml
 homebrew_casks:
-  - name: foo
+  - name: aws-sso
     hooks:
       post:
-        # replace foo with the actual binary name
         install: |
           if system_command("/usr/bin/xattr", args: ["-h"]).exit_status == 0
             system_command "/usr/bin/xattr", args: ["-dr", "com.apple.quarantine", "#{staged_path}/aws-sso"]
@@ -57,15 +56,15 @@ homebrew_casks:
 ```
 <!-- markdownlint-enable MD013 -->
 
-It's nice to know that this runtime protection exists, though. And it
-got me thinking that even if I don't want to pay Apple $99/year, I
-should do my end users justice and notarize my binary so that they
-have an increased amout of trust installing and using my software that
-interacts with such sensitive information.
+Although it was annoying to deal with, it's nice to know that this runtime
+protection exists. And it got me thinking that even if I don't want to pay Apple
+$99/year, I should do my end users justice and notarize my binary so that they
+have an increased amout of trust installing and using my software that interacts
+with such sensitive information.
 
 ## GnuPG(GNU Privacy Guard)
 
-[GnuPG][] is a free implementation of OpenPGP. From [RFC4880][]:
+[GnuPG][] is a free implementation of [OpenPGP][]. From [RFC4880][]:
 
 > OpenPGP software uses a combination of strong public-key and symmetric
 > cryptography to provide security services for electronic communications and
@@ -80,7 +79,7 @@ running through that process, I was able to get my public key uploaded at
 
 This section will just go over some useful GPG tips so that I can
 reference this later. It specifically signs a `doc` with a [detached
-signature][] because I am mostly using GPG to sign a distribute
+signature][] because I am mostly using GPG to sign and distribute
 software.
 
 ```bash
@@ -104,7 +103,8 @@ gpg --verify doc.sig doc
 [Arch Wiki docs]: https://wiki.archlinux.org/title/GnuPG#Create_a_key_pair
 [aws-sso]: https://github.com/louislef299/aws-sso
 [detached signature]: https://www.gnupg.org/gph/en/manual/r622.html
-[GnuPG]: https://www.openpgp.org/about/
+[GnuPG]: https://www.gnupg.org/gph/en/manual/book1.html
+[OpenPGP]: https://www.openpgp.org/about/
 [PR#480]: https://github.com/louislef299/aws-sso/pull/480
 [RFC4880]: https://www.ietf.org/rfc/rfc4880.txt
 [v1.4.0]: https://github.com/louislef299/aws-sso/releases/tag/v1.4.0
