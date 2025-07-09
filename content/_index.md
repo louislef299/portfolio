@@ -2,25 +2,14 @@
 title: About
 ---
 
-Hey, my name is Louis! I'm an endurance athlete that writes code and likes to
-travel around the world. I began writing code at 14 years old and my imagination
-was instantly drawn to the unlimited possibilities of the internet, which led me
-to attend the University of Minnesota in 2017 for Computer Science. Luckily, I
-was able to turn my hobby into my profession and I focus on system
-administration, microservices development and computer networks.
+If you're in the metro, hey! If you're out exploring, howdy. 
 
-As an endurance athlete, I was introduced to the running community at Edina High
-School and worked up to running varsity cross country and running at the
-Minnesota State Meet in 2017. In college, I decided to attend a D1 school and
-continue my training with my friend David Madison. Eventually, I was drawn to
-marathons through my interest in sports science and nutrition that I picked up
-from my High School coaches. In 2019, I qualified for the Boston Marathon by
-finishing in 2h53 at Grandma's Marathon in Duluth, but was unable to travel to
-the Boston race due to COVID-19.
+In a nutshell, I studied at the University of Minnesota - Twin Cities and graduated in 2017 studying Computer Science. Whether it was my genuine interest or just fantastic teachers, my favorite subjects in school were operating systems, networking and general programming.
 
-Today, I still run from time to time, but not as rigorously as I used to. I've
-been turning my attention to surfing, paddleboarding(prone), backpacking,
-lifting and boxing. I'd love to have the time to compete again, but life just
-got busy ever since I left college.
+Now, I focus on distributed systems, big data and embedded engineering, but to make my life easiser, I dabble in effective CI/CD and frontend engineering. Currently employed at Medtronic.
+
+Outside of computers, I also love to adventure and travel, however, I really suck at writing, so you'll have to bear with me. To stay active, I like to paddle on  Bde Maka Ska, backpack on the North Shore and the northern Minnesota border with my girlfriend, golf the cities with my friends, and hunt for good surf with my brother(when finances allow).
+
+I come from a family where the cook never cleans<3
 
 ![base-photo](/image/background.jpeg)
