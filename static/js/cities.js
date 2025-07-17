@@ -28,4 +28,6 @@ CITIES =
    {name: 'Devil\'s Tower', latitude: 44.59772676105159, longitude: -104.71802507936667, radius: 3, fillKey: 'nationalPark', date: '2020-08'},
    {name: 'George Town', latitude: 19.296808085806397, longitude: -81.38101632162923, radius: 3, fillKey: 'city', date: '2009-03'},
    {name: 'Rincón', latitude: 18.34214496196399, longitude: -67.25145549977067, radius: 3, fillKey: 'city', date: '2025-03'},
+   {name: 'Chicago', latitude: 41.8338486, longitude: -87.896685, radius: 3, fillKey: 'city', date: '2019-07'},
+   {name: 'Decorah', latitude: 43.300627, longitude: -91.8460777, radius: 3, fillKey: 'city', date: '2019-05'},
 ]
