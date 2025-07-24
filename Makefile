@@ -9,3 +9,4 @@ build:
 lint:
 	markdownlint --fix -c .markdownlint.json glob content/**
 
+.PHONY: serve build lint
