@@ -1,7 +1,7 @@
 # Personal Portfolio
 
 This represents my personal portfolio website! It can be reached at
-[louislefebvre.net][]. Built with [Hugo][] and deployed to [Netlify][].
+[louislefebvre.net][]. Built with [Hugo][] and deployed with [Netlify][].
 
 If you would like to build from source, simply run `hugo serve`.
 
