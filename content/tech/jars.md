@@ -28,8 +28,8 @@ This article assumes you are comfortable with the [Java compiler][].
 First off, JAR stands for **J**ava **AR**chive and is a file archive and
 compression format that allows for the aggregation of all [Java class files][]
 and their associated metadata required to run an application. Very similar to
-tar or zip, just specific to Java. JAR files improve portability and security of
-Java applications.
+tar or zip(and I guess [pax][]??), just specific to Java. JAR files improve
+portability and security of Java applications.
 
 Before the introduction of JAR, web browsers encountering a Java applet within a
 webpage had to establish separate connections for each individual component of
@@ -73,7 +73,7 @@ You may have noticed when you were looking in the JAR file that there was a
 required for JAR to take action. A very simple manifest looks like:
 
 ```bash
-lefebl4[simple] > cat META-INF/MANIFEST.MF 
+$ cat META-INF/MANIFEST.MF 
 Manifest-Version: 1.0
 Created-By: 24.0.2 (Amazon.com Inc.)
 Main-Class: Hello
@@ -123,6 +123,7 @@ but my previous post covered signing binaries, so I'll leave it be for now.
 [Java compiler]: https://dev.java/learn/jvm/tools/core/javac/
 [Java Corretto]: https://aws.amazon.com/corretto/
 [PackageMan]: https://docs.oracle.com/javase/tutorial/deployment/jar/packageman.html
+[pax]: https://en.wikipedia.org/wiki/Pax_(command)
 [Security Attributes]: https://docs.oracle.com/javase/tutorial/deployment/jar/secman.html
 [sign JARs]: https://docs.oracle.com/javase/tutorial/deployment/jar/signindex.html
 [What are JAR Files]: https://medium.com/@youeleven/what-are-jar-files-in-java-7363bcf5380f
