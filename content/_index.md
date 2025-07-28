@@ -16,9 +16,9 @@ my way into open source.
 
 Outside of computers, I also love to adventure and travel, but really suck at
 writing, so you'll have to bear with me. To stay active, I like to [paddle][] on
-Bde Maka Ska, [backpack][] on the North Shore and the northern Minnesota border
-with my girlfriend, golf the cities with my friends, and [hunt][] for good surf
-with my brother(when finances allow).
+Bde Maka Ska, [backpack][] on the North Shore and Northern Minnesota border with
+my girlfriend, golf the cities with my friends, and [hunt][] for good surf with
+my brother(when finances allow).
 
 I come from a family where the cook never cleans<3
 
