@@ -30,4 +30,5 @@ CITIES =
    {name: 'Rincón', latitude: 18.34214496196399, longitude: -67.25145549977067, radius: 3, fillKey: 'city', date: '2025-03'},
    {name: 'Chicago', latitude: 41.8338486, longitude: -87.896685, radius: 3, fillKey: 'city', date: '2019-07'},
    {name: 'Decorah', latitude: 43.300627, longitude: -91.8460777, radius: 3, fillKey: 'city', date: '2019-05'},
+   {name: 'Grand Teton National Park', latitude: 43.8078058, longitude: -110.85332, radius: 3, fillKey: 'nationalPark', date: '2025-08'}
 ]
