@@ -4,7 +4,8 @@ date: 2025-09-23T22:23:52-05:00
 draft: false
 ---
 
-<img src="/image/cash-and-dan.JPG" alt="Cash and Dan" 
+<!-- markdownlint-disable MD033 MD013 -->
+<img src="/image/cash-and-dan.JPG" alt="Cash and Dan"
     style="float:left;margin-right:15px;margin-bottom:15px;width:300px;height:400px;">
 
 Just got back from a great road trip from San Francisco to San Diego with my
@@ -42,7 +43,7 @@ back, it felt like home as I had been to San Diego and Oceanside multiple times
 at this point and had really fallen in love with Northern Cali when I was road
 tripping.
 
-<img src="/image/surfing-pfeiffer.gif" alt="Surfing Pfeiffer" 
+<img src="/image/surfing-pfeiffer.gif" alt="Surfing Pfeiffer"
     style="float:right;margin-left:15px;margin-bottom:15px;width:300px;height:300px;">
 
 Luckily, I had traveled with my 6'6" board and was able to get a lot better at
