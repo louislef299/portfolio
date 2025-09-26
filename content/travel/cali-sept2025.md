@@ -6,7 +6,7 @@ draft: false
 
 <!-- markdownlint-disable MD033 MD013 -->
 <img src="/image/cash-and-dan.JPG" alt="Cash and Dan"
-    style="float:left;margin-right:15px;margin-bottom:15px;width:300px;height:400px;">
+    style="float:left;margin-right:3%;margin-bottom:1%;width:50%;height:60%;">
 
 Just got back from a great road trip from San Francisco to San Diego with my
 friends Dan and Cash. It was so much fun from watching the Gophers lose to
@@ -44,7 +44,7 @@ at this point and had really fallen in love with Northern Cali when I was road
 tripping.
 
 <img src="/image/surfing-pfeiffer.gif" alt="Surfing Pfeiffer"
-    style="float:right;margin-left:15px;margin-bottom:15px;width:300px;height:300px;">
+    style="float:right;margin-left:3%;margin-bottom:1%;width:40%;height:40%;">
 
 Luckily, I had traveled with my 6'6" board and was able to get a lot better at
 actually catching waves with it(no footage of me actually catching a wave lol)
