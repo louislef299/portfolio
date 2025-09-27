@@ -2,6 +2,9 @@
 title: "Ocean Beach Surf Trip 2025"
 date: 2025-01-15T09:35:21-08:00
 draft: false
+tags:
+- surf
+- cali
 ---
 
 No surprise, but my brother and I made our annual surf trip to San Diego this
