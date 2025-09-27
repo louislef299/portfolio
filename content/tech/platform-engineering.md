@@ -7,7 +7,7 @@ tags:
 - culture
 ---
 
-Egos in corporate software are strong yet fragile. Engineers often fall into the
+Egos in corporate software are big yet fragile. Engineers often fall into the
 trap of adopting new frameworks and methodologies without fully considering
 their organizational context, resulting in fragmented approaches. When platform
 building intersects with these tendencies, we encounter a slew of common
@@ -22,7 +22,7 @@ experienced firsthand how organizational structures can inadvertently create
 friction between teams with differing goals. When I say high-performing here, I
 really mean having all the skills required to operate as a [loosely coupled
 team][]. This capability to self-serve created friction when platform solutions
-didn't align with our technical needs or delivery timelines, highlighting the
+didn't align with our technical needs or delivery timelines, accentuating the
 challenge platforms face in balancing standardization with team autonomy. This
 dual perspective has highlighted how [Conway's Law][] manifests in practice -
 organizational boundaries often become system boundaries, sometimes in ways that
