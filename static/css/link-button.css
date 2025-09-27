@@ -1,30 +1,25 @@
-/* Styling the button */
-.social-button {
-    background-color: #1d1f27;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    font-size: 16px;
-    cursor: pointer;
-    padding-right: 5px;
+/* Footer social icons styling */
+.footer-social-icons {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 10px;
 }
 
-.social-icons {
-    display: none;
-}
-
-/* Styling each social icon link */
-.social-icons a {
+.footer-social-icons a {
     align-items: center;
     text-decoration: none;
     color: white;
     font-size: 16px;
 }
 
-.social-icons img {
-    padding: 5px;
+.footer-social-icons img {
     width: 24px;
     height: 24px;
-    margin-right: 10px;
     filter: brightness(0) invert(1);
+    transition: opacity 0.3s ease;
+}
+
+.footer-social-icons img:hover {
+    opacity: 0.7;
 }
