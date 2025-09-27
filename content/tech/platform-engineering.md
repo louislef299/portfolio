@@ -19,15 +19,16 @@ gatekeeping to distributed ownership with guardrails.
 Having recently transitioned from working on a [platform team][] to a
 high-performing development team that is a consumer of platform services, I've
 experienced firsthand how organizational structures can inadvertently create
-friction between teams with differing goals. When I say high-performing here, I
-really mean having all the skills required to operate as a [loosely coupled
-team][]. This capability to self-serve created friction when platform solutions
-didn't align with our technical needs or delivery timelines, accentuating the
-challenge platforms face in balancing standardization with team autonomy. This
-dual perspective has highlighted how [Conway's Law][] manifests in practice -
-organizational boundaries often become system boundaries, sometimes in ways that
-inhibit rather than enable team effectiveness. This organizational constraint
-manifests differently depending on the cultural environment.
+friction between teams with differing deliverables. When I say high-performing
+here, I really mean having all the skills required to operate as a [loosely
+coupled team][]. This capability to self-serve created friction when platform
+solutions didn't align with our technical needs or delivery timelines,
+accentuating the challenge platforms face in balancing standardization with team
+autonomy. This dual perspective has highlighted how [Conway's Law][] manifests
+in practice - organizational boundaries often become system boundaries,
+sometimes in ways that inhibit rather than enable team effectiveness. This
+organizational constraint manifests differently depending on the cultural
+environment.
 
 [Westrum's cultural typologies][] provide a lens for understanding why platform
 teams sometimes become territorial gatekeepers rather than collaborative
