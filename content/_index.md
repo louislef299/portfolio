@@ -20,9 +20,13 @@ Bde Maka Ska, [backpack][] on the North Shore and Northern Minnesota border with
 my girlfriend, golf the cities with my friends, and [hunt][] for good surf with
 my brother(when finances allow).
 
-I come from a family where the cook never cleans<3
+<!-- markdownlint-disable MD033 MD013 -->
+<img src="/image/jackson-port.jpg" alt="Base Photo"
+    style="display:block;margin-left:auto;margin-right:auto;;width:80%;height:80%;">
 
-![base-photo](/image/background.jpeg)
+<p style="text-align:center">
+    I come from a family where the cook never cleans
+</p>
 
 [backpack]: https://backalleysurf.com/
 [hunt]: https://www.surfersjournal.com/
