@@ -2,6 +2,9 @@
 title: "California Road Trip 2025"
 date: 2025-09-23T22:23:52-05:00
 draft: false
+tags:
+- surf
+- cali
 ---
 
 <!-- markdownlint-disable MD033 MD013 -->
