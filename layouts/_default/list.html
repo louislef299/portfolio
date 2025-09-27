@@ -1,9 +1,12 @@
 {{ define "main" }}
 <content>
+  {{ if .Content }}
+    {{ .Content }}
+  {{ end }}
+  
   {{ if .Data.Singular }}
     <h3 class="blog-filter">{{ i18n "filtering-for" }} "{{ .Title }}"</h3>
   {{ end }}
-  {{ .Content }}
   <ul class="blog-posts">
     {{ range .Pages }}
     <li>
