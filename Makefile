@@ -1,6 +1,7 @@
 .DEFAULT_GOAL := serve
 
 serve:
+	git submodule update --init --recursive
 	hugo serve
 
 build:
