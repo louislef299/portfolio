@@ -1,9 +1,8 @@
 ---
-title: "Working with Avro & Kafka"
+title: "Working with Avro & Schema Registry"
 date: 2025-10-03T12:05:48-05:00
 draft: false
 tags:
-- java
 - streaming
 - avro
 ---
@@ -13,8 +12,7 @@ tags:
 working with avro in a pretty complex streaming architecture, but I wanted to
 really understand how they worked on a smaller scale first. I'll assume you, the
 reader, will take the time to familiarize yourself with avro using the link
-above and are already familiar with Java and Kafka. The project I will be using
-as a playground can be found at [louislef299/avro-sample][].
+above and are already familiar with Kafka.
 
 ## Downloading Avro Tools
 
@@ -136,8 +134,110 @@ It is a way to identify the avro file type and when you see that error, it
 basically means there are differences in schema file formats on the producer and
 consumer ends.
 
+## Interacting with Schema Registry
+
+[Schema Registry][] is a REST service that acts as a centralized repository for
+managing and validating schemas. In our use case, we can upload our avro schemas
+so that they can be shared between services(a producer and consumer). First, we
+need to spin up a local environment to begin interacting with schema registry.
+Since schema registry uses kafka as a backend, we also need to spin up a broker
+instance:
+
+<!-- markdownlint-disable MD013 -->
+```bash
+$ docker network create kafka-net
+
+$ docker run -d --name kafka --network kafka-net -p 9092:9092 \
+-e KAFKA_PROCESS_ROLES=broker,controller \
+-e KAFKA_LISTENER_SECURITY_PROTOCOL_MAP=PLAINTEXT:PLAINTEXT,CONTROLLER:PLAINTEXT \
+-e KAFKA_LISTENERS=PLAINTEXT://:9092,CONTROLLER://:29093 \
+-e KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://kafka:9092 \
+-e KAFKA_CONTROLLER_LISTENER_NAMES=CONTROLLER \
+-e KAFKA_CONTROLLER_QUORUM_VOTERS=1@localhost:29093 \
+-e KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR=1 \
+-e KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR=1 \
+-e KAFKA_TRANSACTION_STATE_LOG_MIN_ISR=1 \
+-e CLUSTER_ID=MkU3OEVBNTcwNTJENDM2Qk \
+-e KAFKA_NODE_ID=1 \
+confluentinc/cp-kafka:8.0.0
+
+$ docker run -d --name schema-registry --network kafka-net -p 8081:8081 \
+-e SCHEMA_REGISTRY_HOST_NAME=schema-registry \
+-e SCHEMA_REGISTRY_LISTENERS=http://0.0.0.0:8081 \
+-e SCHEMA_REGISTRY_KAFKASTORE_BOOTSTRAP_SERVERS=PLAINTEXT://kafka:9092 \
+confluentinc/cp-schema-registry:8.0.0
+```
+<!-- markdownlint-enable MD013 -->
+
+Once the docker environment is up, you should be able to check the registry
+config, which in this case just prints out [`schema.compatibility.level`][]:
+
+```bash
+$ curl -i http://localhost:8081/config  
+HTTP/1.1 200 OK
+Date: Mon, 06 Oct 2025 14:50:13 GMT
+Vary: Accept-Encoding
+X-Request-ID: 68139540-4aa1-4adf-9a0e-481545e1fe1e
+Content-Type: application/vnd.schemaregistry.v1+json
+Content-Length: 33
+
+{"compatibilityLevel":"BACKWARD"}
+```
+
+### Create a New Schema
+
+Funny enough, the process for creating a new schema requires interacting with
+the `/subjects` endpoint and not the `/schemas`. Subjects refer to the name of
+the registered schema across all contexts in the registry. To register our
+schema, we will be POSTing to `/subjects/(string: subject)/versions`, which will
+return the identifier that will be used to retrieve the schema later. The
+subject name we will target is `user-value`. More information on naming
+strategies are found on the [confluent subject names page][].
+
+<!-- markdownlint-disable MD013 -->
+```bash
+$ curl -X POST -H "Content-Type: application/vnd.schemaregistry.v1+json" \
+--data '{ "schema": "{\"namespace\":\"com.github.louislef299.events.avro\",\"type\":\"record\",\"name\":\"User\",\"fields\":[{\"name\":\"id\",\"type\":\"int\"},{\"name\":\"name\",\"type\":\"string\"},{\"name\":\"email\",\"type\":[\"null\",\"string\"],\"default\":null}]}" }' \
+http://localhost:8081/subjects/user-value/versions
+http://localhost:8081/subjects/user-value/versions
+HTTP/1.1 200 OK
+Date: Mon, 06 Oct 2025 15:23:50 GMT
+Vary: Accept-Encoding
+X-Request-ID: 2ec32d34-2831-4618-95ab-a9942e27ef11
+Content-Type: application/vnd.schemaregistry.v1+json
+Content-Length: 347
+
+{"id":1,"version":1,"guid":"4bd2bf79-95af-aace-ebad-18dfd323a304","schemaType":"AVRO","schema":"{\"type\":\"record\",\"name\":\"User\",\"namespace\":\"com.github.louislef299.events.avro\",\"fields\":[{\"name\":\"id\",\"type\":\"int\"},{\"name\":\"name\",\"type\":\"string\"},{\"name\":\"email\",\"type\":[\"null\",\"string\"],\"default\":null}]}"}
+
+# Verify the subject was created
+$ curl http://localhost:8081/subjects 
+["user-value"]
+```
+<!-- markdownlint-enable MD013 -->
+
+And now that the `user-value` schema is registered in schema registry, they can
+be used by services like kafka to serialize/deserialize schema types. This is
+beyond the scope of this post, and maybe will be covered later. There are also
+more resources on confluent's page going over [avro schema serializer and
+deserializer][] specifically for the confluent platform.
+
+## Clean Up
+
+Make sure to clean up docker resources when you are done messing with schema
+registry:
+
+```bash
+$ docker rm -f schema-registry kafka && docker network rm kafka-net
+schema-registry
+kafka
+kafka-net
+```
+
+[`schema.compatibility.level`]: https://docs.confluent.io/platform/current/schema-registry/installation/config.html#schema-compatibility-level
 [Avro]: https://avro.apache.org/
 [avro-tools]: https://mvnrepository.com/artifact/org.apache.avro/avro-tools
-[louislef299/avro-sample]: https://github.com/louislef299/avro-sample
+[avro schema serializer and deserializer]: https://docs.confluent.io/platform/current/schema-registry/fundamentals/serdes-develop/serdes-avro.html
+[confluent subject names page]: https://docs.confluent.io/platform/current/schema-registry/fundamentals/serdes-develop/index.html#sr-schemas-subject-name-strategies-work
 [magic bytes]: https://www.confluent.io/blog/how-to-fix-unknown-magic-byte-errors-in-apache-kafka/
 [protobuf]: https://protobuf.dev/
+[Schema Registry]: https://docs.confluent.io/platform/current/schema-registry/index.html
