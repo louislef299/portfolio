@@ -11,6 +11,9 @@ This post is just a simple primer on Git and how I would recommend leveraging it
 to improve productivity as an engineer. It's something I wish would have been
 around when I first started using it, but hopefully you find it useful.
 
+***DISCLAIMER***: This post is targeted at engineers. If this is your first time
+interacting with Git, I'd recommend starting with the [gittutorial][].
+
 ## The Bare Minimum
 
 [What is Git?][] Git is a distributed version control system(VCS) that tracks
@@ -80,6 +83,8 @@ could also run `git add .`, which adds all files in the filesystem to the
 staging area. You should now see a hashed git object in our local Git folder:
 
 ```bash
+$ git add README.md
+
 $ find .git/objects -type f
 .git/objects/cd/5248b519c57f2d80cd0ec240e23c7f90f992bb
 
@@ -140,8 +145,7 @@ This should trigger a new version
 
 Creating a commit in Git takes the objects(files) in the staging area and stores
 that snapshot into the Git directory. Commits expect a message applied to them
-and require embed your `user.name` and `user.email` information into the commit
-itself. You can commit by running:
+and an [identity][] to embed into the commit itself. You can commit by running:
 
 ```bash
 $ git commit -m "initial commit"
@@ -169,7 +173,7 @@ Date:   Thu Oct 16 13:48:41 2025 -0500
 #### A Quick Side Note
 
 If you're a savvy developer and have been following along, you may have noticed
-that there were *two* new objects created created with the `git commit` command:
+that there were *two* new objects created with the `git commit` command:
 
 ```bash
 $ find .git/objects -type f
@@ -183,7 +187,7 @@ This is due to `git commit` combining the creation of a tree object and a commit
 object to the Git object database, but this is beyond the scope of this post.
 Feel free to read up on the [internals of Git objects][] if you're interested!
 
-### Collaborate with Remotes
+### Collaborate Leveraging Remotes
 
 Now having this VCS locally is great! But it really isn't as useful if you can't
 backup this database on another device and share it with your friends. This is
@@ -258,7 +262,7 @@ a5b087d (HEAD -> main, origin/main) initial commit
 #### Push New Changes
 
 Next, let's **push** up a new change to our project! For fun, let's create a
-hello, world program in Lua: `echo "print(\"hello, world\!\")" >> main.lua`.
+hello world program in Lua: `echo "print(\"hello, world\!\")" >> main.lua`.
 I'll let you **add**, **commit** and **push** your changes to the remote
 repository yourself. Feel free to reference the above documentation if you get
 stuck. Afterwards, change directories back to the original `sample-repo`
@@ -269,6 +273,7 @@ You'll notice that the Lua script isn't present:
 ```bash
 $ ls
 README.md
+
 $ git log --oneline
 a5b087d (HEAD -> main, origin/main) initial commit
 ```
@@ -295,6 +300,7 @@ Fast-forward
 $ git log --oneline
 e617f78 (HEAD -> main, origin/main, origin/HEAD) hello, lua
 a5b087d initial commit
+
 $ ls
 main.lua        README.md
 ```
@@ -305,8 +311,14 @@ This was a very quick introduction to Git from my perspective. If anything was
 confusing or didn't make sense, let me know! Also, please refer to the
 [authoritative documentation][] to answer any lingering questions you may have.
 
+Want more Git commands? [ohshitgit][](s/o Chris) is a great scenario-based
+resource to bookmark.
+
 [authoritative documentation]: https://git-scm.com/book/en/v2/Getting-Started-About-Version-Control
 [create a github repo]: https://docs.github.com/en/repositories/creating-and-managing-repositories/creating-a-new-repository
 [git-scm]: https://git-scm.com/about/staging-area
+[gittutorial]: https://git-scm.com/docs/gittutorial
+[identity]: https://git-scm.com/book/en/v2/Getting-Started-First-Time-Git-Setup
 [internals of Git objects]: https://git-scm.com/book/en/v2/Git-Internals-Git-Objects
+[ohshitgit]: https://ohshitgit.com/
 [What is Git?]: https://git-scm.com/book/en/v2/Getting-Started-What-is-Git%3F
