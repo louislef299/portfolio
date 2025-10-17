@@ -156,15 +156,15 @@ $ git commit -m "initial commit"
  # view the new commit object
  $ git cat-file -p a5b087d
 tree 7a7affd88353e0551dbc720e17c4e382cc4f6924
-author Louis Lefebvre <lefebl4@medtronic.com> 1760640521 -0500
-committer Louis Lefebvre <lefebl4@medtronic.com> 1760640521 -0500
+author Louis Lefebvre <louis@gmail.com> 1760640521 -0500
+committer Louis Lefebvre <louis@gmail.com> 1760640521 -0500
 
 initial commit
 
 # view the commit object with log
 $ git log
 commit a5b087def21d7f5549ef253a7af845ebb1615035 (HEAD -> main, origin/main)
-Author: Louis Lefebvre <lefebl4@medtronic.com>
+Author: Louis Lefebvre <louis@gmail.com>
 Date:   Thu Oct 16 13:48:41 2025 -0500
 
     initial commit
