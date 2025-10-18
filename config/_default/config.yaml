@@ -5,7 +5,7 @@ enableRobotsTXT: true
 languageCode: en-us
 sectionPagesMenu: main
 theme: bearcub
-title: Louis Lefebvre (✿◠‿◠)
+title: Louis LeFebvre (✿◠‿◠)
 markup:
   goldmark:
     renderer:
