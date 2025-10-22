@@ -5,7 +5,7 @@ serve:
 	hugo serve
 
 build:
-	hugo build
+	hugo build -D
 
 lint:
 	markdownlint --fix -c .markdownlint.json glob content/**
