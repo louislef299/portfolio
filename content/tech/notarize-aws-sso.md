@@ -1,7 +1,9 @@
 ---
-title: "Notarize aws-sso"
+title: "Signing Binaries with GnuPG"
 date: 2025-06-26T16:20:26-05:00
 draft: false
+tags:
+- gpg
 ---
 
 So, it's finally time to shine off my [aws-sso][] custom cli
@@ -54,7 +56,6 @@ homebrew_casks:
             system_command "/usr/bin/xattr", args: ["-dr", "com.apple.quarantine", "#{staged_path}/aws-sso"]
           end
 ```
-<!-- markdownlint-enable MD013 -->
 
 Although it was annoying to deal with, it's nice to know that this runtime
 protection exists. And it got me thinking that even if I don't want to pay Apple
@@ -83,8 +84,14 @@ signature][] because I am mostly using GPG to sign and distribute
 software.
 
 ```bash
+# Generate a new key
+gpg --full-generate-key
+
+# Generate a key with defaults
+gpg --gen-key
+
 # List keys on your public key ring
-gpg --list-keys
+gpg --list-keys --keyid-format=long
 
 # Export a public key to stdout(--output to write to file)
 gpg --armor --export <keyID/userID>
@@ -97,6 +104,35 @@ gpg --default-key <keyID> --detach-sig --output doc.sig --sign doc
 
 # Verify the signature
 gpg --verify doc.sig doc
+
+# Master Key + Subkeys Strategy
+## After generating, create separate subkeys for different operations:
+## Edit your key to add subkeys
+gpg --expert --edit-key your-email@example.com
+```
+
+## Signing a Binary
+
+Signing `aws-sso` is as simple as building the binary:
+
+```bash
+git clone https://github.com/louislef299/aws-sso.git && \
+cd aws-sso && make
+```
+
+and signing that binary with the key ID(gathered with `gpg --list-keys`):
+
+```bash
+gpg --default-key <key-id> --detach-sig --output aws-sso.sig --sign aws-sso
+```
+
+and verify the signature:
+
+```bash
+$ gpg --verify aws-sso.sig aws-sso
+gpg: Signature made Thu June 26 22:34:44 2025 CDT
+gpg:                using EDDSA key <key-id>
+gpg: Good signature from "Louis LeFebvre (Signing key generated 06/26/2025) <louis@gmail.com>" [ultimate]
 ```
 
 [Apple Developer Account]: https://developer.apple.com/
