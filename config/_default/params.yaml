@@ -5,4 +5,4 @@ author:
 description: "A portfolio website for Louis Lefebvre"
 
 madeWith: "Made with [Hugo ʕ•ᴥ•ʔ](https://herman.bearblog.dev/)"
-hideReply: false
+hideReply: true
