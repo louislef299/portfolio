@@ -1,7 +1,7 @@
 ---
 title: "Hugo + Bun"
 date: 2025-11-04T00:08:57-06:00
-draft: false
+draft: true
 tags:
 - hugo
 - bun
@@ -19,9 +19,11 @@ familiarize yourself quick to help make this post more helpful.
 
 ## Filesystem Structure
 
-After considering several options, I went with a **Modern Hybrid** approach that keeps Hugo and Bun sources separate while coordinating their builds. Here's the structure:
+After considering several options, I went with a **Modern Hybrid** approach that
+keeps Hugo and Bun sources separate while coordinating their builds. Here's the
+structure:
 
-```
+```bash
 portfolio/
 ├── config/          # Hugo configuration
 ├── content/         # Blog posts and pages (markdown)
@@ -47,10 +49,13 @@ portfolio/
 
 ### Why This Structure?
 
-1. **Clean separation** - Hugo content lives in `content/`, TypeScript code lives in `src/`
-2. **Static data** - Travel data (cities/countries) as JSON files fetched at runtime
+1. **Clean separation** - Hugo content lives in `content/`, TypeScript code
+   lives in `src/`
+2. **Static data** - Travel data (cities/countries) as JSON files fetched at
+   runtime
 3. **Type safety** - Full TypeScript strict mode with proper interfaces
-4. **Modern tooling** - Using Leaflet instead of D3/Datamaps for better TypeScript support
+4. **Modern tooling** - Using Leaflet instead of D3/Datamaps for better
+   TypeScript support
 5. **Build coordination** - Makefile orchestrates both Bun and Hugo builds
 
 ### Development Workflow
@@ -59,7 +64,7 @@ The `Makefile` includes a `dev` target that runs both Bun and Hugo in parallel:
 
 ```makefile
 dev:
-    @trap 'kill 0' EXIT; \     # Kill all child processes on Ctrl+C
+    @trap 'kill 0' EXIT; \      # Kill all child processes on Ctrl+C
     bun run build:dev & \       # Run Bun in watch mode (background)
     sleep 2; \                  # Wait for initial TypeScript build
     hugo serve [...] & \        # Run Hugo server (background)
@@ -67,12 +72,14 @@ dev:
 ```
 
 **Key techniques:**
+
 - **`&`** - Runs each command in the background
 - **`trap 'kill 0' EXIT`** - Ensures both processes terminate cleanly on Ctrl+C
 - **`sleep 2`** - Gives Bun time to complete initial build before Hugo starts
 - **`wait`** - Blocks until all background jobs finish (or are interrupted)
 
 When you run `make dev`:
+
 1. Bun starts watching `src/` and rebuilds to `static/js/main.js` on any changes
 2. Hugo serves the site on `localhost:1313` with hot-reloading
 3. Both processes run simultaneously - edit TypeScript or content, see changes immediately
@@ -87,6 +94,7 @@ bun install && bun run build:prod && hugo --gc --minify
 ```
 
 This ensures:
+
 1. Dependencies are installed
 2. TypeScript is bundled and minified to `static/js/`
 3. Hugo builds the optimized static site with the bundled JavaScript included
