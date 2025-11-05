@@ -12,6 +12,6 @@ markup:
       unsafe: true
 menu:
   main:
-  - name: "GPG"
+  - name: "PGP"
     url: "/public-key.txt"
     weight: 10
