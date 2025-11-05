@@ -106,3 +106,22 @@ This ensures:
 - **`make build`** - Production build (Bun + Hugo sequentially)
 - **`make build-hugo`** - Hugo build only
 - **`make lint`** - Lint markdown files
+
+## Old vs New:
+
+Currently active (old):
+
+- Datamaps library rendering to #map1
+- Cities and countries as global JS variables (CITIES, COUNTRIES)
+- Loaded via custom_head.html and js_map.html shortcode
+
+Ready but unused (new):
+
+- TypeScript/Bun compiled to main.js
+- Modern async/await data fetching
+- Leaflet integration (commented out, marked TODO)
+- Type-safe interfaces
+
+Next steps would be: implementing the actual Leaflet map logic in
+src/map/index.ts, creating HTML templates that load main.js, and
+switching from the old Datamaps setup.
