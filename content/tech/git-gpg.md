@@ -1,5 +1,5 @@
 ---
-title: "Git GnuPG"
+title: "Git ❤️ GnuPG"
 date: 2025-11-06T08:18:16-06:00
 draft: false
 tags:
@@ -69,7 +69,7 @@ fatal: failed to write commit object
 ```
 
 This is due to GPG being unable to prompt for the key passphrase and needs to be
-told why `tty` to use. The fix is to set `GPG_TTY=$(tty)`, which I just set in
+told what `tty` to use. The fix is to set `GPG_TTY=$(tty)`, which I just set in
 my shell configuration file.
 
 If you would like more commands related to GPG, feel free to check out this [GPG
