@@ -1,38 +1,29 @@
 {
   "compilerOptions": {
-    // Type Checking
+    // Environment setup & latest features
+    "lib": ["ESNext"],
+    "target": "ESNext",
+    "module": "Preserve",
+    "moduleDetection": "force",
+    "jsx": "react-jsx",
+    "allowJs": true,
+
+    // Bundler mode
+    "moduleResolution": "bundler",
+    "allowImportingTsExtensions": true,
+    "verbatimModuleSyntax": true,
+    "noEmit": true,
+
+    // Best practices
     "strict": true,
+    "skipLibCheck": true,
+    "noFallthroughCasesInSwitch": true,
     "noUncheckedIndexedAccess": true,
     "noImplicitOverride": true,
 
-    // Modules
-    "module": "ESNext",
-    "moduleResolution": "bundler",
-    "resolveJsonModule": true,
-
-    // Emit
-    "target": "ES2022",
-    "lib": ["ES2022", "DOM", "DOM.Iterable"],
-    "outDir": "./dist",
-    "noEmit": true,
-
-    // Interop Constraints
-    "esModuleInterop": true,
-    "allowSyntheticDefaultImports": true,
-    "forceConsistentCasingInFileNames": true,
-
-    // Language and Environment
-    "useDefineForClassFields": true,
-
-    // Skip Lib Check
-    "skipLibCheck": true,
-
-    // Path Mapping
-    "baseUrl": ".",
-    "paths": {
-      "@/*": ["src/*"]
-    }
-  },
-  "include": ["src/**/*"],
-  "exclude": ["node_modules", "public", "static"]
+    // Some stricter flags (disabled by default)
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
+    "noPropertyAccessFromIndexSignature": false
+  }
 }
