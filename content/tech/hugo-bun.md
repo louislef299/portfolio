@@ -107,7 +107,7 @@ This ensures:
 - **`make build-hugo`** - Hugo build only
 - **`make lint`** - Lint markdown files
 
-## Old vs New:
+## Old vs New
 
 Currently active (old):
 
