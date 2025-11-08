@@ -1,33 +1,15 @@
-.DEFAULT_GOAL := dev
+.DEFAULT_GOAL := run
 
-# Traditional Hugo development with live reload
-dev:
+run:
 	git submodule update --init --rebase
 	@trap 'kill 0' EXIT; \
-	bun run build:dev & \
+	bun build & \
 	sleep 1; \
 	hugo serve -D --disableFastRender & \
 	wait
 
-# Hybrid mode: Build Hugo once, then run Bun server with dynamic routes
-serve-bun:
-	@echo "Building Hugo site..."
-	@hugo -D
-	@echo "\nStarting Bun server..."
-	@bun run serve
-
-# Watch mode: Rebuild Hugo on changes and run Bun server
-dev-bun:
-	git submodule update --init --rebase
-	@trap 'kill 0' EXIT; \
-	bun run build:dev & \
-	hugo -D -w --disableFastRender & \
-	sleep 2; \
-	bun run serve:watch & \
-	wait
-
 build:
-	bun run build:prod
+	bun run build
 	hugo --gc --minify
 
 lint:
