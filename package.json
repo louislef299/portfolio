@@ -4,7 +4,7 @@
   "description": "Personal portfolio website with Hugo + Bun",
   "scripts": {
     "start": "bun src/index.js",
-    "build": "bun build src/index.js --outdir static/js --minify --sourcemap"
+    "build": "bun build src/alpine.js --outdir static/js --minify --sourcemap"
   },
   "type": "module",
   "dependencies": {

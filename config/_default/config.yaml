@@ -15,3 +15,6 @@ menu:
   - name: "PGP"
     url: "/public-key.txt"
     weight: 10
+  - name: "lsh"
+    url: "/construction.html"
+    weight: 80

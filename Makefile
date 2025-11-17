@@ -3,7 +3,7 @@
 run:
 	git submodule update --init --rebase
 	@trap 'kill 0' EXIT; \
-	bun build & \
+	bun run build & \
 	sleep 1; \
 	hugo serve -D --disableFastRender & \
 	wait
