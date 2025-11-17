@@ -5,138 +5,147 @@
 }
 
 body {
-    background: #fafafa;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    background: #000;
+    color: #0f0;
+    font-family: 'Courier New', Courier, monospace;
     min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    padding: 2rem;
     position: relative;
-    overflow: hidden;
 }
 
 .back-button {
     position: fixed;
-    top: 2rem;
-    left: 2rem;
+    top: 1rem;
+    left: 1rem;
     background: transparent;
-    border: 2px solid #333;
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
+    border: 1px solid #0f0;
+    color: #0f0;
+    padding: 0.5rem 1rem;
     cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 0.9rem;
     transition: all 0.3s ease;
     z-index: 10;
 }
 
 .back-button:hover {
-    background: #333;
-    transform: translateX(-5px);
+    background: #0f0;
+    color: #000;
 }
 
-.back-button:hover svg {
-    stroke: #fafafa;
+.terminal {
+    max-width: 900px;
+    margin: 0 auto;
+    padding-top: 3rem;
 }
 
-.back-button svg {
-    width: 24px;
-    height: 24px;
-    stroke: #333;
-    transition: stroke 0.3s ease;
+.terminal-header {
+    margin-bottom: 2rem;
+    opacity: 0;
+    animation: fadeIn 0.5s ease-in forwards;
 }
 
-.container {
-    text-align: center;
-    padding: 2rem;
-}
-
-h1 {
-    font-size: clamp(2.5rem, 8vw, 6rem);
-    font-weight: 300;
-    color: #333;
-    letter-spacing: -0.02em;
-    line-height: 1.2;
+.terminal-output {
     margin-bottom: 1rem;
-    position: relative;
+    line-height: 1.6;
 }
 
-.creative-text {
-    display: inline-block;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    font-weight: 700;
-    animation: fadeIn 1s ease-in;
+.terminal-output p {
+    margin-bottom: 0.5rem;
 }
 
-.subtitle {
-    font-size: clamp(1rem, 2vw, 1.5rem);
-    color: #666;
-    font-weight: 300;
-    letter-spacing: 0.05em;
-    animation: fadeIn 1.5s ease-in;
+.blink {
+    animation: blink 1s step-end infinite;
+}
+
+@keyframes blink {
+    0%, 50% {
+        opacity: 1;
+    }
+    51%, 100% {
+        opacity: 0;
+    }
+}
+
+.prompt-line {
+    display: flex;
+    align-items: center;
+    margin-top: 1.5rem;
+    opacity: 0;
+    animation: fadeIn 0.5s ease-in 0.5s forwards;
+}
+
+.prompt {
+    color: #0f0;
+    margin-right: 0.5rem;
+    white-space: nowrap;
+}
+
+.terminal-input {
+    flex: 1;
+    background: transparent;
+    border: none;
+    color: #0f0;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 1rem;
+    outline: none;
+    caret-color: #0f0;
+}
+
+.terminal-input::selection {
+    background: #0f0;
+    color: #000;
+}
+
+.command-history {
+    margin-top: 1rem;
+    opacity: 0.7;
+}
+
+.command-history-item {
+    margin-bottom: 0.5rem;
+}
+
+.command-history-item .prompt {
+    display: inline;
+}
+
+.command-history-item .command {
+    color: #0f0;
+}
+
+.command-history-item .output {
+    color: #888;
+    margin-left: 0;
+    margin-top: 0.25rem;
 }
 
 @keyframes fadeIn {
     from {
         opacity: 0;
-        transform: translateY(20px);
     }
     to {
         opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-/* Decorative elements */
-.circle {
-    position: absolute;
-    border-radius: 50%;
-    opacity: 0.1;
-    animation: float 6s ease-in-out infinite;
-}
-
-.circle-1 {
-    width: 300px;
-    height: 300px;
-    background: #667eea;
-    top: -100px;
-    right: -100px;
-    animation-delay: 0s;
-}
-
-.circle-2 {
-    width: 200px;
-    height: 200px;
-    background: #764ba2;
-    bottom: -50px;
-    left: -50px;
-    animation-delay: 2s;
-}
-
-@keyframes float {
-    0%, 100% {
-        transform: translateY(0px);
-    }
-    50% {
-        transform: translateY(-20px);
     }
 }
 
 @media (max-width: 768px) {
-    .back-button {
-        top: 1rem;
-        left: 1rem;
-        width: 40px;
-        height: 40px;
+    body {
+        padding: 1rem;
     }
 
-    .back-button svg {
-        width: 20px;
-        height: 20px;
+    .terminal {
+        padding-top: 2rem;
+    }
+
+    .back-button {
+        top: 0.5rem;
+        left: 0.5rem;
+        padding: 0.4rem 0.8rem;
+        font-size: 0.8rem;
+    }
+
+    .terminal-input {
+        font-size: 0.9rem;
     }
 }

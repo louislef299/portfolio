@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Under Construction</title>
+    <title>Terminal - Under Construction</title>
     <!-- static/css/construction.css -->
     <link rel="stylesheet" href="/css/construction.css">
 </head>
@@ -14,19 +14,43 @@
         aria-label="Go back"
         x-data
     >
-        <svg fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24">
-            <path d="M19 12H5M12 19l-7-7 7-7"/>
-        </svg>
+        ← back
     </button>
 
-    <div class="circle circle-1"></div>
-    <div class="circle circle-2"></div>
+    <div class="terminal" x-data="terminal()" x-init="init()">
+        <div class="terminal-header">
+            <div class="terminal-output">
+                <p>Welcome to the terminal.</p>
+                <p>This page is currently under construction.</p>
+                <p>&nbsp;</p>
+                <p>Type 'help' for available commands.</p>
+            </div>
+        </div>
 
-    <div class="container">
-        <h1>
-            <span class="creative-text">under construction</span>
-        </h1>
-        <p class="subtitle">something amazing is coming soon</p>
+        <div class="command-history">
+            <template x-for="(item, index) in history" :key="index">
+                <div class="command-history-item">
+                    <div>
+                        <span class="prompt">$</span>
+                        <span class="command" x-text="item.command"></span>
+                    </div>
+                    <div class="output" x-html="item.output"></div>
+                </div>
+            </template>
+        </div>
+
+        <div class="prompt-line">
+            <span class="prompt">$</span>
+            <input
+                type="text"
+                class="terminal-input"
+                x-model="currentCommand"
+                @keydown.enter="executeCommand()"
+                x-ref="input"
+                autocomplete="off"
+                spellcheck="false"
+            >
+        </div>
     </div>
 
     <script src="/js/alpine.js"></script>
