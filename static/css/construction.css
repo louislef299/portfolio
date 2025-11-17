@@ -1,0 +1,151 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background: #000;
+    color: #0f0;
+    font-family: 'Courier New', Courier, monospace;
+    min-height: 100vh;
+    padding: 2rem;
+    position: relative;
+}
+
+.back-button {
+    position: fixed;
+    top: 1rem;
+    left: 1rem;
+    background: transparent;
+    border: 1px solid #0f0;
+    color: #0f0;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+    z-index: 10;
+}
+
+.back-button:hover {
+    background: #0f0;
+    color: #000;
+}
+
+.terminal {
+    max-width: 900px;
+    margin: 0 auto;
+    padding-top: 3rem;
+}
+
+.terminal-header {
+    margin-bottom: 2rem;
+    opacity: 0;
+    animation: fadeIn 0.5s ease-in forwards;
+}
+
+.terminal-output {
+    margin-bottom: 1rem;
+    line-height: 1.6;
+}
+
+.terminal-output p {
+    margin-bottom: 0.5rem;
+}
+
+.blink {
+    animation: blink 1s step-end infinite;
+}
+
+@keyframes blink {
+    0%, 50% {
+        opacity: 1;
+    }
+    51%, 100% {
+        opacity: 0;
+    }
+}
+
+.prompt-line {
+    display: flex;
+    align-items: center;
+    margin-top: 1.5rem;
+    opacity: 0;
+    animation: fadeIn 0.5s ease-in 0.5s forwards;
+}
+
+.prompt {
+    color: #0f0;
+    margin-right: 0.5rem;
+    white-space: nowrap;
+}
+
+.terminal-input {
+    flex: 1;
+    background: transparent;
+    border: none;
+    color: #0f0;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 1rem;
+    outline: none;
+    caret-color: #0f0;
+}
+
+.terminal-input::selection {
+    background: #0f0;
+    color: #000;
+}
+
+.command-history {
+    margin-top: 1rem;
+    opacity: 0.7;
+}
+
+.command-history-item {
+    margin-bottom: 0.5rem;
+}
+
+.command-history-item .prompt {
+    display: inline;
+}
+
+.command-history-item .command {
+    color: #0f0;
+}
+
+.command-history-item .output {
+    color: #888;
+    margin-left: 0;
+    margin-top: 0.25rem;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@media (max-width: 768px) {
+    body {
+        padding: 1rem;
+    }
+
+    .terminal {
+        padding-top: 2rem;
+    }
+
+    .back-button {
+        top: 0.5rem;
+        left: 0.5rem;
+        padding: 0.4rem 0.8rem;
+        font-size: 0.8rem;
+    }
+
+    .terminal-input {
+        font-size: 0.9rem;
+    }
+}

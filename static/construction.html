@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Terminal - Under Construction</title>
+    <!-- static/css/construction.css -->
+    <link rel="stylesheet" href="/css/construction.css">
+</head>
+<body>
+    <button
+        class="back-button"
+        @click="window.history.back()"
+        aria-label="Go back"
+        x-data
+    >
+        ← back
+    </button>
+
+    <div class="terminal" x-data="terminal()" x-init="init()">
+        <div class="terminal-header">
+            <div class="terminal-output">
+                <p>Welcome to the terminal.</p>
+                <p>This page is currently under construction.</p>
+                <p>&nbsp;</p>
+                <p>Type 'help' for available commands.</p>
+            </div>
+        </div>
+
+        <div class="command-history">
+            <template x-for="(item, index) in history" :key="index">
+                <div class="command-history-item">
+                    <div>
+                        <span class="prompt">$</span>
+                        <span class="command" x-text="item.command"></span>
+                    </div>
+                    <div class="output" x-html="item.output"></div>
+                </div>
+            </template>
+        </div>
+
+        <div class="prompt-line">
+            <span class="prompt">$</span>
+            <input
+                type="text"
+                class="terminal-input"
+                x-model="currentCommand"
+                @keydown.enter="executeCommand()"
+                x-ref="input"
+                autocomplete="off"
+                spellcheck="false"
+            >
+        </div>
+    </div>
+
+    <script src="/js/alpine.js"></script>
+</body>
+</html>

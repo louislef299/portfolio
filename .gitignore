@@ -14,3 +14,6 @@ hugo.linux
 
 # Local Development
 .DS_Store
+
+# Node Dependencies
+node_modules/

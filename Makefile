@@ -1,13 +1,18 @@
-.DEFAULT_GOAL := serve
+.DEFAULT_GOAL := run
 
-serve:
-	git submodule update --init --recursive
-	hugo serve
+run:
+	git submodule update --init --rebase
+	@trap 'kill 0' EXIT; \
+	bun run build & \
+	sleep 1; \
+	hugo serve -D --disableFastRender & \
+	wait
 
 build:
-	hugo build -D
+	bun run build
+	hugo --gc --minify
 
 lint:
 	markdownlint --fix -c .markdownlint.json glob content/**
 
-.PHONY: serve build lint
+.PHONY: dev serve-bun dev-bun build build-hugo lint
