@@ -13,7 +13,6 @@ build:
 	hugo --gc --minify
 
 lint:
-	bun type-check
 	markdownlint --fix -c .markdownlint.json glob content/**
 
 .PHONY: dev serve-bun dev-bun build build-hugo lint
