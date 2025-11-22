@@ -31,9 +31,8 @@ of deploying a web app that any college group would have! We have stale updates;
 nobody knows when it's down; nobody even can tell me specific details about the
 implementation because most of it was [vibe-coded][].
 
-Anyways, I eventually got frustrated enough that I just learned the whole tech
-stack even though I was just supposed to be on to stabilize their kubernetes
-deployment strategy.
+Anyways, my OCD kicked in and I just learned the whole tech stack even though I
+was just supposed to be on to stabilize their kubernetes deployment strategy.
 
 [Backstage]: https://backstage.io/
 [React]: https://nextjs.org/learn/react-foundations
