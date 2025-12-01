@@ -50,8 +50,8 @@ clarity.
 
 Since we are focusing on gRPC-based plugins, the following is the filesystem
 structure I landed on. If you've worked much with protobufs, you'll notice I'm
-ignoring the use of buf here. This is intentional and I'll just assume you know
-how to compile simple protos with the `justfile`.
+ignoring the use of [buf][] here. This is intentional and I'll just assume you
+know how to compile simple protos with the `justfile`.
 
 ```bash
 $ tree
@@ -67,6 +67,7 @@ $ tree
 ```
 
 [#817]: https://github.com/louislef299/aws-sso/issues/817
+[buf]: https://buf.build/
 [database/sql pkg]: https://pkg.go.dev/database/sql
 [go-plugin]: https://github.com/hashicorp/go-plugin
 [kubectl plugins]: https://kubernetes.io/docs/tasks/extend-kubectl/kubectl-plugins/
