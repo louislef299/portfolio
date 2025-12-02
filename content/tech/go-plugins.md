@@ -57,14 +57,29 @@ know how to compile simple protos with the `justfile`.
 $ tree
 .
 ├── api
+│   └── greeter.proto
 ├── go.mod
+├── go.sum
 ├── justfile
 ├── main.go
 ├── plugins
 └── README.md
 
-3 directories, 4 files
+3 directories, 6 files
 ```
+
+Next, I apparently just have to follow these steps:
+
+1. Choose the interface(s) you want to expose for plugins.
+2. For each interface, implement an implementation of that interface that
+   communicates over a net/rpc connection or over a gRPC connection or both.
+   You'll have to implement both a client and server implementation.
+3. Create a Plugin implementation that knows how to create the RPC client/server
+   for a given plugin type.
+4. Plugin authors call plugin.Serve to serve a plugin from the main function.
+5. Plugin users use plugin.Client to launch a subprocess and request an
+   interface implementation over RPC.
+
 
 [#817]: https://github.com/louislef299/aws-sso/issues/817
 [buf]: https://buf.build/
