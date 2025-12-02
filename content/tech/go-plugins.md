@@ -46,7 +46,7 @@ anything that isn't clear while you're working through, just push through and if
 it doesn't make sense at the end, just come back to the sections that need
 clarity.
 
-### Project Start
+### Project Setup
 
 Since we are focusing on gRPC-based plugins, the following is the filesystem
 structure I landed on. If you've worked much with protobufs, you'll notice I'm
@@ -63,9 +63,12 @@ $ tree
 ├── justfile
 ├── main.go
 ├── plugins
-└── README.md
+│   └── main.go
+├── README.md
+└── shared
+    └── interface.go
 
-3 directories, 6 files
+4 directories, 10 files
 ```
 
 Next, I apparently just have to follow these steps:
@@ -80,6 +83,7 @@ Next, I apparently just have to follow these steps:
 5. Plugin users use plugin.Client to launch a subprocess and request an
    interface implementation over RPC.
 
+### Create a Shared Interface
 
 [#817]: https://github.com/louislef299/aws-sso/issues/817
 [buf]: https://buf.build/
