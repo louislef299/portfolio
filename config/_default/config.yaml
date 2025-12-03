@@ -4,7 +4,7 @@ copyright: "2025 Louis LeFebvre"
 enableRobotsTXT: true
 languageCode: en-us
 sectionPagesMenu: main
-theme: bearcub
+theme: hugo-bearcub
 title: Louis LeFebvre (✿◠‿◠)
 markup:
   goldmark:
