@@ -276,7 +276,7 @@ Plugin Ecosystem][].
 [#817]: https://github.com/louislef299/aws-sso/issues/817
 [buf]: https://buf.build/
 [database/sql pkg]: https://pkg.go.dev/database/sql
-[greeter-plugin]: https://github.com/louislef299/greeter-plugin
+[greeter-plugin]: https://github.com/louislef299/greeter-plugin/tree/basic
 [go-plugin]: https://github.com/hashicorp/go-plugin
 [go-plugin-usage]: https://github.com/hashicorp/go-plugin/tree/main?tab=readme-ov-file#usage
 [kubectl plugins]: https://kubernetes.io/docs/tasks/extend-kubectl/kubectl-plugins/
