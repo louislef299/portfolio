@@ -4,6 +4,8 @@ date: 2025-12-05T08:14:36-06:00
 draft: false
 tags:
 - go
+- sqlite
+- gpg
 ---
 
 <!-- markdownlint-disable MD052 -->
@@ -34,12 +36,14 @@ that route, but it looks like the OSS space has grown a little stale in
 general🤕.
 
 The rest of this post will just go over go-sqlite basics and file encryption
-using gpg and go.
+using [crypto/chacha20poly1305][]. Looks like [crypto/openpgp][] is deprecated.
 
 ## go-sqlite basics
 
 [#817]: https://github.com/louislef299/aws-sso/issues/817
 [#872]: https://github.com/louislef299/aws-sso/pull/872
+[crypto/chacha20poly1305]: https://pkg.go.dev/golang.org/x/crypto/chacha20poly1305
+[crypto/openpgp]: https://github.com/golang/go/issues/44226
 [go-sqlcipher]: https://github.com/mutecomm/go-sqlcipher
 [go-sqlite3]: https://pkg.go.dev/github.com/mattn/go-sqlite3
 [SQLite]: https://sqlite.org/appfileformat.html
