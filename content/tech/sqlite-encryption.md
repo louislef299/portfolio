@@ -6,203 +6,43 @@ tags:
 - go
 ---
 
-SQLite is a single-file database that requires no server or daemon. Combined with GPG encryption, it provides a secure way to store and retrieve sensitive data in Go applications.
+<!-- markdownlint-disable MD052 -->
 
-## Basic SQLite Usage
+If you've been following along with these posts(hey Jake), you may know that
+I've been focusing my free-time [thinking through how to improve the modularity
+of my aws-sso tool][#817]. [My previous post][go-plugins] focused on the problem
+of implementing a plugin system leveraging go & gRPC, which gave me the
+confidence to start implementing that plugin logic in `aws-sso`(now `knot`). But
+I quickly began to think about what this would mean for the core logic and
+service that `knot` would provide.
 
-SQLite operates on a single file. Opening a database creates the file if it doesn't exist:
+What features of `knot` should be shared with all oauth2 workflows? What would
+be special about the core logic of `knot` that would incentivize users to *want*
+to integrate with my solution?
 
-```go
-package main
+Quickly I began to think about having simple yet flexible domains that are
+abstracted from the plugin implementation as well as simple security of this
+data integrated into the tool. Already, [I'd started implementing][#872] the
+`Profile` domain and realized that my little viper configuration format would
+not be enough to handle some of the other domains I'd need to manage. So, after
+some research and consideration, I landed on leveraging
+[SQLite][]([go-sqlite3][]) as an application file format. Due to the sensitive
+data that `knot` handles, I will also want to both ensure I am [taking the
+necessary precautions][sqlite-defense] and encrypting the database file at rest.
+If the [go-sqlcipher][] project hadn't been stale, I probably would have gone
+that route, but it looks like the OSS space has grown a little stale in
+general🤕.
 
-import (
-    "database/sql"
-    "log"
+The rest of this post will just go over go-sqlite basics and file encryption
+using gpg and go.
 
-    _ "github.com/mattn/go-sqlite3"
-)
+## go-sqlite basics
 
-func main() {
-    // Opens or creates config.db in the current directory
-    db, err := sql.Open("sqlite3", "./config.db")
-    if err != nil {
-        log.Fatal(err)
-    }
-    defer db.Close()
+[#817]: https://github.com/louislef299/aws-sso/issues/817
+[#872]: https://github.com/louislef299/aws-sso/pull/872
+[go-sqlcipher]: https://github.com/mutecomm/go-sqlcipher
+[go-sqlite3]: https://pkg.go.dev/github.com/mattn/go-sqlite3
+[SQLite]: https://sqlite.org/appfileformat.html
+[sqlite-defense]: https://sqlite.org/security.html
 
-    // Create table
-    db.Exec(`CREATE TABLE IF NOT EXISTS config (
-        key TEXT PRIMARY KEY,
-        value TEXT
-    )`)
-
-    // Store a value
-    db.Exec("INSERT OR REPLACE INTO config (key, value) VALUES (?, ?)",
-        "session.profile", "my-profile")
-
-    // Retrieve a value
-    var value string
-    db.QueryRow("SELECT value FROM config WHERE key = ?",
-        "session.profile").Scan(&value)
-    log.Println("Profile:", value)
-}
-```
-
-## Adding GPG Encryption
-
-To encrypt data before storing it in SQLite, use the ProtonMail OpenPGP library:
-
-```go
-package main
-
-import (
-    "bytes"
-    "database/sql"
-    "io"
-    "log"
-
-    "github.com/ProtonMail/go-crypto/openpgp"
-    _ "github.com/mattn/go-sqlite3"
-)
-
-type SecureDB struct {
-    db        *sql.DB
-    publicKey *openpgp.Entity
-    secretKey *openpgp.Entity
-}
-
-func NewSecureDB(dbPath, keyringPath string) (*SecureDB, error) {
-    // Open database
-    db, err := sql.Open("sqlite3", dbPath)
-    if err != nil {
-        return nil, err
-    }
-
-    // Create table
-    _, err = db.Exec(`CREATE TABLE IF NOT EXISTS config (
-        key TEXT PRIMARY KEY,
-        value BLOB
-    )`)
-    if err != nil {
-        return nil, err
-    }
-
-    // Load GPG keyring
-    keyringFile, err := os.Open(keyringPath)
-    if err != nil {
-        return nil, err
-    }
-    defer keyringFile.Close()
-
-    entityList, err := openpgp.ReadArmoredKeyRing(keyringFile)
-    if err != nil {
-        return nil, err
-    }
-
-    return &SecureDB{
-        db:        db,
-        publicKey: entityList[0],
-        secretKey: entityList[0],
-    }, nil
-}
-
-// Encrypt data with GPG
-func (s *SecureDB) encrypt(plaintext []byte) ([]byte, error) {
-    buf := new(bytes.Buffer)
-    w, err := openpgp.Encrypt(buf, []*openpgp.Entity{s.publicKey},
-        nil, nil, nil)
-    if err != nil {
-        return nil, err
-    }
-
-    _, err = w.Write(plaintext)
-    if err != nil {
-        return nil, err
-    }
-    w.Close()
-
-    return buf.Bytes(), nil
-}
-
-// Decrypt GPG-encrypted data
-func (s *SecureDB) decrypt(ciphertext []byte) ([]byte, error) {
-    md, err := openpgp.ReadMessage(bytes.NewReader(ciphertext),
-        openpgp.EntityList{s.secretKey}, nil, nil)
-    if err != nil {
-        return nil, err
-    }
-
-    return io.ReadAll(md.UnverifiedBody)
-}
-
-// Store encrypted value
-func (s *SecureDB) Set(key, value string) error {
-    encrypted, err := s.encrypt([]byte(value))
-    if err != nil {
-        return err
-    }
-
-    _, err = s.db.Exec(
-        "INSERT OR REPLACE INTO config (key, value) VALUES (?, ?)",
-        key, encrypted)
-    return err
-}
-
-// Retrieve and decrypt value
-func (s *SecureDB) Get(key string) (string, error) {
-    var encrypted []byte
-    err := s.db.QueryRow(
-        "SELECT value FROM config WHERE key = ?", key).Scan(&encrypted)
-    if err != nil {
-        return "", err
-    }
-
-    decrypted, err := s.decrypt(encrypted)
-    if err != nil {
-        return "", err
-    }
-
-    return string(decrypted), nil
-}
-
-func (s *SecureDB) Close() error {
-    return s.db.Close()
-}
-```
-
-## Usage Example
-
-```go
-func main() {
-    db, err := NewSecureDB("./config.db", "./keyring.asc")
-    if err != nil {
-        log.Fatal(err)
-    }
-    defer db.Close()
-
-    // Store encrypted data
-    db.Set("session.token", "secret-token-value")
-
-    // Retrieve and decrypt data
-    token, err := db.Get("session.token")
-    if err != nil {
-        log.Fatal(err)
-    }
-
-    log.Println("Token:", token)
-}
-```
-
-## Installation
-
-```bash
-go get github.com/mattn/go-sqlite3
-go get github.com/ProtonMail/go-crypto/openpgp
-```
-
-## Key Benefits
-
-- **No server required**: SQLite is just a file, making it simple to deploy
-- **GPG compatibility**: Data can be decrypted with standard GPG tools
-- **Selective encryption**: Encrypt only sensitive values, not the entire database
-- **Concurrent access**: SQLite handles multiple readers safely with transactions
+[go-plugins]: {{< ref "/tech/go-plugins.md" >}}
