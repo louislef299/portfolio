@@ -1,5 +1,6 @@
 ---
-Title: "Tech"
+title: "Tech"
+weight: 10
 ---
 
 You can find most of my tech projects on [my Github][louislef299]. If you use

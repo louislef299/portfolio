@@ -1,6 +1,7 @@
 ---
 title: Travel
 date: 2024-12-05
+weight: 20
 ---
 
 {{< js_map >}}
