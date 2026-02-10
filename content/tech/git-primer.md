@@ -14,6 +14,11 @@ around when I first started using it, but hopefully you find it useful.
 ***DISCLAIMER***: This post is targeted at engineers. If this is your first time
 interacting with Git, I'd recommend starting with the [gittutorial][].
 
+***Update 2/10/26***: Julia Evans wrote an excellent piece on the [Git data
+model][]. It goes over [Git's core data model][], which defines some of the
+terminology commonly found in git like objects and references. If some of this
+vocabulary is confusing, I'd recommend skimming through the doc!
+
 ## The Bare Minimum
 
 [What is Git?][] Git is a distributed version control system(VCS) that tracks
@@ -316,6 +321,8 @@ resource to bookmark.
 
 [authoritative documentation]: https://git-scm.com/book/en/v2/Getting-Started-About-Version-Control
 [create a github repo]: https://docs.github.com/en/repositories/creating-and-managing-repositories/creating-a-new-repository
+[git data model]: https://jvns.ca/blog/2026/01/08/a-data-model-for-git/
+[git's core data model]: https://git-scm.com/docs/gitdatamodel
 [git-scm]: https://git-scm.com/about/staging-area
 [gittutorial]: https://git-scm.com/docs/gittutorial
 [identity]: https://git-scm.com/book/en/v2/Getting-Started-First-Time-Git-Setup
