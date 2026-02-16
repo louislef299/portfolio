@@ -1,0 +1,16 @@
+{
+  "name": "portfolio",
+  "module": "index.ts",
+  "type": "module",
+  "private": true,
+  "devDependencies": {
+    "@types/bun": "latest",
+    "@types/mapbox-gl": "^3.4.1"
+  },
+  "peerDependencies": {
+    "typescript": "^5.9.3"
+  },
+  "dependencies": {
+    "mapbox-gl": "^3.18.1"
+  }
+}
