@@ -60,7 +60,7 @@ build pipeline for future interactive features.
 - **Map style**: `outdoors-v12` (terrain-friendly, good for travel/adventure
   theme)
 
-### Step 1: Initialize Bun project
+### Step 1: Initialize Bun project(Done)
 
 ```bash
 bun init -y
