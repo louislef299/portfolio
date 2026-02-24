@@ -17,18 +17,18 @@ anniversary🎉😘.
 
 We landed in San Diego around 5PST and, as is tradition, grabbed some BBQ on
 Newport Ave. That next morning I woke up and got my ass kicked by the
-ocean(before the morning coffee?). I'd been swimming to prep for this trip, but
+ocean(before the morning coffee). I'd been swimming to prep for this trip, but
 coming off of 6 months without surfing to 10ft+ waves is rough on the shoulders!
-That called for breakfast sandwiches & coffee from [Benedict's][], which, pro
-tip, split the sandwich if there's two of you... they're huge.
-
-<img id="grey-balboa" class="img-left"
-    src="/image/grey-balboa.jpeg" alt="Grey Day at Balboa Park">
+That called for breakfast sandwiches & coffee from [Benedict's][] which, pro
+tip: split the sandwich if there's two of you... they're huge.
 
 Afterwards, the weather picked up, with increasing winds gusting >30 knots, so
 we hunkered down and watched movies until our reservation that night. We went to
 [Herb & Wood][] and damn it was good! Great way to celebrate an anniversary or
 special occasion if you're in the area.
+
+<img id="grey-balboa" class="img-left"
+    src="/image/grey-balboa.jpeg" alt="Grey Day at Balboa Park">
 
 The next few days, we made the most of the bad weather. We coffee shop hopped as
 Elise worked remotely and I was experimenting with Google's ADK(hopefully more
@@ -67,13 +67,14 @@ conditions for the day.
 <img id="la-jolla" class="img-left" src="/image/la-jolla-coastal-hike.jpeg"
     alt="La Jolla Coast">
 
-When we got there, the surf was calm, but so calm I would have needed a foamy or
-at least a longboard to catch them. I'd brought my short board and my new fish
-board, so that was going to be a no... for now. We wound up stumbling on the La
-Jolla coastal trail though! Turned out to be a gorgeous day too as we breathed
-in the fresh air from Matlahuayl State Marine Reserve. After shopping around,
-eating at The Cove, and walking for miles, we looped back down to the car to
-find some sunset surf! So I took out the board and grabbed some slush.
+When we got there, the waves were small and calm, but so calm I would have
+needed a foamy or at least a longboard to catch them. I'd brought my short board
+and my new fish board, so that was going to be a no... for now. We wound up
+stumbling on the La Jolla coastal trail though! Turned out to be a gorgeous day
+too as we breathed in the fresh air from Matlahuayl State Marine Reserve. After
+shopping around, eating at The Cove, and walking for miles, we looped back down
+to the car to find some sunset surf! So I took out the board and grabbed some
+slush.
 
 <img id="ob-surf" class="img-right" src="/image/ob-surf-morn.jpeg"
     alt="OB Surf Morning">
@@ -94,24 +95,24 @@ We parked a little north in town and were preoccupied with the boutiques,
 cafes and exploring for the rest of the afternoon. Before calling it a day, we
 hit Torrey Pines State Beach for a sunset surf to try out the new fish board.
 The waves were very weak and really only for longboards, but I couldn't come
-home without at least trying it! The other sessions I was a little nervous to
-bring it out since the surf was so sparse, I didn't want to risk not being used
-to the smaller board and wasting the waves. But, I really wish I had brought it
-out before. The paddling and handling was super similar to my 6'6" albeit way
-less buoyant, but the rails were a lot sharper and I was able to carve on the
-wave way better for as short as the waves were. It made me really want to try it
-out on Superior, although I'll also have my 9' longboard too for when they get
-really weak.
+home without at least catching a couple waves on it! The other sessions I was a
+little nervous to bring it out since the surf was so sparse, I didn't want to
+risk not being used to the smaller board and wasting the waves. But, I really
+wish I had brought it out before. The paddling and handling was super similar to
+my 6'6" albeit way less buoyant, but the rails were a lot sharper and I was able
+to carve on the wave way better (for as short of a ride as the waves were). It
+made me really want to try it out on Superior, although I'll also have my 9'
+longboard too.
 
 Once I'd had enough, we raced to the lavender coastal walk to hike around for a
 couple miles and watch the sunset. After a big day, we went to Culture Brewing
-to eat some kick-ass BBQ and a beer. They had amazing brisket & pulled pork
+to eat some kick-ass BBQ and have a beer. They had amazing brisket & pulled pork
 sliders that we inhaled, followed with a cinnamon roll slider😋.
 
-The final morning, the waves were pretty weak again. I was pretty spent, but
+The final morning, the waves were pretty weak, again. I was pretty spent, but
 there was a high school surf competition going on, so Elise and I got breakfast
 and watched them a bit. We had to end it with the Blanco-y-Blanco espresso from
-Day Break Cafe and some breakfast sandwiches. Then, we cleaned up the airbnb and
+Day Break Cafe and some breakfast sandwiches. Then, we cleaned up the airbnb,
 packed up the car and decided to get a final hike on La Jolla Shores one more
 time before heading to the airport.
 
@@ -141,35 +142,15 @@ remainder of the winter.
         clear: right;
     }
 
-    @media (min-width: 600px) {
-        .img-right {
-            float: right;
-            margin-left: 3%;
-        }
-    }
-
     #ob-surf {
         width: 100%;
         height: auto;
         border-radius: 0.5rem;
     }
 
-    @media (min-width: 600px) {
-        #ob-surf {
-            width: 45%;
-        }
-    }
-
     .img-left {
         display: block;
         margin-bottom: 1%;
-    }
-
-    @media (min-width: 600px) {
-        .img-left {
-            float: left;
-            margin-right: 3%;
-        }
     }
 
     #torrey-pines {
@@ -178,34 +159,16 @@ remainder of the winter.
         border-radius: 0.5rem;
     }
 
-    @media (min-width: 600px) {
-        #torrey-pines {
-            width: 45%;
-        }
-    }
-
     #grey-balboa {
         width: 100%;
         height: auto;
         border-radius: 0.5rem;
     }
 
-    @media (min-width: 600px) {
-        #grey-balboa {
-            width: 45%;
-        }
-    }
-
     #la-jolla {
         width: 100%;
         height: auto;
         border-radius: 0.5rem;
-    }
-
-    @media (min-width: 600px) {
-        #la-jolla {
-            width: 45%;
-        }
     }
 
     #flight-window {
@@ -219,5 +182,33 @@ remainder of the winter.
         width: 18rem;
         height: 11.5rem;
         border-radius: 0.5rem;
+    }
+
+    @media (min-width: 600px) {
+        .img-right {
+            float: right;
+            margin-left: 3%;
+        }
+
+        .img-left {
+            float: left;
+            margin-right: 3%;
+        }
+
+        #ob-surf {
+            width: 45%;
+        }
+
+        #torrey-pines {
+            width: 45%;
+        }
+
+        #grey-balboa {
+            width: 40%;
+        }
+
+         #la-jolla {
+            width: 45%;
+        }
     }
 </style>
