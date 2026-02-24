@@ -6,7 +6,10 @@ draft: false
 
 ## Surfing Lake Superior: A Data-Driven Approach
 
-Living in Minneapolis and wanting to catch waves on Lake Superior requires planning. After talking with a surfer at Back Alley Surf Shop in Duluth, I learned that 2-3 days of consistent northwest wind typically creates good surf around Stoney Point. But what does "good surf" really mean in data terms?
+Living in Minneapolis and wanting to catch waves on Lake Superior requires
+planning. After talking with a surfer at Back Alley Surf Shop in Duluth, I
+learned that 2-3 days of consistent northwest wind typically creates good surf
+around Stoney Point. But what does "good surf" really mean in data terms?
 
 ## Key Data Points for Surfable Conditions
 
@@ -35,7 +38,10 @@ Living in Minneapolis and wanting to catch waves on Lake Superior requires plann
 
 ## Seasonal Considerations
 
-Late fall and winter are the best times for Lake Superior surfing. Storm systems move through more frequently, and the temperature difference creates more dramatic weather patterns. Most surfable conditions occur when low-pressure systems generate strong winds across the lake.
+Late fall and winter are the best times for Lake Superior surfing. Storm systems
+move through more frequently, and the temperature difference creates more
+dramatic weather patterns. Most surfable conditions occur when low-pressure
+systems generate strong winds across the lake.
 
 ## Data Sources for Forecasting
 
@@ -57,7 +63,9 @@ The Great Lakes Wave Model uses WAVEWATCH III and incorporates HRRR wind forcing
 
 ### Weather.gov Alerts API
 
-One of the most valuable data sources for surf forecasting is the NWS Alerts API. Storm alerts, especially marine warnings, are excellent indicators of surf conditions. When gale warnings are issued, you know big waves are coming.
+One of the most valuable data sources for surf forecasting is the NWS Alerts
+API. Storm alerts, especially marine warnings, are excellent indicators of surf
+conditions. When gale warnings are issued, you know big waves are coming.
 
 **Key Alert Types for Surf Forecasting:**
 - **Gale Warning** - Sustained winds 34-47 knots (39-54 mph) - prime surf conditions!
@@ -88,7 +96,9 @@ https://api.weather.gov/alerts/active?area=MN&event=Gale%20Warning
 3. Note the alert timing - waves typically build during the storm and peak as winds shift
 4. Surf is often best 12-24 hours after the gale warning is issued, as waves organize
 
-The alerts API contains data for the past 7 days, making it useful for both real-time monitoring and historical analysis of what conditions produced good surf.
+The alerts API contains data for the past 7 days, making it useful for both
+real-time monitoring and historical analysis of what conditions produced good
+surf.
 
 ## Building a Surf Alert System
 
