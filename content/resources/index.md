@@ -24,7 +24,12 @@ params:
 - [runningwritings.com][]
 - [swimdojo.com][]
 
+## Artists
+
+- [blackwalnutbakery.com][]
+
 [andrewkelly.me]: https://andrewkelley.me/
+[blackwalnutbakery.com]: blackwalnutbakery.com/
 [eli.thegreenplace.net]: https://eli.thegreenplace.net/
 [filippo.io]: https://filippo.io/
 [iximiuz.com]: https://iximiuz.com/en/
