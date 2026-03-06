@@ -1,7 +1,7 @@
 ---
 title: "Resources"
 date: 2026-02-09T12:35:58-06:00
-weight: 30
+weight: 40
 menus: "main"
 params:
     ignoreDate: true
