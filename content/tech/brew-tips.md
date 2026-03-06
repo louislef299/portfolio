@@ -59,7 +59,7 @@ or placed into appropriate locations depending on the artifact type (e.g.
 software.
 
 ```sh
-# Example of a Formula(go)
+# Example info for a Formula(go)
 $ brew info go
 ==> go ✔: stable 1.26.0 (bottled), HEAD
 Open source programming language to build simple/reliable/efficient software
@@ -80,7 +80,7 @@ install: 202,189 (30 days), 444,567 (90 days), 1,406,114 (365 days)
 install-on-request: 164,448 (30 days), 352,537 (90 days), 1,098,571 (365 days)
 build-error: 833 (30 days)
 
-# Example of a Cask(aws-sso)
+# Example info for a Cask(aws-sso)
 $ brew info aws-sso
 ==> aws-sso ✔: 1.6.22
 https://github.com/louislef299/aws-sso
@@ -106,12 +106,64 @@ hosted by a *Tap*. If you'd like to view what these definitions look like, you
 can run `brew cat go` to view th `go` Formula and `brew cat --cask aws-sso` to
 view the `aws-sso` Cask.
 
-## Taps
+## What's A Tap?
 
 > tap: Directory (and usually Git repository) of formulae, casks and/or external
-> commands.
+> commands. By default, taps are repositories that are assumed to come from
+> GitHub, but isn’t limited to any one location.
 >
 > *[Brew Man Page][]*
+
+So, a tap is a location(remote or local) that contains the required *Formula* or
+*Cask*. The default *Tap* that `brew` uses is [`homebrew/core`][] and any
+additional *Taps* must be integrated with `brew tap`. It's important to note
+here you should only `tap` trusted vendors since tapping gives the repo
+maintainers the ability to deliver code to your machine.
+
+To fully understand tapping, I think it's best to demo an example for `aws-sso`:
+
+```sh
+# First, notice that brew can't find aws-sso by default since it's not in homebrew/core
+$ brew search aws-sso
+==> Formulae
+aws-sso-cli     aws-sso-util
+
+# So, let's tap my repository that hosts my aws-sso Cask
+$ brew tap louislef299/aws-sso
+==> Tapping louislef299/aws-sso
+Cloning into '/opt/homebrew/Library/Taps/louislef299/homebrew-aws-sso'...
+remote: Enumerating objects: 311, done.
+remote: Counting objects: 100% (159/159), done.
+remote: Compressing objects: 100% (122/122), done.
+remote: Total 311 (delta 63), reused 3 (delta 1), pack-reused 152 (from 2)
+Receiving objects: 100% (311/311), 51.66 KiB | 10.33 MiB/s, done.
+Resolving deltas: 100% (158/158), done.
+Tapped 1 cask (15 files, 70.3KB).
+
+# Now, aws-sso is discoverable and can be installed
+$ brew search aws-sso         
+==> Formulae
+aws-sso-cli     aws-sso-util
+
+==> Casks
+louislef299/aws-sso/aws-sso
+
+$ brew install aws-sso
+==> Fetching downloads for: louislef299/aws-sso/aws-sso
+✔︎ Cask aws-sso (1.6.22)     Verified     12.9MB/ 12.9MB
+==> Installing Cask aws-sso
+==> Linking Binary 'aws-sso' to '/opt/homebrew/bin/aws-sso'
+🍺  aws-sso was successfully installed!
+
+# Optionally untap repositories you no longer want
+# (need to uninstall related packages first)
+$ brew uninstall aws-sso && brew untap louislef299/aws-sso
+==> Uninstalling Cask aws-sso
+==> Unlinking Binary '/opt/homebrew/bin/aws-sso'
+==> Purging files for version 1.6.22 of Cask aws-sso
+Untapping louislef299/aws-sso...
+Untapped 1 cask (15 files, 70.3KB).
+```
 
 Note: Below is all slop-generated
 
@@ -127,29 +179,6 @@ installed a CLI tool on a Mac, there's a good chance you used it. This post
 covers day-to-day usage, how to write your own packages, and how to use
 Homebrew responsibly — especially on shared or organizational machines where
 supply-chain risk is a real concern.
-
-## Taps
-
-A **tap** is just a Git repository of additional formula definitions outside
-the core Homebrew repos. When you tap a repo, Homebrew can install packages
-from it as if they were first-party.
-
-```bash
-# add a tap
-$ brew tap hashicorp/tap
-
-# install from a tap (explicit)
-$ brew install hashicorp/tap/terraform
-
-# list taps you've added
-$ brew tap
-
-# remove a tap
-$ brew untap hashicorp/tap
-```
-
-Only tap repos you trust — tapping gives the repo maintainers the ability to
-deliver code to your machine.
 
 ## Security Best Practices
 
@@ -273,5 +302,5 @@ from a single personal machine to a fleet of developer workstations.
 [brew man page]: https://docs.brew.sh/Manpage
 [Cask Cookbook]: https://docs.brew.sh/Cask-Cookbook
 [Formula Cookbook]: https://docs.brew.sh/Formula-Cookbook
-[homebrew-core]: https://github.com/Homebrew/homebrew-core
+[`homebrew/core`]: https://github.com/Homebrew/homebrew-core
 [Homebrew]: https://brew.sh/
