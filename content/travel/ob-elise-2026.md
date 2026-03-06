@@ -2,6 +2,9 @@
 title: "San Diego Again??"
 date: 2026-02-23T21:03:53-06:00
 draft: false
+tags:
+- cali
+- surf
 ---
 
 <img class="img-right" id="flight-window"

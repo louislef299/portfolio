@@ -7,21 +7,23 @@ tags:
 - brew
 - macos
 - secops
+- sysadmin
 ---
 
-[Homebrew][] is an excellent package manager for macOS and even Linux that I use
-daily, so I'm going to take a deep-dive today and give a high-level overview of
-hombrew from the perspective of a sysadmin. I've worked with a lot of engineers
-who understand `brew install`, but haven't taken the time to understand how to
-maintain your installed packages with `brew`. This post covers day-to-day usage,
-how to write your own packages, and how to use Homebrew responsibly — especially
-on shared or organizational machines where supply-chain risk is a real concern.
+## How To Brew🍺
 
-One important command to have in your arsenal is `brew doctor`. It is worth
-running regularly — it catches stale symlinks, PATH issues, and other common
-gotchas. Good to note: Warnings can safely be ignored from the output. For
-example, the following warns me that some packages are disabled, so I should
-figure out where the new remote location is:
+[Homebrew][] is an excellent package manager for macOS and even [Linux][] that I
+use daily, so I'm going to take a deep-dive today and give a high-level overview
+of hombrew from the perspective of a sysadmin. I've worked with a lot of
+engineers who understand `brew install` and maybe even `brew upgrade`, but not
+much past that. This post covers day-to-day usage, how to write your own
+packages, and how to `brew` responsibly.
+
+One important command to have in your arsenal is `brew doctor`. Run this command
+regularly to catch stale symlinks, PATH issues, and other gotchas. Good to note:
+*Warnings* can safely be ignored from the output. For example, the following
+warns me that some packages are disabled, so I should figure out where the new
+remote location is, but `brew` itself is funcitoning fine:
 
 ```sh
 $ brew doctor
@@ -53,13 +55,13 @@ and your disk doesn't fill up with stale artifacts.
 >
 > *[Brew Man Page][]*
 
-This is why I still just call all the targets `brew` manages *packages*.
-Homebrew uses Git for storing formulae & cask definitions. It installs formula
-packages to the *Cellar*(`brew --cellar`) and then symlinks them into the
-*prefix* (`brew --prefix`), while casks are stored in the *Caskroom* and linked
-or placed into appropriate locations depending on the artifact type (e.g.
-`/Applications`). The *Cellar* is a local filesystem directory for installed
-software.
+This is why I still just call all the targets `brew` manages *packages* since it
+covers both *Casks* & *Formulae*. Homebrew uses git for storing formulae & cask
+definitions. It installs *formula* packages to the *Cellar*(`brew --cellar`),
+which is a local filesystem directory for installed software. It then symlinks
+them into the *prefix* (`brew --prefix`). On the other hand, *Casks* are stored
+in the *Caskroom* and linked or placed into appropriate locations depending on
+the artifact type (e.g. `/Applications`).
 
 ```sh
 # Example info for a Formula(go)
@@ -109,6 +111,11 @@ hosted by a *Tap*. If you'd like to view what these definitions look like, you
 can run `brew cat go` to view th `go` Formula and `brew cat --cask aws-sso` to
 view the `aws-sso` Cask.
 
+While understanding these scripts fully aren't required if you are just a client
+of `brew`, there are some parts that you should understand to improve your
+security posture. We'll cover this later in the Security section. But first,
+let's cover the relationship between *Taps* & git.
+
 ## What's A Tap?
 
 > tap: Directory (and usually Git repository) of formulae, casks and/or external
@@ -126,7 +133,8 @@ maintainers the ability to deliver code to your machine.
 To fully understand tapping, I think it's best to demo an example for `aws-sso`:
 
 ```sh
-# First, notice that brew can't find aws-sso by default since it's not in homebrew/core
+# First, notice that brew can't find aws-sso by 
+# default since it's not in homebrew/core
 $ brew search aws-sso
 ==> Formulae
 aws-sso-cli     aws-sso-util
@@ -174,8 +182,16 @@ Homebrew, and frankly all package managers, install arbitrary code from the
 internet. But unlike most package managers, Homebrew [refuses to run under
 sudo][]. The entire prefix (`/opt/homebrew`) is owned by your user, and `brew`
 will error out if you try to run it as root. This is an intentional design
-choice: it limits blast radius by keeping everything in userspace. That's a good
-baseline, but there's more you can do.
+choice: it limits blast radius by keeping everything in userspace.
+
+Supply-chain risk, broadly, is the risk that any link in the chain between you
+and the software you install — the author, the build system, the distribution
+channel — gets compromised. In Homebrew's case, that chain is a Git repo full
+of Ruby scripts (the tap), an upstream source URL or vendor binary, and
+Homebrew's own [bottle][bottles] infrastructure. A hijacked tap, a swapped
+source tarball, or a compromised cask URL all mean someone else's code running
+on your machine. The rest of this section covers what Homebrew gives you out of
+the box and what you can tighten up.
 
 ### Know What You're Installing
 
@@ -189,8 +205,8 @@ Formulae from `homebrew/core` ship as [bottles][] by default — precompiled
 binaries built by [BrewTestBot][] on Homebrew's own CI infrastructure. Each
 bottle has a per-platform sha256 checksum baked into the formula definition,
 so you're getting a reproducible artifact rather than building from an
-arbitrary source tarball. If a bottle isn't available for your platform,
-Homebrew falls back to building from source.
+arbitrary source tarball. If a bottle isn't available for the requested
+platform, Homebrew falls back to building from source.
 
 Casks don't have the same CI story — they pull vendor binaries directly. You
 can enforce checksum verification for casks globally:
@@ -246,10 +262,10 @@ to prevent drive-by tapping.
 
 ### Reproducibility with Brewfile
 
-A [Brewfile][] is a declarative manifest of what should be installed — taps,
-formulae, casks, and even Mac App Store apps. It is *not* a lockfile (Homebrew
-has no lockfile concept), so it won't pin you to exact versions. What it gives
-you is a declarative installation process and package drift detection:
+A [Brewfile][] is a declarative manifest of taps, formulae, casks, and even Mac
+App Store apps. It isn't a lockfile(Homebrew has no lockfile concept), so it
+won't pin you to exact versions. What it gives you is a declarative installation
+process, making it easy to install & detect drift. Here's a sample `Brewfile`:
 
 ```ruby
 # Brewfile
@@ -257,10 +273,12 @@ tap "louislef299/aws-sso"
 tap "mike-engel/jwt-cli"
 
 brew "git"
+brew "gnupg"
+brew "gh"
 brew "jq"
 brew "caddy"
-brew "aws-sso"
 brew "jwt-cli"
+brew "aws-sso"
 
 cask "firefox"
 
@@ -268,36 +286,40 @@ cask "firefox"
 cask_args require_sha: true
 ```
 
+And here's how to manage your brews with the `Brewfile` and `brew bundle`:
+
 ```sh
 # generate a Brewfile from your current install state
 $ brew bundle dump
 
-# install everything declared in the Brewfile
+# install everything declared in the ~/Brewfile
+# use --file=~/.config/Brewfile for non-standard locations
 $ brew bundle install
 
 # check for drift
 $ brew bundle check
 
-# remove anything installed that ISN'T in the Brewfile
+# remove anything installed that isn't in the Brewfile
 $ brew bundle cleanup --force
 ```
 
-## Conclusion
+## Conclusion🍻
 
-Homebrew is a tool most of us use daily without thinking much about it. The
-basics — `brew update`, `brew upgrade`, `brew cleanup` — go a long way. But
-once you understand the distinction between formulae and casks, keep your taps
-clean, enforce checksums on cask installs, and maintain a Brewfile as your
-source of truth, you're in a much stronger position. Especially in CI, where
-reproducibility matters, a few environment variables make the difference
-between "works on my machine" and "works every time."
+Homebrew really makes installing software on Macs a breeze and `update`,
+`upgrade` & `cleanup` can take you a long way. However, understanding the
+distinction between formulae & casks, keeping your taps clean, enforcing
+checksums on cask installs, and declaratively maintaining your macOS packages
+with a `Brewfile` helps you become a power user.
+
+How is your system looking? Run `brew doctor && brew outdated` right now!
 
 [bottles]: https://docs.brew.sh/Bottles
 [BrewTestBot]: https://docs.brew.sh/Brew-Test-Bot
-[Brewfile]: https://github.com/Homebrew/homebrew-bundle
+[Brewfile]: https://docs.brew.sh/Brew-Bundle-and-Brewfile
 [brew man page]: https://docs.brew.sh/Manpage
 [Cask Cookbook]: https://docs.brew.sh/Cask-Cookbook
 [Formula Cookbook]: https://docs.brew.sh/Formula-Cookbook
 [`homebrew/core`]: https://github.com/Homebrew/homebrew-core
 [Homebrew]: https://brew.sh/
+[Linux]: https://docs.brew.sh/Homebrew-on-Linux
 [refuses to run under sudo]: https://docs.brew.sh/FAQ#why-does-homebrew-say-sudo-is-bad
