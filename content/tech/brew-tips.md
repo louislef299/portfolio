@@ -19,7 +19,7 @@ engineers who understand `brew install` and maybe even `brew upgrade`, but not
 much past that. This post covers day-to-day usage and how to `brew` responsibly.
 
 Regularly, I run `brew update && brew upgrade && brew cleanup` so my tools stay
-current and your disk doesn't fill up with stale artifacts.
+current and my disk doesn't fill up with stale artifacts.
 
 Another important command to run regularly is `brew doctor` to catch stale
 symlinks, PATH issues, and other gotchas. Good to note:  *Warnings* can safely
@@ -53,7 +53,7 @@ You should find replacements for the following formulae:
 > *[Brew Man Page][]*
 
 This is why I still just call all the targets `brew` manages *packages* since it
-covers both *Casks* & *Formulae*. Homebrew uses Git for storing formulae & cask
+covers both *Casks* & *Formulae*. Homebrew uses Git for storing formula & cask
 definitions. It installs *formula* packages to the *Cellar* (`brew --cellar`),
 which is a local filesystem directory for installed software. It then symlinks
 them into the *prefix* (`brew --prefix`). On the other hand, *Casks* are stored
