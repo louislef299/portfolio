@@ -14,16 +14,18 @@ tags:
 
 [Homebrew][] is an excellent package manager for macOS and even [Linux][] that I
 use daily, so I'm going to take a deep-dive today and give a high-level overview
-of hombrew from the perspective of a sysadmin. I've worked with a lot of
+of Homebrew from the perspective of a sysadmin. I've worked with a lot of
 engineers who understand `brew install` and maybe even `brew upgrade`, but not
-much past that. This post covers day-to-day usage, how to write your own
-packages, and how to `brew` responsibly.
+much past that. This post covers day-to-day usage and how to `brew` responsibly.
 
-One important command to have in your arsenal is `brew doctor`. Run this command
-regularly to catch stale symlinks, PATH issues, and other gotchas. Good to note:
-*Warnings* can safely be ignored from the output. For example, the following
-warns me that some packages are disabled, so I should figure out where the new
-remote location is, but `brew` itself is funcitoning fine:
+Regularly, I run `brew update && brew upgrade && brew cleanup` so my tools stay
+current and your disk doesn't fill up with stale artifacts.
+
+Another important command to run regularly is `brew doctor` to catch stale
+symlinks, PATH issues, and other gotchas. Good to note:  *Warnings* can safely
+be ignored from the output. For example, the following warns me that some
+packages are disabled, so I should figure out where the new remote location is,
+but `brew` itself is functioning fine:
 
 ```sh
 $ brew doctor
@@ -41,11 +43,6 @@ You should find replacements for the following formulae:
   terraform
 ```
 
-`brew doctor` is worth running regularly — it catches stale symlinks, PATH
-issues, and other common gotchas. It's also a good habit to run `brew update &&
-brew upgrade && brew cleanup` on a regular cadence so your tools stay current
-and your disk doesn't fill up with stale artifacts.
-
 ## Casks? Formulae?? Packages???
 
 > Formula: Homebrew package definition that builds from upstream sources.
@@ -56,8 +53,8 @@ and your disk doesn't fill up with stale artifacts.
 > *[Brew Man Page][]*
 
 This is why I still just call all the targets `brew` manages *packages* since it
-covers both *Casks* & *Formulae*. Homebrew uses git for storing formulae & cask
-definitions. It installs *formula* packages to the *Cellar*(`brew --cellar`),
+covers both *Casks* & *Formulae*. Homebrew uses Git for storing formulae & cask
+definitions. It installs *formula* packages to the *Cellar* (`brew --cellar`),
 which is a local filesystem directory for installed software. It then symlinks
 them into the *prefix* (`brew --prefix`). On the other hand, *Casks* are stored
 in the *Caskroom* and linked or placed into appropriate locations depending on
@@ -106,15 +103,15 @@ aws-sso (Binary)
 
 This post won't go over how to create *Formulae* or *Casks*, but you can
 reference the [Formula Cookbook][] and [Cask Cookbook][] to get started. It is
-important to mention that these Formula/Cask definitions are just ruby scripts
+important to mention that these Formula/Cask definitions are just Ruby scripts
 hosted by a *Tap*. If you'd like to view what these definitions look like, you
-can run `brew cat go` to view th `go` Formula and `brew cat --cask aws-sso` to
+can run `brew cat go` to view the `go` Formula and `brew cat --cask aws-sso` to
 view the `aws-sso` Cask.
 
-While understanding these scripts fully aren't required if you are just a client
+While fully understanding these scripts isn't required if you are just a client
 of `brew`, there are some parts that you should understand to improve your
-security posture. We'll cover this later in the Security section. But first,
-let's cover the relationship between *Taps* & git.
+security posture. We'll cover this later in the Security section, but first,
+let's cover the relationship between *Taps* & Git.
 
 ## What's A Tap?
 
@@ -196,14 +193,14 @@ the box and what you can tighten up.
 ### Know What You're Installing
 
 Before you install something unfamiliar, you can print out the formula/cask
-source to review the ruby script yourself(`brew cat`/`brew edit`). For formulae,
-the interesting bits are the `url`, `sha256`, and the `install` block — that's
-the code that actually runs on your machine. For casks, pay attention to the
-`sha256` and the `url` pointing at the vendor binary.
+source to review the Ruby script yourself (`brew cat`/`brew edit`). For
+formulae, the interesting bits are the `url`, `sha256`, and the `install` block
+— that's the code that actually runs on your machine. For casks, pay attention
+to the `sha256` and the `url` pointing at the vendor binary.
 
 Formulae from `homebrew/core` ship as [bottles][] by default — precompiled
 binaries built by [BrewTestBot][] on Homebrew's own CI infrastructure. Each
-bottle has a per-platform sha256 checksum baked into the formula definition,
+bottle has a per-platform `sha256` checksum baked into the formula definition,
 so you're getting a reproducible artifact rather than building from an
 arbitrary source tarball. If a bottle isn't available for the requested
 platform, Homebrew falls back to building from source.
@@ -244,7 +241,7 @@ it won't tell you if something installed on your machine is compromised.
 ### Tap Hygiene
 
 Remember, every `brew tap` is a Git repo whose maintainers can deliver arbitrary
-ruby code to your machine. Treat tapping like adding a third-party package
+Ruby code to your machine. Treat tapping like adding a third-party package
 registry — vet the repo, check who maintains it, and untap anything you're
 no longer using.
 
@@ -263,7 +260,7 @@ to prevent drive-by tapping.
 ### Reproducibility with Brewfile
 
 A [Brewfile][] is a declarative manifest of taps, formulae, casks, and even Mac
-App Store apps. It isn't a lockfile(Homebrew has no lockfile concept), so it
+App Store apps. It isn't a lockfile (Homebrew has no lockfile concept), so it
 won't pin you to exact versions. What it gives you is a declarative installation
 process, making it easy to install & detect drift. Here's a sample `Brewfile`:
 
