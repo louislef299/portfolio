@@ -2,6 +2,7 @@
 title: "Simple Bluetooth Communication Using Go"
 date: 2024-12-07T14:23:59-06:00
 draft: false
+toc: true
 tags:
 - go
 - ble

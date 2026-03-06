@@ -2,6 +2,7 @@
 title: "gRPC Plugins in Go"
 date: 2025-11-30T19:27:57-06:00
 draft: false
+toc: true
 tags:
 - go
 - gRPC

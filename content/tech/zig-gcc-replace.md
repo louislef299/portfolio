@@ -2,6 +2,7 @@
 title: "Improving My C Build System with Zig"
 date: 2025-05-20T10:18:34-05:00
 draft: false
+toc: true
 tags:
 - zig
 - sysprog

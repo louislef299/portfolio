@@ -2,6 +2,7 @@
 title: "A Primer on Git"
 date: 2025-10-15T12:49:36-05:00
 draft: false
+toc: true
 tags:
 - git
 - github

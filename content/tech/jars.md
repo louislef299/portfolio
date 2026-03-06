@@ -2,6 +2,7 @@
 title: "JAR Files -- Containers for Java?"
 date: 2025-07-23T10:20:59-05:00
 draft: false
+toc: true
 tags:
 - java
 - sysprog

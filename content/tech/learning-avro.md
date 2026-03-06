@@ -2,6 +2,7 @@
 title: "Working with Avro & Schema Registry"
 date: 2025-10-03T12:05:48-05:00
 draft: false
+toc: true
 tags:
 - streaming
 - avro

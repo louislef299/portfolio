@@ -2,16 +2,17 @@
 title: "Brew Maintenance Tips"
 date: 2026-03-05T19:27:13-06:00
 draft: false
+toc: true
 tags:
 - brew
 - macos
 - secops
 ---
 
-[Homebrew][] is an excellent package manager for macOS and even Linux, so I'm
-going to take a deep-dive today and give a high-level overview of hombrew from
-the perspective of a sysadmin. I've worked with a lot of engineers who
-understand `brew install`, but haven't taken the time to understand how to
+[Homebrew][] is an excellent package manager for macOS and even Linux that I use
+daily, so I'm going to take a deep-dive today and give a high-level overview of
+hombrew from the perspective of a sysadmin. I've worked with a lot of engineers
+who understand `brew install`, but haven't taken the time to understand how to
 maintain your installed packages with `brew`. This post covers day-to-day usage,
 how to write your own packages, and how to use Homebrew responsibly — especially
 on shared or organizational machines where supply-chain risk is a real concern.
@@ -169,32 +170,24 @@ Untapped 1 cask (15 files, 70.3KB).
 
 ## Security Best Practices
 
-Homebrew installs arbitrary code from the internet — that's the deal. But
-unlike most package managers, Homebrew [refuses to run under sudo][]. The
-entire prefix (`/opt/homebrew` on Apple Silicon) is owned by your user, and
-`brew` will error out if you try to run it as root. This is an intentional
-design choice: it limits blast radius by keeping everything in userspace.
-That's a good baseline, but there's more you can do.
+Homebrew, and frankly all package managers, install arbitrary code from the
+internet. But unlike most package managers, Homebrew [refuses to run under
+sudo][]. The entire prefix (`/opt/homebrew`) is owned by your user, and `brew`
+will error out if you try to run it as root. This is an intentional design
+choice: it limits blast radius by keeping everything in userspace. That's a good
+baseline, but there's more you can do.
 
 ### Know What You're Installing
 
-Before you install something unfamiliar, read the definition:
-
-```sh
-# print the formula/cask source to stdout
-$ brew cat ripgrep
-
-# or open it in $EDITOR if you want to poke around
-$ brew edit ripgrep
-```
-
-For formulae, the interesting bits are the `url`, `sha256`, and the `install`
-block — that's the code that actually runs on your machine. For casks, pay
-attention to the `sha256` and the `url` pointing at the vendor binary.
+Before you install something unfamiliar, you can print out the formula/cask
+source to review the ruby script yourself(`brew cat`/`brew edit`). For formulae,
+the interesting bits are the `url`, `sha256`, and the `install` block — that's
+the code that actually runs on your machine. For casks, pay attention to the
+`sha256` and the `url` pointing at the vendor binary.
 
 Formulae from `homebrew/core` ship as [bottles][] by default — precompiled
 binaries built by [BrewTestBot][] on Homebrew's own CI infrastructure. Each
-bottle has a per-platform SHA-256 checksum baked into the formula definition,
+bottle has a per-platform sha256 checksum baked into the formula definition,
 so you're getting a reproducible artifact rather than building from an
 arbitrary source tarball. If a bottle isn't available for your platform,
 Homebrew falls back to building from source.
@@ -207,7 +200,7 @@ can enforce checksum verification for casks globally:
 $ export HOMEBREW_CASK_OPTS="--require-sha"
 
 # or pass it per-command
-$ brew install --cask --require-sha some-app
+$ brew install --cask --require-sha aws-sso
 ```
 
 If a cask doesn't declare a `sha256`, the install will fail. This is a good
@@ -234,21 +227,17 @@ it won't tell you if something installed on your machine is compromised.
 
 ### Tap Hygiene
 
-Every `brew tap` is a Git repo whose maintainers can deliver arbitrary Ruby
-code to your machine. Treat tapping like adding a third-party package
+Remember, every `brew tap` is a Git repo whose maintainers can deliver arbitrary
+ruby code to your machine. Treat tapping like adding a third-party package
 registry — vet the repo, check who maintains it, and untap anything you're
-no longer using:
-
-```sh
-$ brew untap some-org/some-tap
-```
+no longer using.
 
 You can restrict which taps are allowed on your machine entirely with the
 `HOMEBREW_ALLOWED_TAPS` environment variable:
 
 ```sh
 # only allow homebrew-core and one internal tap
-export HOMEBREW_ALLOWED_TAPS="homebrew/core myorg/internal-tools"
+export HOMEBREW_ALLOWED_TAPS="homebrew/core louislef299/aws-sso"
 ```
 
 With this set, any `brew tap` or `brew install` from a tap not on the list
@@ -260,16 +249,19 @@ to prevent drive-by tapping.
 A [Brewfile][] is a declarative manifest of what should be installed — taps,
 formulae, casks, and even Mac App Store apps. It is *not* a lockfile (Homebrew
 has no lockfile concept), so it won't pin you to exact versions. What it gives
-you is a reproducible baseline:
+you is a declarative installation process and package drift detection:
 
 ```ruby
 # Brewfile
-tap "homebrew/bundle"
-tap "myorg/internal-tools"
+tap "louislef299/aws-sso"
+tap "mike-engel/jwt-cli"
 
 brew "git"
 brew "jq"
-brew "ripgrep"
+brew "caddy"
+brew "aws-sso"
+brew "jwt-cli"
+
 cask "firefox"
 
 # enforce checksum verification for all casks in this Brewfile
@@ -289,36 +281,6 @@ $ brew bundle check
 # remove anything installed that ISN'T in the Brewfile
 $ brew bundle cleanup --force
 ```
-
-`brew bundle cleanup --force` is the one people miss — it uninstalls anything
-on your machine that isn't declared in the Brewfile. Combined with
-`brew bundle check`, you get a tight feedback loop: the Brewfile is the source
-of truth, and drift gets caught or corrected.
-
-Committing a Brewfile to a dotfiles repo makes new machine setup reproducible
-and auditable.
-
-### CI and Automation
-
-Homebrew in CI is a different beast. By default, `brew install` triggers
-`brew update` first, which means your CI run can get different formula
-versions than the last run. Two environment variables to know:
-
-```sh
-# skip the auto-update before install/upgrade
-export HOMEBREW_NO_AUTO_UPDATE=1
-
-# force fetching formulae from tapped repos instead of the JSON API
-# (useful if you need to pin to a specific tap commit)
-export HOMEBREW_NO_INSTALL_FROM_API=1
-```
-
-`HOMEBREW_NO_AUTO_UPDATE=1` is the big one — without it, your CI builds are
-non-deterministic. `HOMEBREW_NO_INSTALL_FROM_API=1` is more niche but
-relevant if you're doing something like pinning a tap to a specific Git ref.
-
-Pair these with a checked-in Brewfile and `brew bundle install` in your CI
-setup step, and you get a predictable, auditable set of tools for every run.
 
 ## Conclusion
 
