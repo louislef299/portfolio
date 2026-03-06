@@ -1,0 +1,15 @@
+/* Fix variable-sized code blocks on mobile.
+   Constrains <pre> to viewport width and removes
+   conflicting white-space / text-wrap directives
+   from the hugo-bearcub theme's original.css. */
+
+pre {
+  max-width: 100%;
+  overflow-x: auto;
+}
+
+pre code {
+  white-space: pre;
+  text-wrap: unset;
+  overflow-x: unset;
+}
