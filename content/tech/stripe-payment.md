@@ -2,6 +2,7 @@
 title: "Stripe Payment Intentions"
 date: 2026-01-16T07:50:43-06:00
 draft: false
+toc: true
 tags:
 - webdev
 - ecommerce

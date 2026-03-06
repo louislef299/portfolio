@@ -2,6 +2,7 @@
 title: "Dependabot Auto-Merge"
 date: 2024-12-15T09:32:18-06:00
 draft: false
+toc: true
 tags:
 - github
 ---

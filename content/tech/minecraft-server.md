@@ -2,6 +2,7 @@
 title: "Minecraft Server"
 date: 2025-01-04T12:52:04-06:00
 draft: false
+toc: true
 tags:
 - linux
 - sysadmin

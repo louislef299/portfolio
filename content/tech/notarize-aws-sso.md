@@ -2,6 +2,7 @@
 title: "Signing Binaries with GnuPG"
 date: 2025-06-26T16:20:26-05:00
 draft: false
+toc: true
 tags:
 - gpg
 ---

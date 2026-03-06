@@ -1,6 +1,7 @@
 ---
 title: Playground for Network Interfaces
 date: 2023-11-04
+toc: true
 tags:
 - net
 - linux

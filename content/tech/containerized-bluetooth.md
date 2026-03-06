@@ -2,6 +2,7 @@
 title: "Exploring Dual Bluetooth Roles on One Device"
 date: 2024-12-28T16:08:53-06:00
 draft: false
+toc: true
 tags:
 - net
 - ble

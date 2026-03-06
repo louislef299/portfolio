@@ -2,6 +2,7 @@
 title: "Getting Started with DBus"
 date: 2025-01-05T12:26:41-06:00
 draft: false
+toc: true
 tags:
 - linux
 ---

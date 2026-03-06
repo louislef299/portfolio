@@ -2,6 +2,7 @@
 title: "TCP/IP Basics"
 date: 2024-12-26T13:18:58-06:00
 draft: false
+toc: true
 tags:
 - go
 - tcp

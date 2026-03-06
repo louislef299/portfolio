@@ -2,6 +2,7 @@
 title: "Research: Upcoming Travels 2025"
 date: 2024-12-29T23:34:32-06:00
 draft: false
+toc: true
 tags:
 - mn
 - north shore
