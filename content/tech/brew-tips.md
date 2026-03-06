@@ -1,11 +1,120 @@
 ---
-title: "Brew Tips"
+title: "Brew Maintenance Tips"
 date: 2026-03-01T19:27:13-06:00
 draft: false
 tags:
 - homebrew
 - macos
 - security
+---
+
+[Homebrew][] is an excellent package manager for macOS and even Linux, so I'm
+going to take a deep-dive today and give a high-level overview of hombreew from
+the perspective of a sysadmin. I've worked with a lot of engineers who
+understand `brew install`, but haven't taken the time to understand how to
+maintain your installed packages with `brew`.
+
+One important command to have in your arsenal is `brew doctor`. It is worth
+running regularly — it catches stale symlinks, PATH issues, and other common
+gotchas. Good to note: Warnings can safely be ignored from the output. For
+example, the following warns me that some packages are disabled, so I should
+figure out where the new remote location is:
+
+```sh
+$ brew doctor
+Please note that these warnings are just used to help the Homebrew maintainers
+with debugging if you file an issue. If everything you use Homebrew for is
+working fine: please don't worry or file an issue; just ignore this. Thanks!
+
+Warning: Some installed casks are deprecated or disabled.
+You should find replacements for the following casks:
+  powershell
+
+Warning: Some installed formulae are deprecated or disabled.
+You should find replacements for the following formulae:
+  neofetch
+  terraform
+```
+
+`brew doctor` is worth running regularly — it catches stale symlinks, PATH
+issues, and other common gotchas. It's also a good habit to run `brew update &&
+brew upgrade && brew cleanup` on a regular cadence so your tools stay current
+and your disk doesn't fill up with stale artifacts.
+
+## Casks? Formulae?? Packages???
+
+> Formula: Homebrew package definition that builds from upstream sources.
+>
+> Cask: Homebrew package definition that installs pre-compiled binaries built
+> and signed by upstream.
+>
+> *[Brew Man Page][]*
+
+This is why I still just call all the targets `brew` manages *packages*.
+Homebrew uses Git for storing formulae & cask definitions. It installs formula
+packages to the *Cellar*(`brew --cellar`) and then symlinks them into the
+*prefix* (`brew --prefix`), while casks are stored in the *Caskroom* and linked
+or placed into appropriate locations depending on the artifact type (e.g.
+`/Applications`). The *Cellar* is a local filesystem directory for installed
+software.
+
+```sh
+# Example of a Formula(go)
+$ brew info go
+==> go ✔: stable 1.26.0 (bottled), HEAD
+Open source programming language to build simple/reliable/efficient software
+https://go.dev/
+Installed
+/opt/homebrew/Cellar/go/1.26.0 (14,925 files, 228.4MB) *
+  Poured from bottle using the formulae.brew.sh API on 2026-02-13 at 10:21:30
+From: https://github.com/Homebrew/homebrew-core/blob/HEAD/Formula/g/go.rb
+License: BSD-3-Clause
+==> Requirements
+Required: macOS >= 12 (or Linux) ✔
+==> Options
+--HEAD
+        Install HEAD version
+==> Downloading https://formulae.brew.sh/api/formula/go.json
+==> Analytics
+install: 202,189 (30 days), 444,567 (90 days), 1,406,114 (365 days)
+install-on-request: 164,448 (30 days), 352,537 (90 days), 1,098,571 (365 days)
+build-error: 833 (30 days)
+
+# Example of a Cask(aws-sso)
+$ brew info aws-sso
+==> aws-sso ✔: 1.6.22
+https://github.com/louislef299/aws-sso
+Installed
+/opt/homebrew/Caskroom/aws-sso/1.6.22 (40.2MB)
+  Installed on 2025-11-20 at 09:39:22
+From: https://github.com/louislef299/homebrew-aws-sso/blob/HEAD/Casks/aws-sso.rb
+==> Name
+aws-sso
+==> Description
+Thanks for installing aws-sso! You can get configured by going to 
+https://aws-sso.netlify.app. The binary you have installed came with a binary 
+signature if you would like to verify the install. More information can be 
+found on the website
+==> Artifacts
+aws-sso (Binary)
+```
+
+This post won't go over how to create *Formulae* or *Casks*, but you can
+reference the [Formula Cookbook][] and [Cask Cookbook][] to get started. It is
+important to mention that these Formula/Cask definitions are just ruby scripts
+hosted by a *Tap*. If you'd like to view what these definitions look like, you
+can run `brew cat go` to view th `go` Formula and `brew cat --cask aws-sso` to
+view the `aws-sso` Cask.
+
+## Taps
+
+> tap: Directory (and usually Git repository) of formulae, casks and/or external
+> commands.
+>
+> *[Brew Man Page][]*
+
+Note: Below is all slop-generated
+
 ---
 
 <!-- EDITOR NOTE (Zed): Alt+Q hard-wraps the current paragraph at the column
@@ -18,57 +127,6 @@ installed a CLI tool on a Mac, there's a good chance you used it. This post
 covers day-to-day usage, how to write your own packages, and how to use
 Homebrew responsibly — especially on shared or organizational machines where
 supply-chain risk is a real concern.
-
-## The Basics
-
-### Installing Homebrew
-
-The official install script pulls from GitHub and requires a one-time password
-prompt to install into `/usr/local` (Intel) or `/opt/homebrew` (Apple
-Silicon):
-
-```bash
-$ /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-```
-
-After installation, verify everything is healthy:
-
-```bash
-$ brew doctor
-Your system is ready to brew.
-```
-
-`brew doctor` is worth running regularly — it catches stale symlinks, PATH
-issues, and other common gotchas.
-
-### Essential Commands
-
-```bash
-# install a package
-$ brew install ripgrep
-
-# uninstall a package
-$ brew uninstall ripgrep
-
-# update Homebrew itself and fetch new formula definitions
-$ brew update
-
-# upgrade all installed packages to their latest versions
-$ brew upgrade
-
-# list what's installed
-$ brew list
-
-# show info about a package (version, dependencies, caveats)
-$ brew info ripgrep
-
-# remove old versions that are no longer linked
-$ brew cleanup
-```
-
-A good habit is to run `brew update && brew upgrade && brew cleanup` on a
-regular cadence so your tools stay current and your disk doesn't fill up with
-old versions.
 
 ## Taps
 
@@ -93,91 +151,9 @@ $ brew untap hashicorp/tap
 Only tap repos you trust — tapping gives the repo maintainers the ability to
 deliver code to your machine.
 
-## Formulae vs. Casks
-
-Homebrew has two main package types:
-
-- **Formula** — a CLI tool or library, built from source or fetched as a
-  precompiled binary. Installed into the Homebrew prefix (`/opt/homebrew`).
-- **Cask** — a macOS GUI application (`.app`, `.pkg`, `.dmg`). Installed into
-  `/Applications` (or `~/Applications`).
-
-```bash
-# formula install
-$ brew install jq
-
-# cask install
-$ brew install --cask firefox
-
-# search across both
-$ brew search zed
-```
-
-## Writing Your Own Formula
-
-Sometimes a tool isn't in the registry yet. Homebrew makes it
-straightforward to write your own formula.
-
-### Formula Anatomy
-
-The simplest formula is a Ruby class that inherits from `Formula`:
-
-```ruby
-class Mytool < Formula
-  desc "A short description of what mytool does"
-  homepage "https://github.com/you/mytool"
-  url "https://github.com/you/mytool/archive/refs/tags/v1.0.0.tar.gz"
-  sha256 "abc123..."
-  license "MIT"
-
-  def install
-    bin.install "mytool"
-  end
-
-  test do
-    system "#{bin}/mytool", "--version"
-  end
-end
-```
-
-### Creating and Testing It
-
-```bash
-# create a new formula skeleton
-$ brew create https://github.com/you/mytool/archive/refs/tags/v1.0.0.tar.gz
-
-# audit for style/correctness issues
-$ brew audit --strict mytool
-
-# install from the local formula file to test
-$ brew install --build-from-source mytool
-
-# run the test block
-$ brew test mytool
-```
-
-Once the formula is working locally, you can either submit a PR to
-[homebrew-core][] for wide distribution or maintain it in your own tap.
-
-### Writing a Cask
-
-Casks live in their own DSL:
-
-```ruby
-cask "myapp" do
-  version "1.0.0"
-  sha256 "abc123..."
-
-  url "https://github.com/you/myapp/releases/download/v#{version}/MyApp.dmg"
-  name "MyApp"
-  desc "A GUI app that does something useful"
-  homepage "https://github.com/you/myapp"
-
-  app "MyApp.app"
-end
-```
-
 ## Security Best Practices
+
+`brew audit`?
 
 This is where it gets interesting. Homebrew installs arbitrary code from the
 internet, often with elevated privileges. Here's how to keep that under
@@ -294,5 +270,8 @@ from a single personal machine to a fleet of developer workstations.
 
 [Ansible]: https://www.ansible.com/
 [Brewfile]: https://github.com/Homebrew/homebrew-bundle
+[brew man page]: https://docs.brew.sh/Manpage
+[Cask Cookbook]: https://docs.brew.sh/Cask-Cookbook
+[Formula Cookbook]: https://docs.brew.sh/Formula-Cookbook
 [homebrew-core]: https://github.com/Homebrew/homebrew-core
 [Homebrew]: https://brew.sh/
