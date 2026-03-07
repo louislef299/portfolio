@@ -2,33 +2,8 @@ User-agent: *
 Allow: /
 Sitemap: {{ "sitemap.xml" | absURL }}
 
-# AI Crawlers
-User-agent: GPTBot
-Disallow: /
-
-User-agent: ChatGPT-User
-Disallow: /
-
-User-agent: CCBot
-Disallow: /
-
-User-agent: anthropic-ai
-Disallow: /
-
-User-agent: Claude-Web
-Disallow: /
-
-User-agent: Google-Extended
-Disallow: /
-
-User-agent: Bytespider
-Disallow: /
-
-User-agent: FacebookBot
-Disallow: /
-
-User-agent: cohere-ai
-Disallow: /
+# AI Crawlers (from https://github.com/ai-robots-txt/ai.robots.txt)
+{{ os.ReadFile "data/ai-robots-txt/robots.txt" }}
 
 # Let normal search engines through
 User-agent: Googlebot
