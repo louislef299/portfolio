@@ -19,6 +19,7 @@
 
 <small> {{ .Site.Copyright }} | {{ markdownify .Site.Params.madeWith }} </small>
 
+<!-- Show the Buy Me a Coffee widget only when the footer is visible -->
 <script>
     const observer = new IntersectionObserver((entries) => {
         const btn = document.getElementById("bmc-wbtn");
