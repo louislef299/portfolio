@@ -16,10 +16,10 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding: 10px 16px;
-    border-radius: 8px;
+    padding: 0.625rem 1rem;
+    border-radius: 0.5rem;
     border: 2px solid;
-    min-width: 90px;
+    min-width: 5.625rem;
     font-family:
         ui-monospace, "Cascadia Code", "Source Code Pro", Menlo, Consolas,
         monospace;
@@ -34,7 +34,7 @@
 /* Secondary descriptive text beneath the label */
 .bb-box .bb-sub {
     font-size: 0.7rem;
-    margin-top: 2px;
+    margin-top: 0.125rem;
     opacity: 0.6;
 }
 
