@@ -1,0 +1,10 @@
+{
+  "soft_wrap": "preferred_line_length",
+  "preferred_line_length": 80,
+  "languages": {
+    "Markdown": {
+      "format_on_save": "on",
+      "formatter": "prettier"
+    }
+  }
+}
