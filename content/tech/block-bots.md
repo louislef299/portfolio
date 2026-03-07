@@ -12,6 +12,41 @@ tags:
 
 <!-- markdownlint-disable MD033 MD013 -->
 
+<style>
+@keyframes pulse-border {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+.bb-box {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 16px;
+  border-radius: 8px;
+  border: 2px solid;
+  min-width: 90px;
+  font-family: ui-monospace, 'Cascadia Code', 'Source Code Pro', Menlo, Consolas, monospace;
+}
+.bb-box .bb-label {
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+.bb-box .bb-sub {
+  font-size: 0.7rem;
+  margin-top: 2px;
+  opacity: 0.6;
+}
+.bb-pulse {
+  animation: pulse-border 2s ease-in-out infinite;
+}
+.bb-arrow {
+  font-size: 1.1rem;
+  opacity: 0.5;
+}
+</style>
+
 ## The Crawl Ratio Problem
 
 Here's a fun stat: in mid-2025, OpenAI's crawl-to-referral ratio was roughly
@@ -79,12 +114,18 @@ and [Dark Visitors][] (now Known Agents) offers a dynamically-updated
 
 But the fundamental issue remains:
 
-<div style="display:grid;grid-template-columns:repeat(16,1fr);gap:2px;max-width:420px;margin:2rem auto;">
-<div style="grid-column:1/17;text-align:center;font-weight:bold;font-size:0.85rem;padding:4px;color:#3dbdb5;">robots.txt compliance is voluntary</div>
-<div style="grid-column:1/9;background:#1a8fe3;height:24px;border-radius:3px;" title="Compliant bots"></div>
-<div style="grid-column:9/17;background:#5b3a29;height:24px;border-radius:3px;" title="Non-compliant bots"></div>
-<div style="grid-column:1/9;text-align:center;font-size:0.75rem;">Respects rules</div>
-<div style="grid-column:9/17;text-align:center;font-size:0.75rem;">Ignores them</div>
+<div style="max-width:440px;margin:2rem auto;">
+<div style="text-align:center;font-size:0.8rem;opacity:0.6;margin-bottom:8px;font-weight:600;">robots.txt compliance is voluntary</div>
+<div style="display:flex;gap:8px;justify-content:center;">
+<div class="bb-box" style="border-color:#1a8fe3;background:rgba(26,143,227,0.15);flex:1;">
+<span class="bb-label" style="color:#1a8fe3;">Compliant</span>
+<span class="bb-sub">respects rules</span>
+</div>
+<div class="bb-box bb-pulse" style="border-color:#e74c3c;background:rgba(231,76,60,0.12);flex:1;">
+<span class="bb-label" style="color:#e74c3c;">Non-compliant</span>
+<span class="bb-sub">ignores them</span>
+</div>
+</div>
 </div>
 
 A well-behaved bot reads your `robots.txt` and moves on. A poorly-behaved bot
@@ -152,21 +193,50 @@ This is Cloudflare's most creative defense. When [AI Labyrinth][] detects an
 unauthorized crawler, instead of blocking it, it lures the bot into a maze of
 AI-generated decoy pages:
 
-<div style="display:grid;grid-template-columns:repeat(12,1fr);gap:3px;max-width:380px;margin:2rem auto;font-size:0.7rem;text-align:center;">
-<div style="grid-column:6/8;background:#1a8fe3;color:#fff;padding:6px;border-radius:3px;">Your Site</div>
-<div style="grid-column:6/8;font-size:1.2rem;color:#3dbdb5;">↓</div>
-<div style="grid-column:4/6;background:#e8a832;color:#181a20;padding:6px;border-radius:3px;font-weight:bold;">Decoy A</div>
-<div style="grid-column:6/8;background:#c4d64a;color:#181a20;padding:6px;border-radius:3px;font-weight:bold;">Decoy B</div>
-<div style="grid-column:8/10;background:#e8a832;color:#181a20;padding:6px;border-radius:3px;font-weight:bold;">Decoy C</div>
-<div style="grid-column:3/5;font-size:0.9rem;color:#3dbdb5;">↙</div>
-<div style="grid-column:6/8;font-size:0.9rem;color:#3dbdb5;">↓</div>
-<div style="grid-column:9/11;font-size:0.9rem;color:#3dbdb5;">↘</div>
-<div style="grid-column:2/4;background:#5b3a29;color:#fafafa;padding:6px;border-radius:3px;">Decoy</div>
-<div style="grid-column:4/6;background:#7c4dff;color:#fff;padding:6px;border-radius:3px;">Decoy</div>
-<div style="grid-column:6/8;background:#5b3a29;color:#fafafa;padding:6px;border-radius:3px;">Decoy</div>
-<div style="grid-column:8/10;background:#7c4dff;color:#fff;padding:6px;border-radius:3px;">Decoy</div>
-<div style="grid-column:10/12;background:#5b3a29;color:#fafafa;padding:6px;border-radius:3px;">Decoy</div>
-<div style="grid-column:1/13;font-size:0.75rem;padding-top:6px;font-style:italic;color:#3dbdb5;">Bot wastes compute traversing infinite fake content</div>
+<div style="max-width:460px;margin:2rem auto;">
+<div style="text-align:center;font-size:0.8rem;opacity:0.6;margin-bottom:10px;font-weight:600;">AI Labyrinth: the honeypot maze</div>
+<div style="display:flex;flex-direction:column;align-items:center;gap:4px;">
+<!-- Row 1: Your site -->
+<div class="bb-box" style="border-color:#1a8fe3;background:rgba(26,143,227,0.15);">
+<span class="bb-label" style="color:#1a8fe3;">Your Site</span>
+<span class="bb-sub">real content</span>
+</div>
+<span class="bb-arrow">↓</span>
+<!-- Row 2: First decoys -->
+<div style="display:flex;gap:8px;justify-content:center;">
+<div class="bb-box" style="border-color:#e8a832;background:rgba(232,168,50,0.12);">
+<span class="bb-label" style="color:#e8a832;">Decoy A</span>
+</div>
+<div class="bb-box" style="border-color:#c4d64a;background:rgba(196,214,74,0.12);">
+<span class="bb-label" style="color:#c4d64a;">Decoy B</span>
+</div>
+<div class="bb-box" style="border-color:#e8a832;background:rgba(232,168,50,0.12);">
+<span class="bb-label" style="color:#e8a832;">Decoy C</span>
+</div>
+</div>
+<div style="display:flex;gap:40px;" class="bb-arrow">
+<span>↙</span><span>↓</span><span>↘</span>
+</div>
+<!-- Row 3: Deep decoys -->
+<div style="display:flex;gap:6px;justify-content:center;flex-wrap:wrap;">
+<div class="bb-box bb-pulse" style="border-color:#5b3a29;background:rgba(91,58,41,0.15);min-width:70px;">
+<span class="bb-label" style="color:#8b6844;">Decoy</span>
+</div>
+<div class="bb-box bb-pulse" style="border-color:#7c4dff;background:rgba(124,77,255,0.1);min-width:70px;animation-delay:0.4s;">
+<span class="bb-label" style="color:#a07cff;">Decoy</span>
+</div>
+<div class="bb-box bb-pulse" style="border-color:#5b3a29;background:rgba(91,58,41,0.15);min-width:70px;animation-delay:0.8s;">
+<span class="bb-label" style="color:#8b6844;">Decoy</span>
+</div>
+<div class="bb-box bb-pulse" style="border-color:#7c4dff;background:rgba(124,77,255,0.1);min-width:70px;animation-delay:1.2s;">
+<span class="bb-label" style="color:#a07cff;">Decoy</span>
+</div>
+<div class="bb-box bb-pulse" style="border-color:#5b3a29;background:rgba(91,58,41,0.15);min-width:70px;animation-delay:1.6s;">
+<span class="bb-label" style="color:#8b6844;">Decoy</span>
+</div>
+</div>
+<div style="font-size:0.75rem;opacity:0.5;font-style:italic;margin-top:4px;">Bot wastes compute traversing infinite fake content</div>
+</div>
 </div>
 
 The links to the labyrinth are invisible to humans but visible in the HTML —
@@ -238,13 +308,19 @@ Cloudflare as a proxy is the single highest-leverage thing you can do.
 
 Here's the layered approach, from least to most aggressive:
 
-<div style="display:grid;grid-template-columns:repeat(12,1fr);gap:3px;max-width:480px;margin:2rem auto;font-size:0.78rem;text-align:center;">
-<div style="grid-column:1/13;background:#1a8fe3;color:#fff;padding:8px;border-radius:3px;font-weight:bold;">Layer 1: robots.txt + noai meta tags</div>
-<div style="grid-column:1/13;background:#155fa0;color:#c4d64a;padding:4px;font-size:0.7rem;">Advisory only — compliant bots respect it</div>
-<div style="grid-column:2/12;background:#e8a832;color:#181a20;padding:8px;border-radius:3px;font-weight:bold;">Layer 2: Edge Functions / WAF Rules</div>
-<div style="grid-column:2/12;background:#b8841f;color:#fafafa;padding:4px;font-size:0.7rem;">User-Agent inspection — blocks known crawlers</div>
-<div style="grid-column:3/11;background:#5b3a29;color:#c4d64a;padding:8px;border-radius:3px;font-weight:bold;">Layer 3: AI Labyrinth / Honeypots</div>
-<div style="grid-column:3/11;background:#3d2619;color:#3dbdb5;padding:4px;font-size:0.7rem;">Active defense — waste bot resources + fingerprint</div>
+<div style="max-width:500px;margin:2rem auto;display:flex;flex-direction:column;align-items:center;gap:8px;">
+<div class="bb-box" style="border-color:#1a8fe3;background:rgba(26,143,227,0.12);width:100%;">
+<span class="bb-label" style="color:#1a8fe3;">Layer 1: robots.txt + noai meta tags</span>
+<span class="bb-sub">advisory only — compliant bots respect it</span>
+</div>
+<div class="bb-box" style="border-color:#e8a832;background:rgba(232,168,50,0.1);width:85%;">
+<span class="bb-label" style="color:#e8a832;">Layer 2: Edge Functions / WAF Rules</span>
+<span class="bb-sub">User-Agent inspection — blocks known crawlers</span>
+</div>
+<div class="bb-box bb-pulse" style="border-color:#5b3a29;background:rgba(91,58,41,0.15);width:70%;">
+<span class="bb-label" style="color:#8b6844;">Layer 3: AI Labyrinth / Honeypots</span>
+<span class="bb-sub" style="color:#3dbdb5;opacity:0.8;">active defense — waste bot resources + fingerprint</span>
+</div>
 </div>
 
 No single layer is bulletproof. Bots can spoof user agents, ignore `robots.txt`,
