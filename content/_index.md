@@ -21,8 +21,9 @@ my girlfriend, golf the cities with my friends, and [hunt][] for good surf with
 my brother(when finances allow).
 
 <!-- markdownlint-disable MD033 MD013 -->
+
 <img src="/image/jackson-port.jpg" alt="Base Photo"
-    style="display:block;margin-left:auto;margin-right:auto;;width:80%;height:80%;">
+    style="display:block;margin-left:auto;margin-right:auto;width:80%;height:80%;border-radius: 0.5rem;">
 
 <p style="text-align:center">
     I come from a family where the cook never cleans
@@ -30,4 +31,5 @@ my brother(when finances allow).
 
 [backpack]: https://backalleysurf.com/
 [hunt]: https://www.surfersjournal.com/
-[paddle]: https://www.nationalgeographic.com/adventure/article/interview-allstar-paddleboarder-jamie-mitchell-wins
+[paddle]:
+https://www.nationalgeographic.com/adventure/article/interview-allstar-paddleboarder-jamie-mitchell-wins
