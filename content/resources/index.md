@@ -8,34 +8,31 @@ params:
     hideReply: true
 ---
 
-## Blogs
+## Engineers
 
-- [seankhliao.com][]
-- [mitchellh.com][]
-- [andrewkelly.me][]
-- [filippo.io][]
-- [eli.thegreenplace.net][]
-- [iximiuz.com][]
-- [jvns.ca][]
-- [openmymind.net][]
+- [seankhliao.com](https://seankhliao.com/)
+- [mitchellh.com](https://mitchellh.com/)
+- [andrewkelly.me](https://andrewkelley.me/)
+- [filippo.io](https://filippo.io/)
+- [eli.thegreenplace.net](https://eli.thegreenplace.net/)
+- [iximiuz.com](https://iximiuz.com/)
+- [jvns.ca](https://jvns.ca/)
+- [openmymind.net](https://www.openmymind.net/)
 
 ## Athletics
 
-- [runningwritings.com][]
-- [swimdojo.com][]
+- [runningwritings.com](https://runningwritings.com/)
+- [swimdojo.com](https://www.swimdojo.com/workouts)
 
 ## Artists
 
-- [blackwalnutbakery.com][]
+- [blackwalnutbakery.com](https://www.blackwalnutbakery.com/)
 
-[andrewkelly.me]: https://andrewkelley.me/
-[blackwalnutbakery.com]: blackwalnutbakery.com/
-[eli.thegreenplace.net]: https://eli.thegreenplace.net/
-[filippo.io]: https://filippo.io/
-[iximiuz.com]: https://iximiuz.com/en/
-[jvns.ca]: https://jvns.ca/
-[mitchellh.com]: https://mitchellh.com/
-[openmymind.net]: https://www.openmymind.net/
-[runningwritings.com]: https://runningwritings.com/
-[seankhliao.com]: https://seankhliao.com/
-[swimdojo.com]: https://www.swimdojo.com/workouts
+## Friends :)
+
+- [zacharycorbishley.com](https://www.zacharycorbishley.com/)
+- [barbercash.github.io](https://barbercash.github.io/Portfolio/)
+- [defoeam.com](https://defoeam.com/)
+- [derekwinters.com](https://derekwinters.com/)
+- [eskwak.github.io](https://eskwak.github.io/)
+- [783170.github.io](https://783170.github.io/)
