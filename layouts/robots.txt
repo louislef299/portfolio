@@ -1,0 +1,13 @@
+User-agent: *
+Allow: /
+Sitemap: {{ "sitemap.xml" | absURL }}
+
+# AI Crawlers (from https://github.com/ai-robots-txt/ai.robots.txt)
+{{ os.ReadFile "data/ai-robots-txt/robots.txt" }}
+
+# Let normal search engines through
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /

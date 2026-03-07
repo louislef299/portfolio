@@ -17,14 +17,25 @@
     </a>
 </div>
 
-<small> {{ .Site.Copyright }} | {{ markdownify .Site.Params.madeWith }} </small>
+<style>
+    .bmc-btn-container {
+        transform: scale(0.6);
+    }
+</style>
+<div>
+    <script
+        type="text/javascript"
+        src="https://cdnjs.buymeacoffee.com/1.0.0/button.prod.min.js"
+        data-name="bmc-button"
+        data-slug="louislef299"
+        data-color="#40DCA5"
+        data-emoji=""
+        data-font="Cookie"
+        data-text="Buy me a coffee"
+        data-outline-color="#000000"
+        data-font-color="#000000"
+        data-coffee-color="#FFDD00"
+    ></script>
+</div>
 
-<!-- Show the Buy Me a Coffee widget only when the footer is visible -->
-<script>
-    const observer = new IntersectionObserver((entries) => {
-        const btn = document.getElementById("bmc-wbtn");
-        if (!btn) return;
-        btn.classList.toggle("bmc-visible", entries[0].isIntersecting);
-    });
-    observer.observe(document.querySelector("footer"));
-</script>
+<small> {{ .Site.Copyright }} | {{ markdownify .Site.Params.madeWith }} </small>
