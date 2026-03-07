@@ -4,10 +4,10 @@ date: 2026-03-06T18:07:37-06:00
 draft: false
 toc: true
 tags:
-  - secops
-  - web
-  - ai
-  - cloudflare
+- secops
+- web
+- ai
+- cloudflare
 ---
 
 <!-- markdownlint-disable MD033 MD013 -->
@@ -171,22 +171,22 @@ For more control, you can write your own Edge Function that inspects the
 ```typescript
 // netlify/edge-functions/block-bots.ts
 const AI_BOTS = [
-  "GPTBot",
-  "ChatGPT-User",
-  "CCBot",
-  "anthropic-ai",
-  "Claude-Web",
-  "Google-Extended",
-  "Bytespider",
-  "cohere-ai",
-  "FacebookBot",
+"GPTBot",
+"ChatGPT-User",
+"CCBot",
+"anthropic-ai",
+"Claude-Web",
+"Google-Extended",
+"Bytespider",
+"cohere-ai",
+"FacebookBot",
 ];
 
 export default async (request: Request) => {
-  const ua = request.headers.get("user-agent") || "";
-  if (AI_BOTS.some((bot) => ua.includes(bot))) {
-    return new Response("Blocked", { status: 401 });
-  }
+const ua = request.headers.get("user-agent") || "";
+if (AI_BOTS.some((bot) => ua.includes(bot))) {
+return new Response("Blocked", { status: 401 });
+}
 };
 
 export const config = { path: "/*" };
@@ -235,17 +235,17 @@ platform gives you. Your content is worth protecting.
 [AI Labyrinth]: https://blog.cloudflare.com/ai-labyrinth/
 [ai-robots-txt]: https://github.com/ai-robots-txt/ai.robots.txt
 [Cloudflare blocks AI bots by default]:
-  https://www.technologyreview.com/2025/07/01/1119498/cloudflare-will-now-by-default-block-ai-bots-from-crawling-its-clients-websites/
+https://www.technologyreview.com/2025/07/01/1119498/cloudflare-will-now-by-default-block-ai-bots-from-crawling-its-clients-websites/
 [Cloudflare Free]: https://www.cloudflare.com/plans/free/
 [Dark Visitors]: https://darkvisitors.com/
 [DeviantArt in 2022]:
-  https://www.foundationwebdev.com/2022/11/noai-noimageai-meta-tag-how-to-install/
+https://www.foundationwebdev.com/2022/11/noai-noimageai-meta-tag-how-to-install/
 ["double up"]:
-  https://developers.netlify.com/guides/blocking-ai-bots-and-controlling-crawlers/
+https://developers.netlify.com/guides/blocking-ai-bots-and-controlling-crawlers/
 [manage your robots.txt]:
-  https://blog.cloudflare.com/control-content-use-for-ai-training/
+https://blog.cloudflare.com/control-content-use-for-ai-training/
 [Netlify Edge Functions]:
-  https://docs.netlify.com/build/build-with-ai/block-ai-crawlers/
+https://docs.netlify.com/build/build-with-ai/block-ai-crawlers/
 [RFC 9309]: https://www.rfc-editor.org/rfc/rfc9309
 [User Agent Blocker]:
-  https://developers.netlify.com/guides/blocking-ai-bots-and-controlling-crawlers/
+https://developers.netlify.com/guides/blocking-ai-bots-and-controlling-crawlers/

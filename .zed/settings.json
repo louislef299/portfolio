@@ -1,6 +1,9 @@
 {
   "soft_wrap": "preferred_line_length",
   "preferred_line_length": 80,
+  "file_types": {
+    "HTML": ["html"]
+  },
   "languages": {
     "Markdown": {
       "format_on_save": "on",
