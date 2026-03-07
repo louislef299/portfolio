@@ -4,8 +4,8 @@ date: 2025-05-17T11:09:21-05:00
 draft: false
 toc: true
 tags:
-  - llm
-  - ai
+- llm
+- ai
 ---
 
 Alright, I've been putting this off for a while now, mostly because I believe
@@ -149,21 +149,21 @@ follow-up articles.
 
 [3Blue1Brown]: https://www.3blue1brown.com/topics/neural-networks
 [Demystifying Vectors and Embeddings]:
-  https://sidecar.ai/blog/demystifying-vectors-and-embeddings-in-ai-a-beginners-guide
+https://sidecar.ai/blog/demystifying-vectors-and-embeddings-in-ai-a-beginners-guide
 [dot product]:
-  https://www.khanacademy.org/math/multivariable-calculus/thinking-about-multivariable-function/x786f2022:vectors-and-matrices/a/dot-products-mvc
+https://www.khanacademy.org/math/multivariable-calculus/thinking-about-multivariable-function/x786f2022:vectors-and-matrices/a/dot-products-mvc
 [Foundational Models]: https://www.youtube.com/watch?v=oYm66fHqHUM
 [Getting Started with PyTorch]:
-  https://docs.pytorch.org/tutorials/beginner/basics/intro
+https://docs.pytorch.org/tutorials/beginner/basics/intro
 [Hugging Face LLM Course]: https://huggingface.co/learn/llm-course/chapter1/1
 [neural networks]: https://aws.amazon.com/what-is/neural-network/
 [Practical Deep Learning for Coders]: https://course.fast.ai/
 [Recurrent Neural Network]:
-  https://aws.amazon.com/what-is/recurrent-neural-network/
+https://aws.amazon.com/what-is/recurrent-neural-network/
 [The Math Behind Transformers]:
-  https://medium.com/@touhid3.1416/the-surprisingly-simple-math-behind-transformer-attention-mechanism-d354fbb4fef6
+https://medium.com/@touhid3.1416/the-surprisingly-simple-math-behind-transformer-attention-mechanism-d354fbb4fef6
 [Transformers]: https://arxiv.org/abs/1706.03762
 [Transformers Explained Visually]:
-  https://towardsdatascience.com/transformers-explained-visually-part-2-how-it-works-step-by-step-b49fa4a64f34/
+https://towardsdatascience.com/transformers-explained-visually-part-2-how-it-works-step-by-step-b49fa4a64f34/
 [Understanding the Modern LLM]:
-  https://medium.com/@ikim1994914/understanding-the-modern-llm-part-1-source-and-target-masks-in-transformers-and-example-use-5fb72af3bd57
+https://medium.com/@ikim1994914/understanding-the-modern-llm-part-1-source-and-target-masks-in-transformers-and-example-use-5fb72af3bd57

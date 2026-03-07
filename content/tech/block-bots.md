@@ -32,44 +32,8 @@ The first line of defense is `robots.txt` — a plaintext file at the root of yo
 site that tells crawlers what they can and can't access. It follows [RFC 9309][]
 and has been the de facto standard since the mid-90s.
 
-Here's a minimal example targeting the most common AI crawlers:
-
-```text
-# AI Crawlers
-User-agent: GPTBot
-Disallow: /
-
-User-agent: ChatGPT-User
-Disallow: /
-
-User-agent: CCBot
-Disallow: /
-
-User-agent: anthropic-ai
-Disallow: /
-
-User-agent: Claude-Web
-Disallow: /
-
-User-agent: Google-Extended
-Disallow: /
-
-User-agent: Bytespider
-Disallow: /
-
-User-agent: FacebookBot
-Disallow: /
-
-User-agent: cohere-ai
-Disallow: /
-
-# Let normal search engines through
-User-agent: Googlebot
-Allow: /
-
-User-agent: Bingbot
-Allow: /
-```
+Check out my minimal example targeting the most common `#AI Crawlers`:
+[/robots.txt](/robots.txt).
 
 The problem? **This list is already out of date.** New crawlers pop up
 constantly, and some don't even identify themselves honestly. The
