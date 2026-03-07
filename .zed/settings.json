@@ -5,6 +5,10 @@
     "Markdown": {
       "format_on_save": "on",
       "formatter": "prettier"
+    },
+    "HTML": {
+      "format_on_save": "on",
+      "formatter": "prettier"
     }
   }
 }

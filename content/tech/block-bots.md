@@ -4,54 +4,19 @@ date: 2026-03-06T18:07:37-06:00
 draft: false
 toc: true
 tags:
-- security
-- web
-- ai
-- cloudflare
+  - secops
+  - web
+  - ai
+  - cloudflare
 ---
 
 <!-- markdownlint-disable MD033 MD013 -->
-
-<style>
-@keyframes pulse-border {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.4; }
-}
-.bb-box {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 10px 16px;
-  border-radius: 8px;
-  border: 2px solid;
-  min-width: 90px;
-  font-family: ui-monospace, 'Cascadia Code', 'Source Code Pro', Menlo, Consolas, monospace;
-}
-.bb-box .bb-label {
-  font-size: 0.85rem;
-  font-weight: 600;
-}
-.bb-box .bb-sub {
-  font-size: 0.7rem;
-  margin-top: 2px;
-  opacity: 0.6;
-}
-.bb-pulse {
-  animation: pulse-border 2s ease-in-out infinite;
-}
-.bb-arrow {
-  font-size: 1.1rem;
-  opacity: 0.5;
-}
-</style>
 
 ## The Crawl Ratio Problem
 
 Here's a fun stat: in mid-2025, OpenAI's crawl-to-referral ratio was roughly
 **1,700:1**. Anthropic's? **73,000:1**. That means for every 73,000 pages
-Anthropic's crawler scraped, it sent *one* visitor back. Compare that to
+Anthropic's crawler scraped, it sent _one_ visitor back. Compare that to
 traditional search engines, where the implicit deal has always been "we crawl
 your content, we send you traffic." AI crawlers broke that deal.
 
@@ -114,19 +79,7 @@ and [Dark Visitors][] (now Known Agents) offers a dynamically-updated
 
 But the fundamental issue remains:
 
-<div style="max-width:440px;margin:2rem auto;">
-<div style="text-align:center;font-size:0.8rem;opacity:0.6;margin-bottom:8px;font-weight:600;">robots.txt compliance is voluntary</div>
-<div style="display:flex;gap:8px;justify-content:center;">
-<div class="bb-box" style="border-color:#1a8fe3;background:rgba(26,143,227,0.15);flex:1;">
-<span class="bb-label" style="color:#1a8fe3;">Compliant</span>
-<span class="bb-sub">respects rules</span>
-</div>
-<div class="bb-box bb-pulse" style="border-color:#e74c3c;background:rgba(231,76,60,0.12);flex:1;">
-<span class="bb-label" style="color:#e74c3c;">Non-compliant</span>
-<span class="bb-sub">ignores them</span>
-</div>
-</div>
-</div>
+{{< block-bots-l1 >}}
 
 A well-behaved bot reads your `robots.txt` and moves on. A poorly-behaved bot
 treats it like a suggestion. You need enforcement.
@@ -139,7 +92,7 @@ and have since been adopted more broadly:
 
 ```html
 <!-- In your <head> -->
-<meta name="robots" content="noai, noimageai">
+<meta name="robots" content="noai, noimageai" />
 ```
 
 Or via HTTP headers (useful for non-HTML assets like images and PDFs):
@@ -152,7 +105,7 @@ On a static site like one built with Hugo, you can add the meta tag to your base
 template. For the header approach, it depends on your hosting platform — we'll
 cover that per-platform below.
 
-These aren't formal web standards *yet*, but OpenAI, Google, and Anthropic have
+These aren't formal web standards _yet_, but OpenAI, Google, and Anthropic have
 all publicly stated they honor them. Think of this layer as putting a "No
 Trespassing" sign on your lawn. Honest visitors will respect it. For the rest,
 you need a fence.
@@ -171,15 +124,13 @@ the most options.
 
 **One-click AI bot blocking:**
 
-Navigate to **Security > Bots** in your dashboard and toggle **Block AI
-Scrapers and Crawlers**. That's it. This has been used by over one million
-Cloudflare customers since its launch. As of mid-2025, [Cloudflare blocks AI
-bots by default][] for new domains — the first major infrastructure provider to
-do so.
+Navigate to **Security > Bots** in your dashboard and toggle **Block AI Scrapers
+and Crawlers**. That's it. This has been used by over one million Cloudflare
+customers since its launch. As of mid-2025, [Cloudflare blocks AI bots by
+default][] for new domains — the first major infrastructure provider to do so.
 
-You can also fine-tune this with **AI Crawl Control**, which lets you
-allow or block specific crawlers individually rather than blanket-blocking
-everything.
+You can also fine-tune this with **AI Crawl Control**, which lets you allow or
+block specific crawlers individually rather than blanket-blocking everything.
 
 **Managed robots.txt:**
 
@@ -193,51 +144,7 @@ This is Cloudflare's most creative defense. When [AI Labyrinth][] detects an
 unauthorized crawler, instead of blocking it, it lures the bot into a maze of
 AI-generated decoy pages:
 
-<div style="max-width:460px;margin:2rem auto;">
-<div style="text-align:center;font-size:0.8rem;opacity:0.6;margin-bottom:10px;font-weight:600;">AI Labyrinth: the honeypot maze</div>
-<div style="display:flex;flex-direction:column;align-items:center;gap:4px;">
-<!-- Row 1: Your site -->
-<div class="bb-box" style="border-color:#1a8fe3;background:rgba(26,143,227,0.15);">
-<span class="bb-label" style="color:#1a8fe3;">Your Site</span>
-<span class="bb-sub">real content</span>
-</div>
-<span class="bb-arrow">↓</span>
-<!-- Row 2: First decoys -->
-<div style="display:flex;gap:8px;justify-content:center;">
-<div class="bb-box" style="border-color:#e8a832;background:rgba(232,168,50,0.12);">
-<span class="bb-label" style="color:#e8a832;">Decoy A</span>
-</div>
-<div class="bb-box" style="border-color:#c4d64a;background:rgba(196,214,74,0.12);">
-<span class="bb-label" style="color:#c4d64a;">Decoy B</span>
-</div>
-<div class="bb-box" style="border-color:#e8a832;background:rgba(232,168,50,0.12);">
-<span class="bb-label" style="color:#e8a832;">Decoy C</span>
-</div>
-</div>
-<div style="display:flex;gap:40px;" class="bb-arrow">
-<span>↙</span><span>↓</span><span>↘</span>
-</div>
-<!-- Row 3: Deep decoys -->
-<div style="display:flex;gap:6px;justify-content:center;flex-wrap:wrap;">
-<div class="bb-box bb-pulse" style="border-color:#5b3a29;background:rgba(91,58,41,0.15);min-width:70px;">
-<span class="bb-label" style="color:#8b6844;">Decoy</span>
-</div>
-<div class="bb-box bb-pulse" style="border-color:#7c4dff;background:rgba(124,77,255,0.1);min-width:70px;animation-delay:0.4s;">
-<span class="bb-label" style="color:#a07cff;">Decoy</span>
-</div>
-<div class="bb-box bb-pulse" style="border-color:#5b3a29;background:rgba(91,58,41,0.15);min-width:70px;animation-delay:0.8s;">
-<span class="bb-label" style="color:#8b6844;">Decoy</span>
-</div>
-<div class="bb-box bb-pulse" style="border-color:#7c4dff;background:rgba(124,77,255,0.1);min-width:70px;animation-delay:1.2s;">
-<span class="bb-label" style="color:#a07cff;">Decoy</span>
-</div>
-<div class="bb-box bb-pulse" style="border-color:#5b3a29;background:rgba(91,58,41,0.15);min-width:70px;animation-delay:1.6s;">
-<span class="bb-label" style="color:#8b6844;">Decoy</span>
-</div>
-</div>
-<div style="font-size:0.75rem;opacity:0.5;font-style:italic;margin-top:4px;">Bot wastes compute traversing infinite fake content</div>
-</div>
-</div>
+{{< block-bots-l3 >}}
 
 The links to the labyrinth are invisible to humans but visible in the HTML —
 acting as a honeypot. Any visitor that goes multiple links deep into the maze is
@@ -245,8 +152,8 @@ almost certainly a bot, which gives Cloudflare data to fingerprint and catalog
 bad actors. It's available on all plans including free, and it's opt-in via a
 single toggle.
 
-As PC Gamer memorably put it: *"No real human would go four links deep into a
-maze of AI-generated nonsense."*
+As PC Gamer memorably put it: _"No real human would go four links deep into a
+maze of AI-generated nonsense."_
 
 ### Netlify
 
@@ -264,14 +171,20 @@ For more control, you can write your own Edge Function that inspects the
 ```typescript
 // netlify/edge-functions/block-bots.ts
 const AI_BOTS = [
-  "GPTBot", "ChatGPT-User", "CCBot", "anthropic-ai",
-  "Claude-Web", "Google-Extended", "Bytespider",
-  "cohere-ai", "FacebookBot"
+  "GPTBot",
+  "ChatGPT-User",
+  "CCBot",
+  "anthropic-ai",
+  "Claude-Web",
+  "Google-Extended",
+  "Bytespider",
+  "cohere-ai",
+  "FacebookBot",
 ];
 
 export default async (request: Request) => {
   const ua = request.headers.get("user-agent") || "";
-  if (AI_BOTS.some(bot => ua.includes(bot))) {
+  if (AI_BOTS.some((bot) => ua.includes(bot))) {
     return new Response("Blocked", { status: 401 });
   }
 };
@@ -279,7 +192,7 @@ export default async (request: Request) => {
 export const config = { path: "/*" };
 ```
 
-Netlify recommends using *both* a `robots.txt` and an Edge Function since
+Netlify recommends using _both_ a `robots.txt` and an Edge Function since
 `robots.txt` alone is advisory. Their docs call this the ["double up"][]
 approach.
 
@@ -308,20 +221,7 @@ Cloudflare as a proxy is the single highest-leverage thing you can do.
 
 Here's the layered approach, from least to most aggressive:
 
-<div style="max-width:500px;margin:2rem auto;display:flex;flex-direction:column;align-items:center;gap:8px;">
-<div class="bb-box" style="border-color:#1a8fe3;background:rgba(26,143,227,0.12);width:100%;">
-<span class="bb-label" style="color:#1a8fe3;">Layer 1: robots.txt + noai meta tags</span>
-<span class="bb-sub">advisory only — compliant bots respect it</span>
-</div>
-<div class="bb-box" style="border-color:#e8a832;background:rgba(232,168,50,0.1);width:85%;">
-<span class="bb-label" style="color:#e8a832;">Layer 2: Edge Functions / WAF Rules</span>
-<span class="bb-sub">User-Agent inspection — blocks known crawlers</span>
-</div>
-<div class="bb-box bb-pulse" style="border-color:#5b3a29;background:rgba(91,58,41,0.15);width:70%;">
-<span class="bb-label" style="color:#8b6844;">Layer 3: AI Labyrinth / Honeypots</span>
-<span class="bb-sub" style="color:#3dbdb5;opacity:0.8;">active defense — waste bot resources + fingerprint</span>
-</div>
-</div>
+{{< block-bots-full-stack >}}
 
 No single layer is bulletproof. Bots can spoof user agents, ignore `robots.txt`,
 and strip meta tags from scraped content. But stacking these layers creates
@@ -334,12 +234,18 @@ platform gives you. Your content is worth protecting.
 
 [AI Labyrinth]: https://blog.cloudflare.com/ai-labyrinth/
 [ai-robots-txt]: https://github.com/ai-robots-txt/ai.robots.txt
-[Cloudflare blocks AI bots by default]: https://www.technologyreview.com/2025/07/01/1119498/cloudflare-will-now-by-default-block-ai-bots-from-crawling-its-clients-websites/
+[Cloudflare blocks AI bots by default]:
+  https://www.technologyreview.com/2025/07/01/1119498/cloudflare-will-now-by-default-block-ai-bots-from-crawling-its-clients-websites/
 [Cloudflare Free]: https://www.cloudflare.com/plans/free/
 [Dark Visitors]: https://darkvisitors.com/
-[DeviantArt in 2022]: https://www.foundationwebdev.com/2022/11/noai-noimageai-meta-tag-how-to-install/
-["double up"]: https://developers.netlify.com/guides/blocking-ai-bots-and-controlling-crawlers/
-[manage your robots.txt]: https://blog.cloudflare.com/control-content-use-for-ai-training/
-[Netlify Edge Functions]: https://docs.netlify.com/build/build-with-ai/block-ai-crawlers/
+[DeviantArt in 2022]:
+  https://www.foundationwebdev.com/2022/11/noai-noimageai-meta-tag-how-to-install/
+["double up"]:
+  https://developers.netlify.com/guides/blocking-ai-bots-and-controlling-crawlers/
+[manage your robots.txt]:
+  https://blog.cloudflare.com/control-content-use-for-ai-training/
+[Netlify Edge Functions]:
+  https://docs.netlify.com/build/build-with-ai/block-ai-crawlers/
 [RFC 9309]: https://www.rfc-editor.org/rfc/rfc9309
-[User Agent Blocker]: https://developers.netlify.com/guides/blocking-ai-bots-and-controlling-crawlers/
+[User Agent Blocker]:
+  https://developers.netlify.com/guides/blocking-ai-bots-and-controlling-crawlers/
