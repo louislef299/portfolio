@@ -3,16 +3,13 @@ title: "Tech"
 weight: 10
 ---
 
-You can find most of my tech projects on [my Github][louislef299]. If you use
-AWS and would like to streamline access to your accounts, try out my [aws-sso][]
-cli tool!
+This mostly just serves as a linear log of my experiments that I use as a personal reference. If they help you, great! Not sure where to start? Check out the different [Tags][].
 
-These articles are mostly just logs of the experiments I've done and discoveries
-I've found. They are not edited very much and I don't intend to make them
-consumable for the general public anytime soon. If you do want some better
-references of what I'm reading from real authors, feel free to check out my
-[lists on medium][].
+Technologically, I like researching [container systems][], [os programming][], cloud architecture(search for *Large-scale indexing system for ITER data handling*), [wireguard-based networking][] and [agentic programming][]. You can find most of my tech projects on [my Github][louislef299] and I try to blog when I find myself with free time, so subscribe to my [RSS feed](/index.xml)!
 
-[aws-sso]: https://aws-sso.netlify.app/
-[lists on medium]: https://medium.com/@louislefebvre1999
+[agentic programming]: https://ollama.com/
+[container systems]: https://docs.docker.com/build/bake/
+[wireguard-based networking]: https://www.wireguard.com/
 [louislef299]: https://github.com/louislef299
+[os programming]: https://ziglang.org/
+[Tags]: /tags
