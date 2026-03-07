@@ -1,19 +1,30 @@
 <!-- Social media icons -->
 <div class="footer-social-icons">
     <a href="https://linkedin.com/in/louislef299" target="_blank">
-        <img src="/image/svgs/brands/linkedin.svg" alt="linkedin">
+        <img src="/image/svgs/brands/linkedin.svg" alt="linkedin" />
     </a>
     <a href="https://github.com/louislef299" target="_blank">
-        <img src="/image/svgs/brands/github.svg" alt="gitHub">
+        <img src="/image/svgs/brands/github.svg" alt="gitHub" />
     </a>
-    <a href="https://open.spotify.com/user/lefavorite?si=ac8f2ce91f62475c" target="_blank">
-        <img src="/image/svgs/brands/spotify.svg" alt="spotify">
+    <a
+        href="https://open.spotify.com/user/lefavorite?si=ac8f2ce91f62475c"
+        target="_blank"
+    >
+        <img src="/image/svgs/brands/spotify.svg" alt="spotify" />
     </a>
     <a href='{{ absURL "index.xml" }}' target="_blank">
-        <img src="/image/svgs/solid/rss.svg" alt="RSS">
+        <img src="/image/svgs/solid/rss.svg" alt="RSS" />
     </a>
 </div>
 
-<small>
-  {{ .Site.Copyright }} | {{ markdownify .Site.Params.madeWith }}
-</small>
+<small> {{ .Site.Copyright }} | {{ markdownify .Site.Params.madeWith }} </small>
+
+<!-- Show the Buy Me a Coffee widget only when the footer is visible -->
+<script>
+    const observer = new IntersectionObserver((entries) => {
+        const btn = document.getElementById("bmc-wbtn");
+        if (!btn) return;
+        btn.classList.toggle("bmc-visible", entries[0].isIntersecting);
+    });
+    observer.observe(document.querySelector("footer"));
+</script>
