@@ -7,6 +7,6 @@
   TZ = "America/Chicago"
 
 [[headers]]
-  for = “/*”
+  for = "/*"
   [headers.values]
-    X-Robots-Tag = “noai, noimageai”
+    X-Robots-Tag = "noai, noimageai"
