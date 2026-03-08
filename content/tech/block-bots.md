@@ -12,8 +12,6 @@ tags:
 
 <!-- markdownlint-disable MD033 MD013 -->
 
-<https://crawlercheck.com/?q=https%3A%2F%2Flouislefebvre.net>
-
 ## The Crawl Ratio Problem
 
 The agentic internet is on the rise. In 2025 Q2, the visitation ratio for human
@@ -39,8 +37,8 @@ surfacing that provide payment for your content to AI bots<sub>([4](#4))</sub>.
 ## Layer 1: The Polite Ask
 
 For the unaware, [robots.txt][] is a plaintext file at the root of your site
-that tells crawlers what they can and can't access. You can view min that tries
-to target the most common `#AI Crawlers`: [/robots.txt](/robots.txt). This is
+that tells crawlers what they can and can't access. You can view mine, which
+tries to target the most common AI Crawlers: [/robots.txt](/robots.txt). This is
 the first line of defense and has been the de facto standard since the
 mid-90s<sub>([5](#5))</sub>.
 
@@ -51,7 +49,7 @@ dynamically-updated robots.txt as well that tracks new crawlers as they appear,
 and [ai.robots.txt][] is an opensource alternative I've taken to using.
 
 Even if you switch to dynamically-generated `robots.txt` files, poorly-behaved
-bots just treat this as a suggestion. The next layer required enforcement.
+bots just treat this as a suggestion. The next layer requires enforcement.
 
 ## Layer 2: The Written Notice
 
@@ -72,7 +70,7 @@ crawlers from using a website's content for training purposes:
 ```
 
 In addition to the HTML meta tags, the `X-Robots-Tag` [HTTP response header][]
-defines how crawlers should index URLs(useful for non-HTML assets like images
+defines how crawlers should index URLs (useful for non-HTML assets like images
 and PDFs). Each web hosting service sets the header differently, but the header
 should be set to:
 
@@ -80,14 +78,13 @@ should be set to:
 X-Robots-Tag: noai, noimageai
 ```
 
-These aren't formal web standards _yet_, but OpenAI, Google, Perplexity, and
-Anthropic have all publicly stated they honor them. However, there are still
-plenty of bad actors out there who are more than willing to ignore this
-community initiative. Tollbit found that over 26 million scrapes ignored the
-protocol in March 2025 alone, so we need to be a little more intentional with
-blocking AI bot traffic for the next layer.
+These aren't formal web standards _yet_, and there are still plenty of bad
+actors out there who are more than willing to ignore this community initiative.
+Tollbit found that over 26 million scrapes ignored the protocol in March 2025
+alone, so we need to be a little more intentional with blocking AI bot traffic
+for the next layer.
 
-## Layer 3: The Moat
+## Layer 3: Time to Roll Up the Sleeves
 
 This is where things get platform-specific. The idea is simple: inspect the
 `User-Agent` header on incoming requests and reject known AI crawlers at the
@@ -115,8 +112,8 @@ blocking it, it lures the bot into a maze of AI-generated decoy pages:
 
 {{< block-bots-l3 >}}
 
-It does this by adding invisible links to the HTML page with the `Nofollow` tag.
-Since the specification is clear, this does not hurt SEO or other bots that
+It does this by adding invisible links to the HTML page with the [`nofollow`][]
+tag. Since the specification is clear, this does not hurt SEO or other bots that
 respect the no-crawl instructions. Any visitor that goes multiple links deep
 into the maze is almost certainly a bot, which gives Cloudflare data to
 fingerprint and catalog bad actors.
@@ -151,7 +148,7 @@ const AI_BOTS = [
 export default async (request: Request) => {
   const ua = request.headers.get("user-agent") || "";
   if (AI_BOTS.some((bot) => ua.includes(bot))) {
-    return new Response("Blocked", { status: 401 });
+    return new Response("Blocked", { status: 403 });
   }
 };
 
@@ -159,7 +156,7 @@ export const config = { path: "/*" };
 ```
 
 Netlify recommends using _both_ a `robots.txt` and an Edge Function since
-`robots.txt` alone is advisory(the ["double up"][] approach).
+`robots.txt` alone is advisory (the ["double up"][] approach).
 
 ### GitHub Pages
 
@@ -177,9 +174,21 @@ Your options are:
 Honestly, if bot protection matters to you and you're on GitHub Pages, adding
 Cloudflare as a proxy is the single highest-leverage thing you can do.
 
+## Understanding Your Risk
+
+With the agentic internet on the rise, it's more important than ever to protect
+the pockets of human-generated content we have left. There was a time when I
+thought about just taking down my blog altogether, but instead I decided to
+equip my stack with the latest AI defense. Although I still have an uneasy
+feeling about publishing so much online, it has been too much damn fun blogging,
+so these layers will have to do.
+
+A simple way to assess and audit your website against AI bot traffic is with
+[crawlercheck.com][] or [mrs.digital/ai-crawler-access-checker][].
+
 ---
 
-## _Citations_
+## _Footnotes_
 
 1. <a id="1" href="https://tollbit.com/state-of-the-bots/q3-q4-2025/"> State of
    the Bots </a>
@@ -187,7 +196,7 @@ Cloudflare as a proxy is the single highest-leverage thing you can do.
    AI Bot Traffic 2025 </a>
 3. <a id="3" href="https://radar.cloudflare.com/ai-insights?dateRange=52w#crawl-to-refer-ratio">
    Cloudflare AI Insights </a>
-4. <div id="4"><em>Since I use Cloudflare extensively(and you should too, their free-tier is amazing), I'll mostly be focusing on their service offerings.</em></div>
+4. <div id="4"><em>Since I use Cloudflare extensively (and you should too, their free-tier is amazing), I'll mostly be focusing on their service offerings.</em></div>
 5. <a id="5" href="https://www.rfc-editor.org/rfc/rfc9309"> RFC 9309 </a>
 6. <a id="6" href="https://www.amicited.com/blog/noai-meta-tags-controlling-ai-access/">
    NoAI Meta Tags </a>
@@ -200,14 +209,19 @@ Cloudflare as a proxy is the single highest-leverage thing you can do.
 [AI Labyrinth]: https://blog.cloudflare.com/ai-labyrinth/
 [Cloudflare blocks AI bots by default]:
   https://www.technologyreview.com/2025/07/01/1119498/cloudflare-will-now-by-default-block-ai-bots-from-crawling-its-clients-websites/
+[crawlercheck.com]: https://crawlercheck.com/?q=https%3A%2F%2Flouislefebvre.net
 ["double up"]:
   https://developers.netlify.com/guides/blocking-ai-bots-and-controlling-crawlers/
 [HTTP response header]:
   https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/X-Robots-Tag
 [manage your robots.txt]:
   https://blog.cloudflare.com/control-content-use-for-ai-training/
+[mrs.digital/ai-crawler-access-checker]:
+  https://mrs.digital/tools/ai-crawler-access-checker/
 [Netlify Edge Functions]:
   https://docs.netlify.com/build/build-with-ai/block-ai-crawlers/
+[`nofollow`]:
+  https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Attributes/rel#nofollow
 [Pay Per Crawl]: https://blog.cloudflare.com/introducing-pay-per-crawl/
 [robots.txt]: https://www.cloudflare.com/learning/bots/what-is-robots-txt/
 [Tollbit]: https://tollbit.com/
