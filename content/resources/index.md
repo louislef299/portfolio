@@ -4,11 +4,11 @@ date: 2026-02-09T12:35:58-06:00
 weight: 40
 menus: "main"
 params:
-    ignoreDate: true
-    hideReply: true
+  ignoreDate: true
+  hideReply: true
 ---
 
-## Engineers
+## Software Engineers
 
 - [seankhliao.com](https://seankhliao.com/)
 - [mitchellh.com](https://mitchellh.com/)

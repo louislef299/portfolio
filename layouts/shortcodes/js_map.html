@@ -1,48 +1,59 @@
 <!-- https://github.com/pfalcon/visited_places/blob/master/index.html -->
-<div id="map1" style="position: absolute; top: 0; left: 0; right: 0; bottom: 0;;"></div>
+<div
+    id="map1"
+    style="position: absolute; top: 0; left: 0; right: 0; bottom: 0"
+></div>
 
 <script src="/js/countries.js"></script>
 <script src="/js/cities.js"></script>
 
 <script>
-
-var map = new Datamap({
-    scope: 'world',
-    element: document.getElementById('map1'),
-    projection: 'mercator',
-    responsive: true,
-    fills: {
-        defaultFill: '#D2B48C', // Tan
-        visited: '#8B4513', // Saddle Brown
-        city: '#556B2F', // Dark Olive Green
-        nationalPark: '#006994', // Sea Blue
-    },
-    geographyConfig: {
-        highlightOnHover: true,
-        highlightFillColor: '#A0C0A0',
-        highlightBorderColor: '#F0F0F0',
-        popupOnHover: true,
-        popupTemplate: function(geography, data) {
-            return '<div class="hoverinfo"><b>' + geography.properties.name + '</b></div>';
+    var map = new Datamap({
+        scope: "world",
+        element: document.getElementById("map1"),
+        projection: "mercator",
+        responsive: true,
+        fills: {
+            defaultFill: "#D2B48C", // Tan
+            visited: "#8B4513", // Saddle Brown
+            city: "#556B2F", // Dark Olive Green
+            nationalPark: "#006994", // Sea Blue
         },
-    },
-    bubblesConfig: {
-        borderWidth: 1,
-        borderColor: '#FFFFFF',
-        highlightOnHover: true,
-        popupOnHover: true,
-        popupTemplate: function(geo, data) {
-            return "<div class='hoverinfo'>" + data.name + ":<br>" + data.date + "</div>";
-        }
-    },
+        geographyConfig: {
+            highlightOnHover: true,
+            highlightFillColor: "#A0C0A0",
+            highlightBorderColor: "#F0F0F0",
+            popupOnHover: true,
+            popupTemplate: function (geography, data) {
+                return (
+                    '<div class="hoverinfo"><b>' +
+                    geography.properties.name +
+                    "</b></div>"
+                );
+            },
+        },
+        bubblesConfig: {
+            borderWidth: 1,
+            borderColor: "#FFFFFF",
+            highlightOnHover: true,
+            popupOnHover: true,
+            popupTemplate: function (geo, data) {
+                return (
+                    "<div class='hoverinfo'>" +
+                    data.name +
+                    ":<br>" +
+                    data.date +
+                    "</div>"
+                );
+            },
+        },
 
-    data: COUNTRIES
-});
+        data: COUNTRIES,
+    });
 
-map.bubbles(CITIES);
+    map.bubbles(CITIES);
 
-window.addEventListener('resize', function() {
-    map.resize();
-});
-
+    window.addEventListener("resize", function () {
+        map.resize();
+    });
 </script>

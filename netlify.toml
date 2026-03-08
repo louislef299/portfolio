@@ -5,3 +5,8 @@
 [build.environment]
   HUGO_VERSION = "0.148.2"
   TZ = "America/Chicago"
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Robots-Tag = "noai, noimageai"
