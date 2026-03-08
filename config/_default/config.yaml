@@ -1,6 +1,7 @@
 ---
 baseURL: https://louislefebvre.net/
 copyright: "© 2026 Louis LeFebvre"
+enableGitInfo: true
 enableRobotsTXT: true
 languageCode: en-us
 sectionPagesMenu: main
@@ -12,9 +13,9 @@ markup:
       unsafe: true
 menu:
   main:
-  - name: "PGP"
-    url: "/public-key.txt"
-    weight: 10
-  - name: "Tags"
-    url: "/tags"
-    weight: 30
+    - name: "PGP"
+      url: "/public-key.txt"
+      weight: 10
+    - name: "Tags"
+      url: "/tags"
+      weight: 30

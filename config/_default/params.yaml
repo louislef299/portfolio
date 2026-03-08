@@ -1,8 +1,8 @@
 ---
-author: 
+author:
   name: Louis LeFebvre
   email: l@louislefebvre.net
 description: "A portfolio website for Louis Lefebvre"
-
+gitRepoURL: "https://github.com/louislef299/portfolio"
 madeWith: "Made with [Hugo ᕦʕ •ᴥ•ʔᕤ](https://github.com/clente/hugo-bearcub)"
 hideReply: true
