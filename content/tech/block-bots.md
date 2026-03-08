@@ -4,49 +4,52 @@ date: 2026-03-06T18:07:37-06:00
 draft: false
 toc: true
 tags:
-- secops
-- web
-- ai
-- cloudflare
+  - secops
+  - webdev
+  - ai
+  - cloudflare
 ---
 
 <!-- markdownlint-disable MD033 MD013 -->
 
 ## The Crawl Ratio Problem
 
-Here's a fun stat: in mid-2025, OpenAI's crawl-to-referral ratio was roughly
-**1,700:1**. Anthropic's? **73,000:1**. That means for every 73,000 pages
-Anthropic's crawler scraped, it sent _one_ visitor back. Compare that to
-traditional search engines, where the implicit deal has always been "we crawl
-your content, we send you traffic." AI crawlers broke that deal.
+The agentic internet is on the rise. In 2025 Q2, the visitation ratio for human
+to AI bot traffic was 50:1. By Q4, AI bot traffic increased with a ratio of
+31:1<sub>([1](#1))</sub>. With 4.2% of all HTTP internet traffic originating
+from AI bots in 2025<sub>([2](#2))</sub>, and crawl-to-refer ratios looking
+abysmal<sub>([3](#3))</sub>(Anthropic @ 41.1K:1 & OpenAI @ 1.1K:1), the internet
+is increasingly becoming dominated by bot traffic.
 
-Meanwhile, Cloudflare reports that AI crawlers generate **over 50 billion
-requests per day** across their network — nearly 1% of all web traffic. That's
-not a rounding error. That's an industry.
+For reference, DuckDuckGo's crawl-to-refer ratio is at 0.84:1, making the
+relationship with their bots much more advantageous for web developers and the
+trade-off clear: I let you crawl my content, you help surface my page in your
+search engine. This is now becoming a broken relationship as internet content is
+increasingly being crawled for training purposes without the referal benefits.
 
-So let's talk about what you can do about it.
+So, how do we, as web developers, protect our content and compete in this
+agentic internet age? We'll go over three defensive measures you can take
+against AI bot traffic and even some of the newer and evolving tools that are
+surfacing that provide payment for your content to AI bots<sub>([4](#4))</sub>.
+
+{{< block-bots-full-stack >}}
 
 ## Layer 1: robots.txt (The Polite Ask)
 
-The first line of defense is `robots.txt` — a plaintext file at the root of your
-site that tells crawlers what they can and can't access. It follows [RFC 9309][]
-and has been the de facto standard since the mid-90s.
+For the unaware, [robots.txt][] is a plaintext file at the root of your site
+that tells crawlers what they can and can't access. You can view min that tries
+to target the most common `#AI Crawlers`: [/robots.txt](/robots.txt). This is
+the first line of defense and has been the de facto standard since the
+mid-90s<sub>([5](#5))</sub>.
 
-Check out my minimal example targeting the most common `#AI Crawlers`:
-[/robots.txt](/robots.txt).
+A static `robots.txt` in the age of the agentic internet presents a problem:
+this list becomes stale _rapidly_. Cloudflare offers solutions to [manage your
+robots.txt][] file for you, companies like [Tollbit][] offer a
+dynamically-updated robots.txt as well that tracks new crawlers as they appear,
+and [ai.robots.txt][] is an opensource alternative I've taken to using.
 
-The problem? **This list is already out of date.** New crawlers pop up
-constantly, and some don't even identify themselves honestly. The
-[ai-robots-txt][] community project on GitHub maintains a comprehensive list,
-and [Dark Visitors][] (now Known Agents) offers a dynamically-updated
-`robots.txt` that tracks new crawlers as they appear.
-
-But the fundamental issue remains:
-
-{{< block-bots-l1 >}}
-
-A well-behaved bot reads your `robots.txt` and moves on. A poorly-behaved bot
-treats it like a suggestion. You need enforcement.
+Even if you switch to dynamically-generated `robots.txt` files, poorly-behaved
+bots just treat this as a suggestion. The next layer required enforcement.
 
 ## Layer 2: Meta Tags & Headers (The Written Notice)
 
@@ -82,27 +85,20 @@ server level before they ever touch your content.
 
 ### Cloudflare
 
-If you're behind Cloudflare (and if you're hosting a personal site, [you
-probably should be][Cloudflare Free] — the free tier is excellent), you've got
-the most options.
+If you're behind Cloudflare, you've got the most options. We've already gone
+over their managed `robots.txt` solution, but they also offer more.
 
-**One-click AI bot blocking:**
+#### One-click AI bot blocking
 
 Navigate to **Security > Bots** in your dashboard and toggle **Block AI Scrapers
-and Crawlers**. That's it. This has been used by over one million Cloudflare
-customers since its launch. As of mid-2025, [Cloudflare blocks AI bots by
-default][] for new domains — the first major infrastructure provider to do so.
+and Crawlers**. This has been used by over one million Cloudflare customers
+since its launch. As of mid-2025, [Cloudflare blocks AI bots by default][] for
+new domains — the first major infrastructure provider to do so.
 
 You can also fine-tune this with **AI Crawl Control**, which lets you allow or
 block specific crawlers individually rather than blanket-blocking everything.
 
-**Managed robots.txt:**
-
-Cloudflare can also [manage your robots.txt][] for you, keeping it current as
-new crawlers emerge. You can scope it to only block on pages with ads or apply
-it site-wide.
-
-**AI Labyrinth (the fun one):**
+#### AI Labyrinth
 
 This is Cloudflare's most creative defense. When [AI Labyrinth][] detects an
 unauthorized crawler, instead of blocking it, it lures the bot into a maze of
@@ -115,9 +111,6 @@ acting as a honeypot. Any visitor that goes multiple links deep into the maze is
 almost certainly a bot, which gives Cloudflare data to fingerprint and catalog
 bad actors. It's available on all plans including free, and it's opt-in via a
 single toggle.
-
-As PC Gamer memorably put it: _"No real human would go four links deep into a
-maze of AI-generated nonsense."_
 
 ### Netlify
 
@@ -135,22 +128,22 @@ For more control, you can write your own Edge Function that inspects the
 ```typescript
 // netlify/edge-functions/block-bots.ts
 const AI_BOTS = [
-"GPTBot",
-"ChatGPT-User",
-"CCBot",
-"anthropic-ai",
-"Claude-Web",
-"Google-Extended",
-"Bytespider",
-"cohere-ai",
-"FacebookBot",
+  "GPTBot",
+  "ChatGPT-User",
+  "CCBot",
+  "anthropic-ai",
+  "Claude-Web",
+  "Google-Extended",
+  "Bytespider",
+  "cohere-ai",
+  "FacebookBot",
 ];
 
 export default async (request: Request) => {
-const ua = request.headers.get("user-agent") || "";
-if (AI_BOTS.some((bot) => ua.includes(bot))) {
-return new Response("Blocked", { status: 401 });
-}
+  const ua = request.headers.get("user-agent") || "";
+  if (AI_BOTS.some((bot) => ua.includes(bot))) {
+    return new Response("Blocked", { status: 401 });
+  }
 };
 
 export const config = { path: "/*" };
@@ -181,35 +174,34 @@ Your options are:
 Honestly, if bot protection matters to you and you're on GitHub Pages, adding
 Cloudflare as a proxy is the single highest-leverage thing you can do.
 
-## The Full Stack
+## Citations
 
-Here's the layered approach, from least to most aggressive:
+1. <a id="1" href="https://tollbit.com/state-of-the-bots/q3-q4-2025/"> State of
+   the Bots </a>
+2. <a id="2" href="https://radar.cloudflare.com/year-in-review/2025#ai-traffic-share">
+   AI Bot Traffic 2025 </a>
+3. <a id="3" href="https://radar.cloudflare.com/ai-insights?dateRange=52w#crawl-to-refer-ratio">
+   Cloudflare AI Insights </a>
+4. <em>Since I use Cloudflare extensively(and you should too, their free-tier is
+   amazing), I'll mostly be focusing on their service offerings.</em>
+5. <a id="5" href="https://www.rfc-editor.org/rfc/rfc9309"> RFC 9309 </a>
 
-{{< block-bots-full-stack >}}
-
-No single layer is bulletproof. Bots can spoof user agents, ignore `robots.txt`,
-and strip meta tags from scraped content. But stacking these layers creates
-meaningful friction, and platforms like Cloudflare are adding behavioral
-detection that goes beyond user-agent strings.
-
-The AI scraping arms race isn't slowing down. At minimum, drop a `robots.txt`
-with the [ai-robots-txt][] community list and flip the switches your hosting
-platform gives you. Your content is worth protecting.
-
+[ai.robots.txt]: https://github.com/ai-robots-txt/ai.robots.txt
 [AI Labyrinth]: https://blog.cloudflare.com/ai-labyrinth/
-[ai-robots-txt]: https://github.com/ai-robots-txt/ai.robots.txt
 [Cloudflare blocks AI bots by default]:
-https://www.technologyreview.com/2025/07/01/1119498/cloudflare-will-now-by-default-block-ai-bots-from-crawling-its-clients-websites/
+  https://www.technologyreview.com/2025/07/01/1119498/cloudflare-will-now-by-default-block-ai-bots-from-crawling-its-clients-websites/
 [Cloudflare Free]: https://www.cloudflare.com/plans/free/
 [Dark Visitors]: https://darkvisitors.com/
 [DeviantArt in 2022]:
-https://www.foundationwebdev.com/2022/11/noai-noimageai-meta-tag-how-to-install/
+  https://www.foundationwebdev.com/2022/11/noai-noimageai-meta-tag-how-to-install/
 ["double up"]:
-https://developers.netlify.com/guides/blocking-ai-bots-and-controlling-crawlers/
+  https://developers.netlify.com/guides/blocking-ai-bots-and-controlling-crawlers/
 [manage your robots.txt]:
-https://blog.cloudflare.com/control-content-use-for-ai-training/
+  https://blog.cloudflare.com/control-content-use-for-ai-training/
 [Netlify Edge Functions]:
-https://docs.netlify.com/build/build-with-ai/block-ai-crawlers/
+  https://docs.netlify.com/build/build-with-ai/block-ai-crawlers/
+[robots.txt]: https://www.cloudflare.com/learning/bots/what-is-robots-txt/
 [RFC 9309]: https://www.rfc-editor.org/rfc/rfc9309
+[Tollbit]: https://tollbit.com/
 [User Agent Blocker]:
-https://developers.netlify.com/guides/blocking-ai-bots-and-controlling-crawlers/
+  https://developers.netlify.com/guides/blocking-ai-bots-and-controlling-crawlers/
