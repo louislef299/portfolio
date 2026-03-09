@@ -13,9 +13,6 @@ markup:
       unsafe: true
 menu:
   main:
-    - name: "PGP"
-      url: "/public-key.txt"
-      weight: 10
     - name: "Tags"
       url: "/tags"
       weight: 30
