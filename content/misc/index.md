@@ -1,14 +1,19 @@
 ---
-title: "Resources"
-date: 2026-02-09T12:35:58-06:00
-weight: 40
-menus: "main"
+title: "..."
+weight: 50
+menu: main
 params:
   ignoreDate: true
   hideReply: true
 ---
 
-## Software Engineers
+## **_Misc_**
+
+- [My PGP](/public-key.txt)
+
+## **_Online Resources_**
+
+### _Software Engineers_
 
 - [seankhliao.com](https://seankhliao.com/)
 - [mitchellh.com](https://mitchellh.com/)
@@ -19,16 +24,16 @@ params:
 - [jvns.ca](https://jvns.ca/)
 - [openmymind.net](https://www.openmymind.net/)
 
-## Athletics
+### _Athletics_
 
 - [runningwritings.com](https://runningwritings.com/)
 - [swimdojo.com](https://www.swimdojo.com/workouts)
 
-## Artists
+### _Artists_
 
 - [blackwalnutbakery.com](https://www.blackwalnutbakery.com/)
 
-## Friends :)
+### _Friends_ :)
 
 - [zacharycorbishley.com](https://www.zacharycorbishley.com/)
 - [barbercash.github.io](https://barbercash.github.io/Portfolio/)
