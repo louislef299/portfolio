@@ -1,5 +1,20 @@
+<hr />
+
+<small> {{ .Site.Copyright }} | {{ markdownify .Site.Params.madeWith }} </small>
+<div class="git-update" style="opacity: 0.5; padding-top: 0.75rem">
+    <small>
+        <i
+            >{{ with .GitInfo }} Last updated {{ .CommitDate | time.Format
+            ":date_medium" }} (<a
+                href="{{ $.Site.Params.gitRepoURL }}/commit/{{ .Hash }}"
+                >{{ .AbbreviatedHash }}</a
+            >) {{ end }}</i
+        >
+    </small>
+</div>
+
 <!-- Social media icons -->
-<div class="footer-social-icons">
+<div class="footer-social-icons" style="opacity: 0.75; padding-top: 1rem">
     <a href="https://linkedin.com/in/louislef299" target="_blank">
         <img src="/image/svgs/brands/linkedin.svg" alt="linkedin" />
     </a>
@@ -22,7 +37,7 @@
         transform: scale(0.6);
     }
 </style>
-<div>
+<div class="bmc-div" style="opacity: 0.75">
     <script
         type="text/javascript"
         src="https://cdnjs.buymeacoffee.com/1.0.0/button.prod.min.js"
@@ -36,17 +51,4 @@
         data-font-color="#000000"
         data-coffee-color="#FFDD00"
     ></script>
-</div>
-
-<small> {{ .Site.Copyright }} | {{ markdownify .Site.Params.madeWith }} </small>
-<div class="git-update" style="opacity: 0.25">
-    <small>
-        <i
-            >{{ with .GitInfo }} Last updated {{ .CommitDate | time.Format
-            ":date_medium" }} (<a
-                href="{{ $.Site.Params.gitRepoURL }}/commit/{{ .Hash }}"
-                >{{ .AbbreviatedHash }}</a
-            >) {{ end }}</i
-        >
-    </small>
 </div>
