@@ -1,0 +1,5 @@
+<!-- Svelte web component shortcode. Renders a <hello-world> custom element
+     defined in components/src/HelloWorld.svelte.
+     Usage: hello-world or hello-world name="Louis"
+     Delete this shortcode when you remove the sample HelloWorld component. -->
+<hello-world{{ with .Get "name" }} name="{{ . }}"{{ end }}></hello-world>

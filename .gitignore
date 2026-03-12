@@ -18,3 +18,6 @@ hugo.linux
 .env
 node_modules/
 bin/
+
+# Vite build artifact — compiled from components/src/ by Netlify on deploy
+static/js/components.js

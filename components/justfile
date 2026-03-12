@@ -1,0 +1,8 @@
+install:
+    bun install
+
+build: install
+    bun run build
+
+dev: install
+    bun run dev

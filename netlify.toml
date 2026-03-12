@@ -1,10 +1,12 @@
 [build]
   publish = "public"
-  command = "hugo --gc --minify"
+  # Build Svelte components first, then Hugo. If component build fails, deploy stops.
+  command = "cd components && bun install && bun run build && cd .. && hugo --gc --minify"
 
 [build.environment]
   HUGO_VERSION = "0.148.2"
   TZ = "America/Chicago"
+  BUN_VERSION = "1.2"
 
 [[headers]]
   for = "/*"
