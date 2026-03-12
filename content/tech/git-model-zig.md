@@ -8,6 +8,8 @@ tags:
 - git
 ---
 
+opencode -s ses_32273be62ffep570bG7WQZoiho
+
 Today I'm experimenting with Zig integrations and Git. Essentially, I want to
 gather Git commit([object][]) information leveraging Zig without using the Git
 cli. With the Git cli, this would be `git log -1` or with the plumbing command
@@ -59,21 +61,43 @@ fn linkSLRE(b: *std.Build, exe: *std.Build.Step.Compile) void {
 However, [libgit2 is a different beast][]. From transitive dependencies,
 specific and platform-specific CMake build-time configurations, and increased
 Zig build times, it will be easiest to link to a system-installed libgit2(the
-project already requires Docker & Ollama as a system dependency anyways).
+project already requires Docker & Ollama as system dependencies anyways).
 
-1. Add libgit2 as a dependency in build.zig.zon
-   - Option A: Use a Zig package that wraps libgit2 (e.g., zig-libgit2 or andrewrk/libgit2)
-   - Option B: Link system-installed libgit2 (brew install libgit2)
-2. Update build.zig to link libgit2
-   - exe.linkSystemLibrary("git2")
-   - exe.linkLibC()
-   - (If vendored: add the dependency module import instead)
+Assuming the dependency is installed on the system actually makes my life
+easier, and all that's required to add to my `build.zig` is:
+
+```c
+exe.linkSystemLibrary("git2");
+exe.linkLibC();
+```
+
+One gotcha that I ran into is the UNIX linking standard. I initially linked the
+system library under the name `libgit2` and ran into a linker error when trying
+to build. I guess UNIX standard is to automatically prepend `lib` to the name
+when searching for the file(`man ld`), which results in an error like:
+
+```sh
+$ zig build
+install
+└─ install ishi
+   └─ compile exe ishi Debug native failure
+error: error: unable to find dynamic system library 'libgit2' using strategy 'paths_first'. searched paths:
+  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/lib/liblibgit2.tbd
+  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/lib/liblibgit2.dylib
+  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/lib/liblibgit2.so
+  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/lib/liblibgit2.a
+  /opt/homebrew/lib/liblibgit2.tbd
+  /opt/homebrew/lib/liblibgit2.dylib
+  /opt/homebrew/lib/liblibgit2.so
+  /opt/homebrew/lib/liblibgit2.a
+```
 
 ## Read a Git Commit
 
 3. Create a new source file: src/lib/git.zig
    - Import libgit2 C headers via @cImport(@cInclude("git2.h"))
    - Define a CommitInfo struct to hold the extracted data:
+       ```json
        {
          sha: [40]u8,
          author_name: []const u8,
@@ -88,50 +112,61 @@ project already requires Docker & Ollama as a system dependency anyways).
          insertions: u32,
          deletions: u32,
        }
+       ```
 4. Write a readHeadCommit(repo_path: []const u8) function:
    4a. Initialize libgit2 runtime
-       - call git_libgit2_init()
-       - defer git_libgit2_shutdown()
+    - call git_libgit2_init()
+    - defer git_libgit2_shutdown()
+
    4b. Open the repository
-       - call git_repository_open(&repo, repo_path)
-       - defer git_repository_free(repo)
+    - call git_repository_open(&repo, repo_path)
+    - defer git_repository_free(repo)
+
    4c. Resolve HEAD to an OID
-       - call git_reference_name_to_id(&oid, repo, "HEAD")
+    - call git_reference_name_to_id(&oid, repo, "HEAD")
+
    4d. Look up the commit object
-       - call git_commit_lookup(&commit, repo, &oid)
-       - defer git_commit_free(commit)
+    - call git_commit_lookup(&commit, repo, &oid)
+    - defer git_commit_free(commit)
+
    4e. Extract commit metadata
-       - sha       = git_oid_tostr_s(&oid)
-       - author    = git_commit_author(commit)      → .name, .email, .when.time
-       - committer = git_commit_committer(commit)    → .name, .email, .when.time
-       - message   = git_commit_message(commit)
+    - sha       = git_oid_tostr_s(&oid)
+    - author    = git_commit_author(commit)      → .name, .email, .when.time
+    - committer = git_commit_committer(commit)    → .name, .email, .when.time
+    - message   = git_commit_message(commit)
+
    4f. Get the commit's tree
-       - call git_commit_tree(&tree, commit)
-       - defer git_tree_free(tree)
+    - call git_commit_tree(&tree, commit)
+    - defer git_tree_free(tree)
+
    4g. Get the parent's tree (if parent exists)
-       - if git_commit_parentcount(commit) > 0:
-           - call git_commit_parent(&parent, commit, 0)
-           - call git_commit_tree(&parent_tree, parent)
-           - defer git_tree_free(parent_tree)
-           - defer git_commit_free(parent)
-       - else:
-           - parent_tree = null  (root commit, diff against empty tree)
+    - if git_commit_parentcount(commit) > 0:
+        - call git_commit_parent(&parent, commit, 0)
+        - call git_commit_tree(&parent_tree, parent)
+        - defer git_tree_free(parent_tree)
+        - defer git_commit_free(parent)
+    - else:
+        - parent_tree = null  (root commit, diff against empty tree)
+
    4h. Compute the diff between parent tree and commit tree
-       - call git_diff_tree_to_tree(&diff, repo, parent_tree, tree, null)
-       - defer git_diff_free(diff)
+    - call git_diff_tree_to_tree(&diff, repo, parent_tree, tree, null)
+    - defer git_diff_free(diff)
+
    4i. Extract diff stats
-       - call git_diff_get_stats(&stats, diff)
-       - defer git_diff_stats_free(stats)
-       - files_changed = git_diff_stats_files_changed(stats)
-       - insertions    = git_diff_stats_insertions(stats)
-       - deletions     = git_diff_stats_deletions(stats)
+    - call git_diff_get_stats(&stats, diff)
+    - defer git_diff_stats_free(stats)
+    - files_changed = git_diff_stats_files_changed(stats)
+    - insertions    = git_diff_stats_insertions(stats)
+    - deletions     = git_diff_stats_deletions(stats)
+
    4j. Extract full patch text
-       - call git_diff_to_buf(&buf, diff, GIT_DIFF_FORMAT_PATCH)
-       - defer git_buf_dispose(&buf)
-       - copy buf.ptr[0..buf.size] into a Zig-owned slice
+    - call git_diff_to_buf(&buf, diff, GIT_DIFF_FORMAT_PATCH)
+    - defer git_buf_dispose(&buf)
+    - copy buf.ptr[0..buf.size] into a Zig-owned slice
+
    4k. Populate and return the CommitInfo struct
 
-## Test It Out!
+## Test It Out
 
 5. Wire it into ishi's command system
    - Add a new subcommand (e.g., "read" or extend "seed")
