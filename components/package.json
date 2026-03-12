@@ -9,7 +9,6 @@
   "devDependencies": {
     "svelte": "^5",
     "@sveltejs/vite-plugin-svelte": "^5",
-    "vite": "^6",
-    "typescript": "^5"
+    "vite": "^6"
   }
 }

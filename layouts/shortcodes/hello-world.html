@@ -2,4 +2,9 @@
      defined in components/src/HelloWorld.svelte.
      Usage: hello-world or hello-world name="Louis"
      Delete this shortcode when you remove the sample HelloWorld component. -->
+<!-- Load the Svelte bundle once per page, only on pages that use a component. -->
+{{ if not (.Page.Scratch.Get "svelte-components-loaded") }}
+  {{ .Page.Scratch.Set "svelte-components-loaded" true }}
+  <script src="/js/components.js" defer></script>
+{{ end }}
 <hello-world{{ with .Get "name" }} name="{{ . }}"{{ end }}></hello-world>
