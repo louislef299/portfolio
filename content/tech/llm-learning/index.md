@@ -40,7 +40,7 @@ Anyways, let's put my current understanding to the test!
 
 ## Machine Learning vs Deep Learning
 
-![Learning Model Venn Diagram](/image/learning-model-vd.png)
+![Learning Model Venn Diagram](learning-model-vd.png)
 
 In some preliminary research just on [neural networks][], I was able to
 understand the true difference between Machine Learning and Deep Learning:
@@ -78,7 +78,7 @@ a great series on neural networks by [3Blue1Brown][] that I would recommend.
 
 ## Transformers
 
-![Transformers](/image/transformer-transparent.gif)
+![Transformers](transformer-transparent.gif)
 
 [Transformers][] are a type of neural network architecture that transforms or
 changes an input sequence into an output sequence, computing hidden
@@ -109,7 +109,7 @@ attention scores. For each query, the model computes the [dot product][] with
 all the keys and then applies a softmax function to normalize the results. These
 scores represent the relevance of each key to the current query.
 
-![Attention Algorithm](/image/attention-algorithm.webp)
+![Attention Algorithm](attention-algorithm.webp)
 
 More information on how transformers work under-the-hood can be found at
 [Transformers Explained Visually][]

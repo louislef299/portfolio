@@ -47,7 +47,7 @@ Instead of setting `commit.gpgsign`, you can also sign an individual commit with
 the `-S` flag. This is great and all, but as you can see, my gpg key is still
 unverified in my actual GitHub repository:
 
-![GPG GitHub](/image/gpg-unverified.png)
+![GPG GitHub](gpg-unverified.png)
 
 Follow the link to add a GPG key under your user settings. Name it whatever you
 like and get the public key for your GPG signing key with `gpg --armor --export
@@ -56,8 +56,7 @@ blue `Verified` tag on the commit!
 
 <!-- markdownlint-disable MD033 MD013 -->
 <div style="text-align:center;">
-    <img src="/image/hackerman-mr-robot.jpg" alt="Hackerman"
-        style="width:70%;height:70%;">
+    {{< img src="hackerman-mr-robot.jpg" alt="Hackerman" style="width:70%;height:70%;" >}}
 </div>
 
 As you're working with GPG and git, you may also run into the following error:

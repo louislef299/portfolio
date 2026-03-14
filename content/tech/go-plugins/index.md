@@ -127,7 +127,7 @@ If you've worked with gRPC before, you know that this obviously requires setting
 up a client and a server. We are starting to require a bit more understanding
 about how this plugin library works, let's go over it quickly.
 
-![https://eli.thegreenplace.net/2023/rpc-based-plugins-in-go/](/image/plugin-rpc-binaries.png)
+![https://eli.thegreenplace.net/2023/rpc-based-plugins-in-go/](plugin-rpc-binaries.png)
 
 Pretend each rpc above is replaced with gRPC. There is a main process
 responsible for the lifecycle of child processes with `cmd.Exec()`(remember

@@ -20,7 +20,7 @@ In short, it is a generic Inter-Process Communication(IPC) used by Linux and
 other operating systems and leveraging Unix domain sockets(AF_UNIX) or
 TCP/IP(AF_INET).
 
-![Linux DBus Architecture](/image/linux-dbus.jpg)
+![Linux DBus Architecture](linux-dbus.jpg)
 
 From [Pid Eins][] on why DBus even exists:
 

@@ -1,0 +1,44 @@
+{{- $src := .Destination -}}
+{{- $alt := .Text -}}
+{{- $isGif := strings.HasSuffix (lower $src) ".gif" -}}
+{{- $img := .Page.Resources.GetMatch $src -}}
+
+{{- if and $img (not $isGif) -}}
+  {{- $sizes := slice 400 800 1200 1600 -}}
+  {{- $variants := slice -}}
+  {{- $full := $img -}}
+  {{- range $sizes -}}
+    {{- if gt $img.Width . -}}
+      {{- $resized := $img.Resize (printf "%dx webp" .) -}}
+      {{- $variants = $variants | append $resized -}}
+    {{- end -}}
+  {{- end -}}
+  {{- if gt (len $variants) 0 -}}
+    {{- $full = index $variants (sub (len $variants) 1) -}}
+  {{- else -}}
+    {{- $full = $img.Resize (printf "%dx webp" $img.Width) -}}
+    {{- $variants = $variants | append $full -}}
+  {{- end -}}
+  {{- $srcsetParts := slice -}}
+  {{- range $variants -}}
+    {{- $srcsetParts = $srcsetParts | append (printf "%s %dw" .RelPermalink .Width) -}}
+  {{- end -}}
+  {{- $srcset := delimit $srcsetParts ", " -}}
+  <img
+    src="{{ $full.RelPermalink }}"
+    alt="{{ $alt }}"
+    width="{{ $full.Width }}"
+    height="{{ $full.Height }}"
+    loading="lazy"
+    {{- if gt (len $variants) 1 }}
+    srcset="{{ $srcset }}"
+    sizes="(max-width: 400px) 400px, {{ $full.Width }}px"
+    {{- end }}
+  />
+{{- else if $img -}}
+  {{/* GIF — no processing, just lazy load */}}
+  <img src="{{ $img.RelPermalink }}" alt="{{ $alt }}" loading="lazy" />
+{{- else -}}
+  {{/* Fallback for images not in page bundle (e.g. /image/...) */}}
+  <img src="{{ $src }}" alt="{{ $alt }}" loading="lazy" />
+{{- end -}}
