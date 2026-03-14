@@ -4,24 +4,34 @@
 {{- $img := .Page.Resources.GetMatch $src -}}
 
 {{- if and $img (not $isGif) -}}
+  {{- $sizes := slice 400 800 1200 1600 -}}
+  {{- $variants := slice -}}
   {{- $full := $img -}}
-  {{- $small := $img -}}
-  {{- if gt $img.Width 800 -}}
-    {{- $full = $img.Resize "800x webp" -}}
+  {{- range $sizes -}}
+    {{- if gt $img.Width . -}}
+      {{- $resized := $img.Resize (printf "%dx webp" .) -}}
+      {{- $variants = $variants | append $resized -}}
+    {{- end -}}
+  {{- end -}}
+  {{- if gt (len $variants) 0 -}}
+    {{- $full = index $variants (sub (len $variants) 1) -}}
   {{- else -}}
     {{- $full = $img.Resize (printf "%dx webp" $img.Width) -}}
+    {{- $variants = $variants | append $full -}}
   {{- end -}}
-  {{- if gt $img.Width 400 -}}
-    {{- $small = $img.Resize "400x webp" -}}
+  {{- $srcsetParts := slice -}}
+  {{- range $variants -}}
+    {{- $srcsetParts = $srcsetParts | append (printf "%s %dw" .RelPermalink .Width) -}}
   {{- end -}}
+  {{- $srcset := delimit $srcsetParts ", " -}}
   <img
     src="{{ $full.RelPermalink }}"
     alt="{{ $alt }}"
     width="{{ $full.Width }}"
     height="{{ $full.Height }}"
     loading="lazy"
-    {{- if gt $img.Width 400 }}
-    srcset="{{ $small.RelPermalink }} 400w, {{ $full.RelPermalink }} {{ $full.Width }}w"
+    {{- if gt (len $variants) 1 }}
+    srcset="{{ $srcset }}"
     sizes="(max-width: 400px) 400px, {{ $full.Width }}px"
     {{- end }}
   />
