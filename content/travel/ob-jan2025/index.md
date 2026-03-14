@@ -83,4 +83,4 @@ our way back, finally getting back around 10:30.
 Had to say goodbye to Lance as it was "too cold" for him in California. Hit
 Newbreak for breakfast and now I'm all caught up.
 
-![Henry & Elise](/image/h-and-e-ob.jpeg)
+![Henry & Elise](h-and-e-ob.jpeg)

@@ -7,8 +7,7 @@ tags:
 - surf
 ---
 
-<img class="img-right" id="flight-window"
-    src="/image/2026-incoming-ob.jpeg" alt="Flying Over the Rockies">
+{{< img src="2026-incoming-ob.jpeg" alt="Flying Over the Rockies" class="img-right" id="flight-window" >}}
 
 Ya what about it? After ripping my way through RDR2 and watching Dolly for a
 week and Elise coming fresh off of a trip to Spain, we set out to OB for a
@@ -30,8 +29,7 @@ we hunkered down and watched movies until our reservation that night. We went to
 [Herb & Wood][] and damn it was good! Great way to celebrate an anniversary or
 special occasion if you're in the area.
 
-<img id="grey-balboa" class="img-left"
-    src="/image/grey-balboa.jpeg" alt="Grey Day at Balboa Park">
+{{< img src="grey-balboa.jpeg" alt="Grey Day at Balboa Park" class="img-left" id="grey-balboa" >}}
 
 The next few days, we made the most of the bad weather. We coffee shop hopped as
 Elise worked remotely and I was experimenting with Google's ADK(hopefully more
@@ -42,8 +40,7 @@ wood coasters(4 for $20) and we had to grab some for our Dads. Elise got almost
 all Rolling Stones albums and Big T got Bobby D, Beatles, Metallica and
 Megadeth🤘.
 
-<img class="img-right" id="art" src="/image/claude-joseph-seaport-at-sunset.jpeg"
-    alt="A Seaport at Sunset by Claude Joseph">
+{{< img src="claude-joseph-seaport-at-sunset.jpeg" alt="A Seaport at Sunset by Claude Joseph" class="img-right" id="art" >}}
 
 On Thursday, we hit Balboa Park☂️. While the sun was out, we walked around as
 much of the north-eastern part of the park as possible; observing different
@@ -67,8 +64,7 @@ at Daybreak Cafe and got a rental car. First order of business? Go to La Jolla
 Shores to check out the surf conditions as it seemed to be the most promising
 conditions for the day.
 
-<img id="la-jolla" class="img-left" src="/image/la-jolla-coastal-hike.jpeg"
-    alt="La Jolla Coast">
+{{< img src="la-jolla-coastal-hike.jpeg" alt="La Jolla Coast" class="img-left" id="la-jolla" >}}
 
 When we got there, the waves were small and calm, but so calm I would have
 needed a foamy or at least a longboard to catch them. I'd brought my short board
@@ -79,8 +75,7 @@ shopping around, eating at The Cove, and walking for miles, we looped back down
 to the car to find some sunset surf! So I took out the board and grabbed some
 slush.
 
-<img id="ob-surf" class="img-right" src="/image/ob-surf-morn.jpeg"
-    alt="OB Surf Morning">
+{{< img src="ob-surf-morn.jpeg" alt="OB Surf Morning" class="img-right" id="ob-surf" >}}
 
 The next morning, I made sure to wake up at 6 to go grab coffee and hit the
 beach for an OB surf morning! Conditions were solid and they were going to taper
@@ -89,8 +84,7 @@ out for hours, there were so many waves to catch and didn't come in until lunch.
 We then scarfed down some left-over pizza from Luigi's and headed for Del Mar,
 which I had never spent a significant amount of time in.
 
-<img id="torrey-pines" class="img-left" src="/image/torrey-pines-surf.jpeg"
-    alt="Torrey Pines Surf">
+{{< img src="torrey-pines-surf.jpeg" alt="Torrey Pines Surf" class="img-left" id="torrey-pines" >}}
 
 <div class="clearfix-right"></div>
 
@@ -124,8 +118,7 @@ have?) spent another week there. I definitely left with a hunger to catch some
 more waves and experiment, so all eyes are going to be up north for the
 remainder of the winter.
 
-<img src="/image/la-jolla-sunset.jpeg" alt="Elise At Sunset"
-    style="border-radius: 0.5rem;">
+{{< img src="la-jolla-sunset.jpeg" alt="Elise At Sunset" style="border-radius: 0.5rem;" >}}
 
 [Benedict's]: https://www.benedictsbrunch.com/menu
 [Herb & Wood]: https://www.herbandwood.com/dinner/?utm_source=google&utm_medium=organic&utm_campaign=gmb

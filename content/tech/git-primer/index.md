@@ -27,7 +27,7 @@ changes to files in a content-addressable filesystem. It is important to
 characterize Git as distributed because it keeps a copy of the entire
 dataset(repository) locally. Git has 3 main stages:
 
-![Git Stages](/image/git-flow-diagram.png)
+![Git Stages](git-flow-diagram.png)
 
 1. Modified => the file in your Git repo has changed but is not committed to
    your local database yet

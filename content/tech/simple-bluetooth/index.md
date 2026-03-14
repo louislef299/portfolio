@@ -52,7 +52,7 @@ to transact data. This interval is just a recommendation, however, not a
 requirement. The GATT transactions contain nested objects called [Profiles][],
 [Services and Characteristics][].
 
-![Profiles, Services, and Chars](/image/microcontrollers_GattStructure.png)
+![Profiles, Services, and Chars](microcontrollers_GattStructure.png)
 
 ## Going over my simple example
 

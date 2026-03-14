@@ -8,8 +8,7 @@ tags:
 ---
 
 <!-- markdownlint-disable MD033 MD013 -->
-<img src="/image/cash-and-dan.JPG" alt="Cash and Dan"
-    style="float:left;margin-right:3%;margin-bottom:1%;width:50%;height:60%;">
+{{< img src="cash-and-dan.JPG" alt="Cash and Dan" style="float:left;margin-right:3%;margin-bottom:1%;width:50%;height:60%;" >}}
 
 Just got back from a great road trip from San Francisco to San Diego with my
 friends Dan and Cash. It was so much fun from watching the Gophers lose to
@@ -46,8 +45,7 @@ back, it felt like home as I had been to San Diego and Oceanside multiple times
 at this point and had really fallen in love with Northern Cali when I was road
 tripping.
 
-<img src="/image/surfing-pfeiffer.gif" alt="Surfing Pfeiffer"
-    style="float:right;margin-left:3%;margin-bottom:1%;width:40%;height:40%;">
+{{< img src="surfing-pfeiffer.gif" alt="Surfing Pfeiffer" style="float:right;margin-left:3%;margin-bottom:1%;width:40%;height:40%;" >}}
 
 Luckily, I had traveled with my 6'6" board and was able to get a lot better at
 actually catching waves with it(no footage of me actually catching a wave lol)
@@ -62,7 +60,7 @@ Anyways, having Cash and Dan on the trip was perfect. A small enough group where
 we could easily agree on things to do and chill guys that would go with the flow
 of my from-the-hip travel planning style.
 
-<img src="/image/la-skyline.JPG" alt="LA Skyline">
+{{< img src="la-skyline.JPG" alt="LA Skyline" >}}
 
 [Cafe de Casa]: https://www.cafedecasa.com/
 [Rudie]: https://www.instagram.com/rudiesrockespresso/

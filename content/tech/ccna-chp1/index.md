@@ -22,7 +22,7 @@ though the TCP/IP model won out and only technically has 5 layers.
 
 Here is a useful diagram of both models and the protocols they implement:
 
-![TCP/IP Networking Model](/image/tcp-ip-network-model.jpg)
+![TCP/IP Networking Model](tcp-ip-network-model.jpg)
 
 The TCP/IP model references protocols that are used to allow and dictate
 communication between computers. Protocol definitions are defined as [RFCs][].

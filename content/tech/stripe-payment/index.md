@@ -20,7 +20,7 @@ working implementation with AI a couple times now, but I didn't feel like I had
 quite grasped all the concepts, so I've been taking the [Stripe Developer
 training course][] to really understand how to properly use their APIs.
 
-![Payment Object Overview](/image/stripe-payment-objects.png)
+![Payment Object Overview](stripe-payment-objects.png)
 
 As an exercise, I'm going to design a payment flow using the [Payment Intent][]
 API that sits one level below the Checkout Sessions API, making it a good
