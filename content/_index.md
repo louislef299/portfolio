@@ -22,9 +22,7 @@ allow).
 
 <!-- markdownlint-disable MD033 MD013 -->
 
-<img src="/image/jackson-port.jpg" alt="Base Photo"
-    width="3024" height="2416" fetchpriority="high"
-    style="display:block;margin-left:auto;margin-right:auto;width:80%;height:80%;border-radius: 0.5rem;">
+{{< img src="image/jackson-port.jpg" alt="Base Photo" priority="high" style="display:block;margin-left:auto;margin-right:auto;width:80%;height:80%;border-radius: 0.5rem;" >}}
 
 <p style="text-align:center">
     I come from a family where the cook never cleans

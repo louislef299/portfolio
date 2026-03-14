@@ -6,6 +6,9 @@
 {{- $priority := .Get "priority" | default "" -}}
 {{- $isGif := strings.HasSuffix (lower $src) ".gif" -}}
 {{- $img := .Page.Resources.GetMatch $src -}}
+{{- if not $img -}}
+  {{- $img = resources.Get $src -}}
+{{- end -}}
 
 {{- if and $img (not $isGif) -}}
   {{- $full := $img -}}
