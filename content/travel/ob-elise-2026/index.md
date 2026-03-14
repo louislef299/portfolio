@@ -7,6 +7,8 @@ tags:
 - surf
 ---
 
+<!-- markdownlint-disable MD013 -->
+
 {{< img src="2026-incoming-ob.jpeg" alt="Flying Over the Rockies" class="img-right" id="flight-window" >}}
 
 Ya what about it? After ripping my way through RDR2 and watching Dolly for a
