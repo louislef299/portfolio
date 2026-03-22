@@ -1,3 +1,5 @@
+export const prerender = true;
+
 const SITE = 'https://louislefebvre.net';
 
 /** @type {import('./$types').RequestHandler} */
