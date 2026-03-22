@@ -218,6 +218,28 @@ theme provides similar colors to the Dracula variant the Hugo site used.
 Note: the actual background color is `#1d1f27` (not `#282828` as originally
 noted — that's the code block background).
 
+### Layout Shell
+
+Components created in `src/lib/components/`:
+
+- **`Nav.svelte`** — skip link + site title + menu links from config
+- **`Footer.svelte`** — copyright, git hash link, social icons (LinkedIn,
+  GitHub, Spotify), Buy Me a Coffee (loaded via `onMount` script injection)
+- **`Seo.svelte`** — `<svelte:head>` with title, description, OG tags, Twitter
+  cards. Props: `title`, `description`, `keywords[]`. Uses `$derived` for
+  computed title/description to satisfy Svelte 5 reactivity model.
+- **`config.ts`** — site metadata (title, author, menu items, URLs)
+
+Root `+layout.svelte` composes Nav → main slot → Footer with Seo in head.
+
+**Gotcha discovered**: `@sveltejs/vite-plugin-svelte@4.x` is incompatible with
+Vite 8 (and partially with Vite 6) — causes `css is not a function` SSR error.
+Must use `@sveltejs/vite-plugin-svelte@7.x` with Vite 8.
+
+**Gotcha discovered**: Svelte 5 warns when `$props()` values are used in `const`
+assignments outside reactive contexts. Use `$derived()` for computed values that
+depend on props.
+
 ### Image Handling
 
 Hugo's `img.html` shortcode has a non-trivial image pipeline:
