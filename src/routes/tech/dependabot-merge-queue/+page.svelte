@@ -1,0 +1,129 @@
+<script>
+	import Seo from '$lib/components/Seo.svelte';
+	import { _metadata as metadata } from './+page.js';
+</script>
+
+<Seo title={metadata.title} keywords={metadata.tags} />
+
+<h1>{metadata.title}</h1>
+<p class="byline">
+	<time datetime={metadata.date}>{metadata.date}</time>
+</p>
+
+<content>
+	<p>
+		In this post, I'm just going to go through
+		<a
+			href="https://docs.github.com/en/code-security/dependabot/working-with-dependabot/automating-dependabot-with-github-actions"
+			>automating dependabot updates</a
+		>
+		and leveraging
+		<a
+			href="https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/configuring-pull-request-merges/managing-a-merge-queue"
+			>merge queue</a
+		>
+		so that I don't have to mess around with rebasing and conflicts. Hoping this will just work
+		natively, but let's try it out!
+	</p>
+
+	<p>
+		The project I spend the most time keeping up-to-date is
+		<a href="https://github.com/louislef299/aws-sso">aws-sso</a>, so this should make my life
+		easier by only needing to execute the release. Side note: I really should write a doc on how to
+		use that tool.
+	</p>
+
+	<h2>Research</h2>
+
+	<p>
+		Alright, so after a little research, I quickly realized that merge queues
+		<a
+			href="https://medium.com/@kojoru/how-to-set-up-merge-queues-in-github-actions-59381e5f435a"
+			>aren't supported for personal repositories</a
+		>.
+	</p>
+
+	<blockquote>
+		<p>
+			Firstly, you need to have a repository that is either a private repository in a GitHub
+			Enterprise-licensed organization or a public repository in any organization. Personal
+			repositories don't support that feature at all, even public ones or if you have a Pro
+			subscription.
+		</p>
+	</blockquote>
+
+	<p>So, that changed up the approach a bit. Simplified things a little bit.</p>
+
+	<h2>Implementation</h2>
+
+	<p>The action ended up looking a bit like the following:</p>
+
+	<pre><code>---
+name: Dependabot Automation
+on: pull_request
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  dependabot:
+    runs-on: ubuntu-latest
+    if: github.event.pull_request.user.login == 'dependabot[bot]'
+    env:
+      PR_URL: ${'{{'}  github.event.pull_request.html_url {'}}'}
+      GH_TOKEN: ${'{{'}  secrets.DEPENDABOT_TOKEN {'}}'}
+    steps:
+    - name: Dependabot metadata
+      id: metadata
+      uses: dependabot/fetch-metadata@v2.2.0
+      with:
+        github-token: "${'{{'}  secrets.GITHUB_TOKEN {'}}'}"
+    - name: Enable auto-merge for Dependabot PRs
+      run: |
+        gh pr review --approve "$PR_URL"
+        gh pr merge --auto --squash "$PR_URL"</code></pre>
+
+	<p>
+		The one thing that I was concerned about when enabling this feature was if there would be any
+		race conditions in merging. That's why I had hoped to try out Merge Queues a bit, but I think
+		GitHub is smart enough to simply require the branch be updated to match the base branch and
+		Dependabot should auto-rebase the branch. So far, it seems to work without a hitch, but the real
+		test will be next week when new updates come up.
+	</p>
+
+	<p>
+		For my project, I don't require any approvals since I'm the only contributor, but if you would
+		need a PR approval, you can add one step to run before auto-merging:
+	</p>
+
+	<pre><code>- name: Approve a PR
+  run: gh pr review --approve "$PR_URL"</code></pre>
+
+	<h2>Conclusion</h2>
+
+	<p>
+		That was super easy! Makes my life better as an open-source contributor and I can definitely see
+		the benefits to bringing this back to the workplace. One requirement to have before enabling this
+		would be thorough testing and integration testing as to not accidentally introduce bad code. With
+		trunk-based development practices and release-please for manual releases, this is pretty safe
+		automation and nothing but a positive imo.
+	</p>
+
+	<h2>A Note on Release-Please</h2>
+
+	<p>
+		When managing releases with <a href="https://github.com/googleapis/release-please">release-please</a>,
+		make sure to create a PAT to trigger workflows that would usually run when merged to main as the
+		default <code>GITHUB_TOKEN</code>
+		<a href="https://gist.github.com/xt0rted/46475099dc0a70ba63e16e3177407872">will not work</a>.
+		After creating the token, I updated the action(above) to use
+		<code>GH_TOKEN: ${'{{'}  secrets.DEPENDABOT_TOKEN {'}}'}</code> as the default token for the cli.
+	</p>
+</content>
+
+<p>
+	{#each metadata.tags as tag}
+		<a class="blog-tags" href="/tags/{tag}/">#{tag}</a>
+	{/each}
+</p>
