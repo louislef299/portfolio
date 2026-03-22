@@ -1,0 +1,104 @@
+<div style="max-width: min(25rem, 95%); margin: 2rem auto">
+	<div
+		style="
+			text-align: center;
+			font-size: 0.8rem;
+			opacity: 0.6;
+			margin-bottom: 0.625rem;
+			font-weight: 600;
+		"
+	>
+		AI Labyrinth: the honeypot maze
+	</div>
+	<div
+		style="
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			gap: 0.25rem;
+		"
+	>
+		<!-- Row 1: Your site -->
+		<div class="bb-box" style="border-color: #1a8fe3; background: rgba(26, 143, 227, 0.15)">
+			<span class="bb-label" style="color: #1a8fe3">Your Site</span>
+			<span class="bb-sub">real content</span>
+		</div>
+		<span class="bb-arrow">↓</span>
+
+		<!-- Row 2: First decoys -->
+		<div style="display: flex; gap: 0.5rem; justify-content: center">
+			<div
+				class="bb-box"
+				style="border-color: #e8a832; background: rgba(232, 168, 50, 0.12)"
+			>
+				<span class="bb-label" style="color: #e8a832">Decoy A</span>
+			</div>
+			<div
+				class="bb-box"
+				style="border-color: #c4d64a; background: rgba(196, 214, 74, 0.12)"
+			>
+				<span class="bb-label" style="color: #c4d64a">Decoy B</span>
+			</div>
+			<div
+				class="bb-box"
+				style="border-color: #e8a832; background: rgba(232, 168, 50, 0.12)"
+			>
+				<span class="bb-label" style="color: #e8a832">Decoy C</span>
+			</div>
+		</div>
+		<div style="display: flex; gap: 2.5rem" class="bb-arrow">
+			<span>↙</span><span>↓</span><span>↘</span>
+		</div>
+
+		<!-- Row 3: Deep decoys -->
+		<div
+			style="
+				display: flex;
+				gap: 0.375rem;
+				justify-content: center;
+				flex-wrap: wrap;
+			"
+		>
+			<div
+				class="bb-box bb-pulse"
+				style="border-color: #5b3a29; background: rgba(91, 58, 41, 0.15); min-width: 4.375rem"
+			>
+				<span class="bb-label" style="color: #8b6844">Decoy</span>
+			</div>
+			<div
+				class="bb-box bb-pulse"
+				style="border-color: #7c4dff; background: rgba(124, 77, 255, 0.1); min-width: 4.375rem; animation-delay: 0.4s"
+			>
+				<span class="bb-label" style="color: #a07cff">Decoy</span>
+			</div>
+			<div
+				class="bb-box bb-pulse"
+				style="border-color: #5b3a29; background: rgba(91, 58, 41, 0.15); min-width: 4.375rem; animation-delay: 0.8s"
+			>
+				<span class="bb-label" style="color: #8b6844">Decoy</span>
+			</div>
+			<div
+				class="bb-box bb-pulse"
+				style="border-color: #7c4dff; background: rgba(124, 77, 255, 0.1); min-width: 4.375rem; animation-delay: 1.2s"
+			>
+				<span class="bb-label" style="color: #a07cff">Decoy</span>
+			</div>
+			<div
+				class="bb-box bb-pulse"
+				style="border-color: #5b3a29; background: rgba(91, 58, 41, 0.15); min-width: 4.375rem; animation-delay: 1.6s"
+			>
+				<span class="bb-label" style="color: #8b6844">Decoy</span>
+			</div>
+		</div>
+		<div
+			style="
+				font-size: 0.75rem;
+				opacity: 0.5;
+				font-style: italic;
+				margin-top: 0.25rem;
+			"
+		>
+			Bot wastes compute traversing infinite fake content
+		</div>
+	</div>
+</div>

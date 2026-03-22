@@ -1,5 +1,7 @@
 <script>
 	import Seo from '$lib/components/Seo.svelte';
+	import BlockBotsDiagram from '$lib/components/BlockBotsDiagram.svelte';
+	import BoxDiagram from '$lib/components/BoxDiagram.svelte';
 	import { _metadata as metadata } from './+page.js';
 </script>
 
@@ -39,7 +41,7 @@
 		>.
 	</p>
 
-	<!-- TODO: Import BlockBotsDiagram component once created in Step 6 -->
+	<BlockBotsDiagram />
 
 	<h2>Layer 1: The Polite Ask</h2>
 
@@ -149,7 +151,7 @@
 		instead of blocking it, it lures the bot into a maze of AI-generated decoy pages:
 	</p>
 
-	<!-- TODO: Import BoxDiagram component once created in Step 6 -->
+	<BoxDiagram />
 
 	<p>
 		It does this by adding invisible links to the HTML page with the
