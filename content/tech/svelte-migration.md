@@ -141,24 +141,55 @@ Here's the full-stack diagram:
 
 ### Project Setup
 
+Scaffolded manually (not via `bunx sv create` which is interactive). Created
+`package.json`, `svelte.config.js`, `vite.config.ts`, `tsconfig.json`,
+`src/app.html`, `src/app.d.ts`, `src/app.css`, `src/routes/+layout.js`,
+`src/routes/+layout.svelte`, `src/routes/+page.svelte`.
+
 ```bash
-bunx sv create .          # Svelte 5, TypeScript
-bun add -D @sveltejs/adapter-static mdsvex shiki
-bun add d3 topojson-client
+bun install  # resolves all deps
+bun run dev  # verify scaffold works
 ```
 
-In `svelte.config.js`:
+**Gotcha discovered**: `trailingSlash` is NOT a `svelte.config.js` kit option in
+current SvelteKit. It's exported from `+layout.js` (or per-page `+page.js`):
+
+```javascript
+// src/routes/+layout.js
+export const prerender = true;
+export const trailingSlash = 'always';
+```
+
+In `svelte.config.js`, the mdsvex highlight config uses shiki's `createHighlighter`
+API. Each code block gets a fresh highlighter instance — this works but could be
+optimized later with a cached singleton:
 
 ```javascript
 import adapter from "@sveltejs/adapter-static";
 import { mdsvex } from "mdsvex";
+import { createHighlighter } from "shiki";
+
+const mdsvexOptions = {
+  extensions: [".md"],
+  highlight: {
+    highlighter: async (code, lang = "text") => {
+      const highlighter = await createHighlighter({
+        themes: ["github-dark"],
+        langs: [lang],
+      });
+      const html = highlighter.codeToHtml(code, { lang, theme: "github-dark" });
+      highlighter.dispose();
+      return `{@html \`${html.replace(/`/g, "\\`")}\`}`;
+    },
+  },
+};
 
 export default {
   extensions: [".svelte", ".md"],
-  preprocess: [mdsvex({ extensions: [".md"] })],
+  preprocess: [mdsvex(mdsvexOptions)],
   kit: {
     adapter: adapter({ fallback: undefined }),
-    prerender: { default: true },
+    prerender: { handleHttpError: "warn" },
   },
 };
 ```
@@ -243,23 +274,6 @@ export function entries() {
   // return [{ tag: 'webdev' }, { tag: 'go' }, ...] from content scan
 }
 ```
-
-### RSS Feed
-
-Create `src/routes/index.xml/+server.js`:
-
-```javascript
-export async function GET() {
-  const posts = /* glob and parse content */;
-  const xml = /* build RSS XML string */;
-  return new Response(xml, {
-    headers: { 'Content-Type': 'application/rss+xml' },
-  });
-}
-```
-
-The static adapter pre-renders this to `build/index.xml` — identical to Hugo's
-output.
 
 ### SEO Parity
 
@@ -358,8 +372,6 @@ src/
       [tag]/
         +page.svelte            ← posts by tag
         +page.js
-    index.xml/
-      +server.js                ← RSS feed
     sitemap.xml/
       +server.js                ← sitemap
 ```
@@ -385,10 +397,7 @@ src/
 5. **`markdownlint-disable` comments**: These exist in several posts. mdsvex
    passes them through as HTML comments, which is fine. They won't render.
 
-6. **RSS subscribers**: If URLs change even slightly, RSS readers show old posts
-   as new. Verify URL parity before merging.
-
-7. **Datamaps removal**: The d3 v7 rewrite means the map will look different.
+6. **Datamaps removal**: The d3 v7 rewrite means the map will look different.
    Test the visual output against the current site. The current map uses
    datamaps' default Mercator with specific fill colors — match those in the
    Svelte component.

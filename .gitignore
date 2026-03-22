@@ -1,23 +1,19 @@
-# Generated files by hugo
+# SvelteKit
+.svelte-kit/
+/build/
+
+# Hugo (legacy — remove after migration complete)
 /public/
 /resources/_gen/
 /assets/jsconfig.json
 hugo_stats.json
-
-# Executable may be added to repository
-hugo.exe
-hugo.darwin
-hugo.linux
-
-# Temporary lock file while building
 /.hugo_build.lock
 
 # Local Development
 .DS_Store
-
 .env
 node_modules/
 bin/
 
-# Vite build artifact — compiled from components/src/ by Netlify on deploy
+# Vite build artifact
 static/js/components.js
