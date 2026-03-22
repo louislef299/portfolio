@@ -24,12 +24,6 @@ SvelteKit with `@sveltejs/adapter-static` gives you both:
   users hover a link, so by click-time the page is ready
 - **Automatic code splitting** — each route only ships its own JS (d3 never
   loads on blog pages)
-- **Minimal hydration** — markdown pages have near-zero JS cost after initial
-  render
-
-The site already has a Svelte 5 + Vite pipeline in `components/`. Migration
-eliminates the dual-build system (components build → Hugo build) in favor of a
-single Vite build.
 
 ## Architecture Mapping
 
@@ -41,24 +35,6 @@ single Vite build.
 | `config/_default/params.yaml`    | `src/lib/config.ts`                   |
 | `hugo.toml` theme/build settings | `svelte.config.js` + `vite.config.ts` |
 
-Create a `src/lib/config.ts` exporting site metadata:
-
-```typescript
-export const site = {
-  title: "Louis LeFebvre (✿◠‿◠)",
-  description: "A portfolio website for Louis Lefebvre",
-  author: { name: "Louis LeFebvre", email: "l@louislefebvre.net" },
-  url: "https://louislefebvre.net",
-  repo: "https://github.com/louislef299/portfolio",
-  copyright: "© 2026 Louis LeFebvre",
-  menu: [
-    { name: "Tech", url: "/tech", weight: 10 },
-    { name: "Travel", url: "/travel", weight: 20 },
-    { name: "Tags", url: "/tags", weight: 30 },
-  ],
-};
-```
-
 ### Layouts → Routes + Components
 
 | Hugo                                         | SvelteKit                                             |
@@ -67,75 +43,93 @@ export const site = {
 | `partials/header.html` + `partials/nav.html` | `src/lib/components/Nav.svelte`                       |
 | `partials/footer.html`                       | `src/lib/components/Footer.svelte`                    |
 | `partials/seo_tags.html`                     | `src/lib/components/Seo.svelte` using `<svelte:head>` |
-| `partials/toc.html`                          | `src/lib/components/Toc.svelte`                       |
-| `_default/single.html`                       | `src/routes/tech/[slug]/+page.svelte`                 |
+| `_default/single.html`                       | `src/routes/tech/<slug>/+page.svelte`                 |
 | `_default/list.html`                         | `src/routes/tech/+page.svelte`                        |
 | `taxonomy.html`                              | `src/routes/tags/+page.svelte`                        |
 | `term.html`                                  | `src/routes/tags/[tag]/+page.svelte`                  |
 
-The root `+layout.svelte` replaces `baseof.html`. It composes Nav, Footer, Seo
-and wraps the page slot. Create `src/routes/+layout.js` with
-`export const prerender = true` to statically generate all pages.
+### Content → HTML Svelte Pages
 
-### Content → mdsvex Markdown
+**No markdown rendering.** Blog posts are written as raw HTML in `.svelte`
+files. This removes the mdsvex/shiki dependency entirely and lets you practice
+webdev by authoring posts directly in HTML.
 
-Markdown files move from `content/` to `src/lib/content/`. Frontmatter stays the
-same — mdsvex parses it and exposes it as `metadata`.
+Each post is a named SvelteKit route with two files:
 
 ```
-src/lib/content/
-  tech/
-    block-bots.md
-    git-primer/
-      index.md       ← page bundles keep their images co-located
-      diagram.png
-  travel/
-    welcome.md
-  misc/
-    index.md
+src/routes/tech/block-bots/
+  +page.js        ← metadata export
+  +page.svelte    ← raw HTML content
 ```
 
-Load content in `+page.js` via Vite's glob import:
+Metadata is exported as a `_metadata` object (underscore prefix required —
+SvelteKit reserves non-prefixed exports):
 
 ```javascript
-export async function load() {
-  const posts = import.meta.glob("$lib/content/tech/*.md");
-  const allPosts = await Promise.all(
-    Object.entries(posts).map(async ([path, resolver]) => {
-      const { metadata } = await resolver();
-      const slug = path.split("/").pop().replace(".md", "");
-      return { ...metadata, slug };
-    }),
-  );
-  return {
-    posts: allPosts.sort((a, b) => new Date(b.date) - new Date(a.date)),
-  };
+// +page.js
+export const _metadata = {
+  title: 'Block the Bots',
+  date: '2026-03-08',
+  tags: ['secops', 'webdev', 'ai']
+};
+```
+
+Post pages import metadata for SEO and tag rendering:
+
+```svelte
+<script>
+  import Seo from '$lib/components/Seo.svelte';
+  import { _metadata as metadata } from './+page.js';
+</script>
+
+<Seo title={metadata.title} keywords={metadata.tags} />
+<h1>{metadata.title}</h1>
+<!-- raw HTML content here -->
+```
+
+List pages use `import.meta.glob` to discover all posts at build time:
+
+```javascript
+// src/routes/tech/+page.js
+export function load() {
+  const modules = import.meta.glob('./*/+page.js', { eager: true });
+  const posts = Object.entries(modules)
+    .filter(([, mod]) => mod._metadata)
+    .map(([path, mod]) => {
+      const slug = path.split('/')[1];
+      return { ...mod._metadata, slug };
+    })
+    .filter((p) => !p.draft)
+    .sort((a, b) => new Date(b.date) - new Date(a.date));
+  return { posts };
 }
 ```
 
 ### Shortcodes → Svelte Components
 
-Hugo shortcodes become Svelte components imported directly in mdsvex files.
+Hugo shortcodes become Svelte components imported directly in post `.svelte`
+files.
 
-| Hugo shortcode                        | Svelte component                | Notes                       |
-| ------------------------------------- | ------------------------------- | --------------------------- |
-| `{{</* img src="..." alt="..." */>}}` | `<Image src={...} alt={...} />` | See image section below     |
-| `{{</* js_map */>}}`                  | `<TravelMap />`                 | d3 v7 rewrite               |
-| `{{</* block-bots-full-stack */>}}`   | `<BlockBotsDiagram />`          | Pure HTML/CSS, trivial port |
-| `{{</* block-bots-l3 */>}}`           | `<BoxDiagram />`                | Pure HTML/CSS, trivial port |
-| `{{</* hello-world */>}}`             | `<HelloWorld />`                | Already a Svelte component  |
+| Hugo shortcode                        | Svelte component       | Notes                       |
+| ------------------------------------- | ---------------------- | --------------------------- |
+| `{{</* img src="..." alt="..." */>}}` | Raw `<img>` tags       | Direct HTML, no wrapper     |
+| `{{</* js_map */>}}`                  | `<TravelMap />`        | d3-geo v3 rewrite           |
+| `{{</* block-bots-full-stack */>}}`   | `<BlockBotsDiagram />` | Pure HTML/CSS, trivial port |
+| `{{</* block-bots-l3 */>}}`          | `<BoxDiagram />`       | Pure HTML/CSS, trivial port |
+| `{{</* hello-world */>}}`             | `<HelloWorld />`       | Dropped customElement mode  |
 
-Usage in mdsvex markdown:
+### Image Handling
 
-```markdown
-<script>
-  import BlockBotsDiagram from '$lib/components/BlockBotsDiagram.svelte'
-</script>
+Images moved from Hugo page bundles to `static/image/<section>/<slug>/`:
 
-Here's the full-stack diagram:
-
-<BlockBotsDiagram />
 ```
+content/travel/ob-jan2025/h-and-e-ob.jpeg  →  static/image/travel/ob-jan2025/h-and-e-ob.jpeg
+```
+
+Referenced with absolute paths in HTML: `<img src="/image/travel/ob-jan2025/h-and-e-ob.jpeg" loading="lazy" />`
+
+No build-time image processing (Hugo's `.Resize`/srcset/LQIP). Can add
+`@sveltejs/enhanced-img` or `vite-imagetools` later if needed.
 
 ## Key Implementation Details
 
@@ -151,55 +145,18 @@ bun install  # resolves all deps
 bun run dev  # verify scaffold works
 ```
 
-**Gotcha discovered**: `trailingSlash` is NOT a `svelte.config.js` kit option in
-current SvelteKit. It's exported from `+layout.js` (or per-page `+page.js`):
+`svelte.config.js` is minimal with no preprocessors:
 
 ```javascript
-// src/routes/+layout.js
-export const prerender = true;
-export const trailingSlash = 'always';
-```
+import adapter from '@sveltejs/adapter-static';
 
-In `svelte.config.js`, the mdsvex highlight config uses shiki's `createHighlighter`
-API. Each code block gets a fresh highlighter instance — this works but could be
-optimized later with a cached singleton:
-
-```javascript
-import adapter from "@sveltejs/adapter-static";
-import { mdsvex } from "mdsvex";
-import { createHighlighter } from "shiki";
-
-const mdsvexOptions = {
-  extensions: [".md"],
-  highlight: {
-    highlighter: async (code, lang = "text") => {
-      const highlighter = await createHighlighter({
-        themes: ["github-dark"],
-        langs: [lang],
-      });
-      const html = highlighter.codeToHtml(code, { lang, theme: "github-dark" });
-      highlighter.dispose();
-      return `{@html \`${html.replace(/`/g, "\\`")}\`}`;
-    },
-  },
-};
-
-export default {
-  extensions: [".svelte", ".md"],
-  preprocess: [mdsvex(mdsvexOptions)],
+const config = {
   kit: {
     adapter: adapter({ fallback: undefined }),
-    prerender: { handleHttpError: "warn" },
-  },
+    prerender: { handleHttpError: 'warn' }
+  }
 };
-```
-
-In `src/app.html`, set the magic attribute on `<body>`:
-
-```html
-<body data-sveltekit-preload-data="hover">
-  %sveltekit.body%
-</body>
+export default config;
 ```
 
 ### CSS Migration
@@ -211,126 +168,73 @@ Merged four CSS files into `src/app.css`:
 - `static/css/codeblock-fix.css` — mobile code block overflow fix
 - `static/css/box-animations.css` — diagram box animations
 
-Skipped `themes/hugo-bearcub/assets/syntax.css` (Hugo Chroma classes) — shiki
-injects inline styles, so Chroma CSS is unnecessary. The `github-dark` shiki
-theme provides similar colors to the Dracula variant the Hugo site used.
-
-Note: the actual background color is `#1d1f27` (not `#282828` as originally
-noted — that's the code block background).
+Skipped `themes/hugo-bearcub/assets/syntax.css` (Hugo Chroma highlight classes).
+Code blocks use raw `<pre><code>` with HTML entities for special characters.
 
 ### Layout Shell
 
-Components created in `src/lib/components/`:
+Components in `src/lib/components/`:
 
 - **`Nav.svelte`** — skip link + site title + menu links from config
 - **`Footer.svelte`** — copyright, git hash link, social icons (LinkedIn,
   GitHub, Spotify), Buy Me a Coffee (loaded via `onMount` script injection)
 - **`Seo.svelte`** — `<svelte:head>` with title, description, OG tags, Twitter
-  cards. Props: `title`, `description`, `keywords[]`. Uses `$derived` for
-  computed title/description to satisfy Svelte 5 reactivity model.
-- **`config.ts`** — site metadata (title, author, menu items, URLs)
+  cards. Uses `$derived` for computed values from props.
 
-Root `+layout.svelte` composes Nav → main slot → Footer with Seo in head.
+### Travel Map (d3-geo)
 
-**Gotcha discovered**: `@sveltejs/vite-plugin-svelte@4.x` is incompatible with
-Vite 8 (and partially with Vite 6) — causes `css is not a function` SSR error.
-Must use `@sveltejs/vite-plugin-svelte@7.x` with Vite 8.
+Replaced d3 v3 + datamaps (unmaintained since 2017) with `d3-geo` + `topojson-client`:
 
-**Gotcha discovered**: Svelte 5 warns when `$props()` values are used in `const`
-assignments outside reactive contexts. Use `$derived()` for computed values that
-depend on props.
+- `src/lib/data/countries.ts` — 14 visited countries (ISO alpha-3 codes)
+- `src/lib/data/cities.ts` — 33 cities/parks with lat/lng/date
+- `src/lib/components/TravelMap.svelte` — SVG Mercator projection, ResizeObserver
+  for responsive sizing, hover tooltips, fetches TopoJSON from world-atlas CDN
 
-### Image Handling
-
-Hugo's `img.html` shortcode has a non-trivial image pipeline:
-`Page.Resources.GetMatch` → `.Resize` at multiple sizes → base64 LQIP → srcset
-generation. Replace with either:
-
-- **`@sveltejs/enhanced-img`** (official, generates srcset/sizes automatically)
-- **`vite-imagetools`** (more control:
-  `import img from './photo.jpg?w=400;800&format=webp'`)
-
-For the LQIP blur-up effect in the current shortcode, `vite-imagetools` can
-generate tiny placeholder variants at build time. The `Image.svelte` component
-handles the blur → sharp transition.
-
-### Travel Map (d3 v7)
-
-Replace d3 v3 + datamaps (unmaintained since 2017) with modern d3-geo. The
-current map does:
-
-- Mercator world projection
-- Country fills from `countries.js` (14 visited countries, keyed by ISO code)
-- City bubbles from `cities.js` (32 entries with lat/lng/radius/date)
-- Hover popups on cities
-
-Port `countries.js` and `cities.js` to typed TypeScript modules in
-`src/lib/data/`. Use `world-atlas` npm package for TopoJSON world data instead
-of vendored files.
-
-Build `TravelMap.svelte` with:
-
-- `d3-geo` for Mercator projection (tree-shakes unused d3 modules, ~150KB
-  savings)
-- SVG rendering (Svelte handles DOM, not d3)
-- Svelte reactivity for hover states (no d3 DOM manipulation)
-
-Since d3 only loads on `/travel` routes, SvelteKit code-splits it automatically.
+d3 only loads on `/travel` routes — SvelteKit code-splits automatically.
 
 ### Tags/Taxonomy
 
-Hugo auto-generates `/tags/` and `/tags/{tag}/`. In SvelteKit, build it
-manually:
+Built manually since Hugo auto-generates these:
 
-1. `src/routes/tags/+page.js` — glob all markdown, extract tags from
-   frontmatter, build index
-2. `src/routes/tags/+page.svelte` — render tag cloud
-3. `src/routes/tags/[tag]/+page.js` — filter posts by tag
-4. `src/routes/tags/[tag]/+page.svelte` — list matching posts
+1. `src/routes/tags/+page.js` — globs all post `+page.js` across tech/travel,
+   builds tag count index
+2. `src/routes/tags/+page.svelte` — tag cloud with counts
+3. `src/routes/tags/[tag]/+page.js` — filters posts by tag, `entries()` for
+   prerender enumeration
+4. `src/routes/tags/[tag]/+page.svelte` — list matching posts with section links
 
-Use `export function entries()` to enumerate all tags at build time for
-prerendering:
+### Sitemap & SEO
 
-```javascript
-export function entries() {
-  // return [{ tag: 'webdev' }, { tag: 'go' }, ...] from content scan
-}
-```
-
-### SEO Parity
-
-- `Seo.svelte` component with `<svelte:head>` for OG tags, description, title
-- `X-Robots-Tag: noai, noimageai` — keep in `netlify.toml` headers AND `<meta>`
-  in `app.html`
-- `robots.txt` — place in `static/robots.txt`
-- Sitemap — generate via `src/routes/sitemap.xml/+server.js`
+- `src/routes/sitemap.xml/+server.js` — prerendered XML sitemap from all post
+  metadata
+- `static/robots.txt` — composed from `data/ai-robots-txt/robots.txt` blocklist
+  with Googlebot/Bingbot allowed
+- `<meta name="robots" content="noai, noimageai">` in `src/app.html`
+- `X-Robots-Tag: noai, noimageai` header in `netlify.toml`
 
 ### Git Info in Footer
 
-Hugo's `{{ .GitInfo }}` shows commit hash + date. Replace with a Vite build-time
-injection:
+Vite build-time injection replaces Hugo's `{{ .GitInfo }}`:
 
 ```javascript
 // vite.config.ts
-import { execSync } from "child_process";
-const gitHash = execSync("git rev-parse --short HEAD").toString().trim();
-
+const gitHash = execSync('git rev-parse --short HEAD').toString().trim();
 export default defineConfig({
-  define: { __GIT_HASH__: JSON.stringify(gitHash) },
+  define: { __GIT_HASH__: JSON.stringify(gitHash) }
 });
 ```
 
 ### Deployment
 
-Update `netlify.toml`:
+`netlify.toml`:
 
 ```toml
 [build]
   publish = "build"
-  command = "bun run build"
+  command = "bun install && bun run build"
 
 [build.environment]
-  NODE_VERSION = "22"
+  TZ = "America/Chicago"
   BUN_VERSION = "1.2"
 
 [[headers]]
@@ -339,14 +243,10 @@ Update `netlify.toml`:
     X-Robots-Tag = "noai, noimageai"
 ```
 
-Update GitHub Actions:
+GitHub Actions updated: Lighthouse uses Bun + SvelteKit build, lint job runs
+`bun run build` check.
 
-- `lighthouse.yml` — swap Hugo setup for Bun setup, change `staticDistDir` to
-  `./build`
-- `lint.yml` — update markdown glob paths, remove separate components build
-- Remove `components/` directory entirely (merged into SvelteKit)
-
-## Route Structure (Final)
+## Route Structure
 
 ```
 src/
@@ -358,36 +258,31 @@ src/
       Nav.svelte
       Footer.svelte
       Seo.svelte
-      Toc.svelte
-      Image.svelte
       TravelMap.svelte
       BlockBotsDiagram.svelte
       BoxDiagram.svelte
       HelloWorld.svelte
-      BuyMeCoffee.svelte
-    content/
-      tech/                     ← 30+ markdown posts
-      travel/                   ← 5 travel posts
-      misc/                     ← misc content
     data/
       countries.ts              ← typed map data
       cities.ts                 ← typed map data
   routes/
     +layout.svelte              ← Nav + Footer + slot
-    +layout.js                  ← prerender = true
+    +layout.js                  ← prerender = true, trailingSlash = 'always'
     +page.svelte                ← About/splash
     tech/
       +page.svelte              ← post list
       +page.js                  ← load posts via glob
-      [slug]/
-        +page.svelte            ← single post
-        +page.js                ← load single post
+      <slug>/
+        +page.svelte            ← raw HTML post
+        +page.js                ← _metadata export
     travel/
       +page.svelte              ← travel list + map
-      [slug]/
+      +page.js                  ← load posts via glob
+      <slug>/
         +page.svelte
+        +page.js
     misc/
-      +page.svelte
+      +page.svelte              ← static links page
     tags/
       +page.svelte              ← tag cloud
       +page.js
@@ -395,44 +290,35 @@ src/
         +page.svelte            ← posts by tag
         +page.js
     sitemap.xml/
-      +server.js                ← sitemap
+      +server.js                ← prerendered sitemap
 ```
 
 ## Gotchas
 
-1. **mdsvex + Svelte 5**: Make sure to use a compatible mdsvex version. As of
-   early 2026, mdsvex works with Svelte 5 but check for runes mode
-   compatibility.
+1. **`_metadata` prefix required**: SvelteKit only allows specific exports from
+   `+page.js` (`load`, `prerender`, `csr`, etc.) or underscore-prefixed custom
+   exports. Using `export const metadata` causes a build error.
 
-2. **URL parity is critical**: Keep the exact same URL structure
-   (`/tech/block-bots/` not `/tech/block-bots`). Configure trailing slashes in
-   `svelte.config.js`: `kit: { trailingSlash: 'always' }`.
+2. **`trailingSlash` location**: NOT in `svelte.config.js`. Must be exported
+   from `+layout.js`: `export const trailingSlash = 'always'`.
 
-3. **Hugo's `unsafe: true` Goldmark setting**: You have raw HTML in markdown
-   (inline styles, `<p>` tags). mdsvex allows this by default — no extra config
-   needed.
+3. **Vite plugin version**: `@sveltejs/vite-plugin-svelte@4.x` is incompatible
+   with Vite 8 — causes `css is not a function` SSR error. Use
+   `@sveltejs/vite-plugin-svelte@7.x`.
 
-4. **Page bundles**: Hugo page bundles (`content/tech/foo/index.md` + images)
-   need the images co-located in `src/lib/content/tech/foo/` and imported in the
-   markdown or component.
+4. **Svelte 5 reactivity**: `$props()` values used in `const` assignments warn.
+   Use `$derived()` for computed values that depend on props.
 
-5. **`markdownlint-disable` comments**: These exist in several posts. mdsvex
-   passes them through as HTML comments, which is fine. They won't render.
+5. **HTML entities in code blocks**: Without a syntax highlighter, code blocks
+   need manual HTML entity encoding (`&lt;`, `&gt;`, `&amp;`, `{'{'}`,
+   `{'}'}`) in `.svelte` files since Svelte processes the HTML.
 
-6. **Datamaps removal**: The d3 v7 rewrite means the map will look different.
-   Test the visual output against the current site. The current map uses
-   datamaps' default Mercator with specific fill colors — match those in the
-   Svelte component.
+6. **Page bundle images**: Hugo page bundles (`content/tech/foo/index.md` +
+   images) → images move to `static/image/tech/foo/` and are referenced with
+   absolute paths.
 
-8. **Buy Me a Coffee widget**: Currently loaded as an external script in the
-   footer. Wrap it in a `BuyMeCoffee.svelte` component that loads the script in
-   `onMount`.
+7. **Sitemap prerender**: `+server.js` endpoints need `export const prerender = true`
+   for adapter-static, otherwise the build fails with "dynamic routes" error.
 
-9. **i18n strings**: The Hugo theme uses `{{ i18n "..." }}` for a few strings
-   (email subject, filtering labels). These are minimal — just hardcode them or
-   use a simple object lookup.
-
-10. **Social card generation**: Hugo's `social_card.html` uses `images.Text` and
-    `images.Overlay` to generate OG images at build time. SvelteKit doesn't have
-    this built in. Options: use `satori` + `@resvg/resvg-js` for build-time OG
-    image generation, or use a static default image and defer dynamic OG images.
+8. **GPG commit signing**: The GPG passphrase prompt doesn't work inside Claude
+   Code's terminal. Create commits in a separate terminal session.
