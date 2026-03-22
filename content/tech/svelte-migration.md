@@ -204,19 +204,19 @@ In `src/app.html`, set the magic attribute on `<body>`:
 
 ### CSS Migration
 
-The bearcub theme CSS (`original.css`, ~180 lines) is minimal custom CSS — dark
-theme, 720px max-width, blog list flexbox, code blocks, skip link. Merge it with
-`footer.css`, `codeblock-fix.css`, and `box-animations.css` into `src/app.css`.
-No framework needed.
+Merged four CSS files into `src/app.css`:
 
-Key CSS sections to preserve:
+- `themes/hugo-bearcub/assets/original.css` — base theme (~180 lines)
+- `static/css/footer.css` — social icon styling
+- `static/css/codeblock-fix.css` — mobile code block overflow fix
+- `static/css/box-animations.css` — diagram box animations
 
-- Dark body theme with `#282828` background
-- `.title` nav layout
-- `ul.blog-posts` flex layout with 130px date column
-- `a.blog-tags` pill styling
-- `pre code` block styling with overflow scroll
-- `.skip-link` accessibility
+Skipped `themes/hugo-bearcub/assets/syntax.css` (Hugo Chroma classes) — shiki
+injects inline styles, so Chroma CSS is unnecessary. The `github-dark` shiki
+theme provides similar colors to the Dracula variant the Hugo site used.
+
+Note: the actual background color is `#1d1f27` (not `#282828` as originally
+noted — that's the code block background).
 
 ### Image Handling
 

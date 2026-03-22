@@ -1,1 +1,292 @@
-/* Placeholder — will be populated in Step 2 */
+/* ==========================================================================
+   Global styles — merged from hugo-bearcub original.css + custom overrides
+   ========================================================================== */
+
+/* --- Base --- */
+
+body {
+	font-family: Verdana, sans-serif;
+	margin: auto;
+	padding: 20px;
+	max-width: 720px;
+	text-align: left;
+	background-color: #1d1f27;
+	word-wrap: break-word;
+	overflow-wrap: break-word;
+	line-height: 1.5;
+	color: #c9d1d9;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+strong,
+b {
+	color: #eee;
+}
+
+a {
+	color: #8cc2dd;
+}
+
+/* --- Navigation --- */
+
+.title {
+	text-decoration: none;
+	border: 0;
+}
+
+.title h1 {
+	font-size: 24px;
+	margin: 19.92px 0 19.92px 0;
+}
+
+.title span {
+	font-weight: 400;
+}
+
+nav a {
+	margin-right: 10px;
+}
+
+/* --- Form elements --- */
+
+textarea {
+	background-color: #252525;
+	color: #ddd;
+	width: 100%;
+	font-size: 16px;
+}
+
+input {
+	background-color: #252525;
+	color: #ddd;
+	font-size: 16px;
+}
+
+/* --- Content --- */
+
+content {
+	line-height: 1.6;
+}
+
+table {
+	width: 100%;
+}
+
+table,
+th,
+td {
+	border: 1px solid;
+	border-collapse: collapse;
+	border-color: #c9d1d9;
+	padding: 5px;
+}
+
+img {
+	max-width: 100%;
+	height: auto;
+}
+
+/* --- Code blocks --- */
+
+code {
+	padding: 2px 5px;
+	color: #f8f8f2;
+	background-color: #282a36;
+}
+
+pre code {
+	display: block;
+	padding: 20px;
+	font-size: 14px;
+}
+
+/* Codeblock fix — constrains <pre> to viewport width on mobile */
+pre {
+	max-width: 100%;
+	overflow-x: auto;
+}
+
+pre code {
+	white-space: pre;
+	text-wrap: unset;
+	overflow-x: unset;
+}
+
+/* --- Blockquotes --- */
+
+blockquote {
+	border-left: 1px solid #999;
+	color: #ccc;
+	padding-left: 20px;
+	font-style: italic;
+}
+
+/* --- Footer --- */
+
+footer {
+	padding: 25px;
+	text-align: center;
+}
+
+/* --- Helper classes --- */
+
+.helptext {
+	color: #aaa;
+	font-size: small;
+}
+
+.errorlist {
+	color: #eba613;
+	font-size: small;
+}
+
+/* --- Blog posts --- */
+
+ul.blog-posts {
+	list-style-type: none;
+	padding: unset;
+}
+
+ul.blog-posts li {
+	display: flex;
+	margin-bottom: 10px;
+}
+
+ul.blog-posts li span {
+	flex: 0 0 130px;
+}
+
+ul.blog-posts li a:visited {
+	color: #8b6fcb;
+}
+
+a.blog-tags {
+	line-height: 2;
+	margin-right: 12px;
+}
+
+h3.blog-filter {
+	margin-bottom: 0;
+}
+
+.disabled {
+	color: currentColor;
+	cursor: not-allowed;
+	opacity: 0.7;
+}
+
+p.byline {
+	font-style: italic;
+}
+
+/* --- Skip link (accessibility) --- */
+
+.skip-link {
+	position: absolute;
+	top: 5;
+	transform: translateY(-600%);
+	transition: transform 0.5s;
+	background-color: #1d1f27;
+	padding: 6px;
+}
+
+.skip-link:focus {
+	transform: translateY(0%);
+}
+
+/* --- Figures --- */
+
+figure {
+	margin-inline-start: 0em;
+	margin-inline-end: 0em;
+}
+
+figcaption > p {
+	margin-block-start: 0px;
+	text-align: center;
+	font-style: italic;
+	color: #ccc;
+}
+
+/* --- Footer social icons --- */
+
+.footer-social-icons {
+	display: flex;
+	justify-content: center;
+	gap: 15px;
+	margin-bottom: 10px;
+}
+
+.footer-social-icons a {
+	align-items: center;
+	text-decoration: none;
+	color: white;
+	font-size: 16px;
+}
+
+.footer-social-icons img {
+	width: 24px;
+	height: 24px;
+	filter: brightness(0) invert(1);
+	transition: opacity 0.3s ease;
+}
+
+.footer-social-icons img:hover {
+	opacity: 0.7;
+}
+
+/* --- Box diagram animations (block-bots post) --- */
+
+@keyframes pulse-border {
+	0%,
+	100% {
+		opacity: 1;
+	}
+	50% {
+		opacity: 0.4;
+	}
+}
+
+.bb-box {
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	padding: 0.625rem 1rem;
+	border-radius: 0.5rem;
+	border: 2px solid;
+	min-width: 5rem;
+	font-family:
+		ui-monospace,
+		'Cascadia Code',
+		'Source Code Pro',
+		Menlo,
+		Consolas,
+		monospace;
+}
+
+.bb-box .bb-label {
+	font-size: 0.85rem;
+	font-weight: 600;
+}
+
+.bb-box .bb-sub {
+	font-size: 0.7rem;
+	margin-top: 0.125rem;
+	opacity: 0.6;
+}
+
+.bb-pulse {
+	animation: pulse-border 2s ease-in-out infinite;
+}
+
+.bb-arrow {
+	font-size: 1.1rem;
+	opacity: 0.5;
+}
