@@ -124,6 +124,81 @@ namespace/kube-system       Active   19m
 
 Nice, got a little talos cluster running locally!
 
+## Under the Hood
+
+Now that we have a cluster running, let's take a step back and look at what
+Talos actually _is_ under the hood. If you're evaluating Talos for a homelab (or
+production), it's worth understanding the design decisions baked into the ISO
+before committing. Talos isn't just "Kubernetes on Linux" — it's a purpose-built
+OS with opinions about boot, security, and operations that differ significantly
+from a traditional distro.
+
+### The Boot Sequence
+
+Talos boots differently than you'd expect. There's no systemd, no init scripts,
+no package manager. The entire userspace is a single binary — `machined` — that
+owns the boot process and spawns the handful of services needed to run
+Kubernetes. The [Architecture][] page covers the high-level structure: an
+immutable SquashFS rootfs, an API-driven control plane, and no SSH.
+
+The [Components][] page breaks down what actually runs: `machined` (PID 1),
+`apid` (the Talos API), `trustd` (certificate management between nodes), and
+the Kubernetes components themselves. Each of these is managed through an
+internal state machine — not a process supervisor. The [Controllers and
+Resources][] page explains how this works: controllers watch typed resources and
+reconcile state, similar to Kubernetes controllers but for the OS itself. This
+is the machinery that drives the bootstrap sequence from "fresh boot" to
+"healthy Kubernetes node."
+
+For bare metal, the [Boot Loader][] page covers the GRUB/systemd-boot choice
+and A/B partition scheme that enables atomic upgrades and rollbacks.
+
+### Kernel & Security Choices
+
+Talos ships a custom kernel config. The [Philosophy][] page lays out the "why":
+minimal attack surface, immutability, and API-only access. No shell, no SSH, no
+way to `exec` into the host. If you can't get a shell, entire classes of attacks
+disappear.
+
+The specifics of _how_ they lock things down are spread across a few pages:
+
+- [Process Capabilities][] — Talos drops Linux capabilities aggressively. System
+  services run with only the caps they need, nothing more. This is the kind of
+  thing you'd configure manually with systemd unit files on a traditional distro;
+  here it's baked in.
+- [Customizing the Kernel][] — This is the page that shows what kernel options
+  Talos enables and disables. Lockdown mode, module signing restrictions,
+  hardened memory allocator options — the choices a security-conscious admin
+  would make, applied by default.
+- [SecureBoot][] — Full chain-of-trust from UEFI firmware through the
+  bootloader to the kernel and initramfs. Optional but supported out of the box.
+
+### The ISO & Extension Model
+
+Talos ISOs aren't assembled like traditional distros. The [Image Factory][]
+explains how images are built from "schematics" — a declarative spec of what
+extensions and overlays to include. Need ZFS, iSCSI, or Intel GPU drivers?
+You don't install packages post-boot; you bake them into the image via [System
+Extensions][]. The rootfs stays immutable, and extensions are layered in at
+image build time.
+
+This is the tradeoff: you give up `apt install` flexibility for reproducible,
+declarative images. For a homelab that "gathers dust" when you move onto other
+interests (ask me how I know), this is a feature.
+
+### Suggested Reading Order
+
+If you want to dig into these yourself, here's how I'd order them:
+
+1. [Philosophy][] — _why_ these choices were made
+2. [Architecture][] — overall structure
+3. [Components][] — what runs and when
+4. [Controllers and Resources][] — how the bootstrap sequence is driven
+5. [Process Capabilities][] — security restrictions
+6. [Customizing the Kernel][] — specific kconfig decisions
+7. [SecureBoot][] — full trust chain
+8. [Image Factory][] + [System Extensions][] — how the ISO is composed
+
 ## Further Reading
 
 - [Introduction to Talos](https://blog.yadutaf.fr/2024/03/14/introduction-to-talos-kubernetes-os/)
@@ -154,3 +229,21 @@ Nice, got a little talos cluster running locally!
   https://docs.siderolabs.com/talos/v1.12/platform-specific-installations/local-platforms/docker
 [`TrustedRootsConfig`]:
   https://docs.siderolabs.com/talos/v1.12/reference/configuration/security/trustedrootsconfig
+[Architecture]:
+  https://docs.siderolabs.com/talos/v1.12/learn-more/architecture/
+[Boot Loader]:
+  https://docs.siderolabs.com/talos/v1.12/talos-guides/install/bare-metal-platforms/bootloader/
+[Components]:
+  https://docs.siderolabs.com/talos/v1.12/learn-more/components/
+[Controllers and Resources]:
+  https://docs.siderolabs.com/talos/v1.12/learn-more/controllers-resources/
+[Customizing the Kernel]:
+  https://docs.siderolabs.com/talos/v1.12/talos-guides/configuration/customizing-the-kernel/
+[Image Factory]:
+  https://docs.siderolabs.com/talos/v1.12/learn-more/image-factory/
+[Process Capabilities]:
+  https://docs.siderolabs.com/talos/v1.12/learn-more/process-capabilities/
+[SecureBoot]:
+  https://docs.siderolabs.com/talos/v1.12/talos-guides/install/bare-metal-platforms/secureboot/
+[System Extensions]:
+  https://docs.siderolabs.com/talos/v1.12/talos-guides/configuration/system-extensions/
