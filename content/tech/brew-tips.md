@@ -4,10 +4,10 @@ date: 2026-03-05T19:27:13-06:00
 draft: false
 toc: true
 tags:
-- brew
-- macos
-- secops
-- sysadmin
+  - brew
+  - macos
+  - secops
+  - sysadmin
 ---
 
 ## How To Brew🍺
@@ -22,10 +22,10 @@ Regularly, I run `brew update && brew upgrade && brew cleanup` so my tools stay
 current and my disk doesn't fill up with stale artifacts.
 
 Another important command to run regularly is `brew doctor` to catch stale
-symlinks, PATH issues, and other gotchas. Good to note:  *Warnings* can safely
-be ignored from the output. For example, the following warns me that some
-packages are disabled, so I should figure out where the new remote location is,
-but `brew` itself is functioning fine:
+symlinks, PATH issues, and other gotchas. Good to note: _Warnings_ can safely be
+ignored from the output. For example, the following warns me that some packages
+are disabled, so I should figure out where the new remote location is, but
+`brew` itself is functioning fine:
 
 ```sh
 $ brew doctor
@@ -50,14 +50,14 @@ You should find replacements for the following formulae:
 > Cask: Homebrew package definition that installs pre-compiled binaries built
 > and signed by upstream.
 >
-> *[Brew Man Page][]*
+> _[Brew Man Page][]_
 
-This is why I still just call all the targets `brew` manages *packages* since it
-covers both *Casks* & *Formulae*. Homebrew uses Git for storing formula & cask
-definitions. It installs *formula* packages to the *Cellar* (`brew --cellar`),
+This is why I still just call all the targets `brew` manages _packages_ since it
+covers both _Casks_ & _Formulae_. Homebrew uses Git for storing formula & cask
+definitions. It installs _formula_ packages to the _Cellar_ (`brew --cellar`),
 which is a local filesystem directory for installed software. It then symlinks
-them into the *prefix* (`brew --prefix`). On the other hand, *Casks* are stored
-in the *Caskroom* and linked or placed into appropriate locations depending on
+them into the _prefix_ (`brew --prefix`). On the other hand, _Casks_ are stored
+in the _Caskroom_ and linked or placed into appropriate locations depending on
 the artifact type (e.g. `/Applications`).
 
 ```sh
@@ -93,25 +93,25 @@ From: https://github.com/louislef299/homebrew-aws-sso/blob/HEAD/Casks/aws-sso.rb
 ==> Name
 aws-sso
 ==> Description
-Thanks for installing aws-sso! You can get configured by going to 
-https://aws-sso.netlify.app. The binary you have installed came with a binary 
-signature if you would like to verify the install. More information can be 
+Thanks for installing aws-sso! You can get configured by going to
+https://aws-sso.netlify.app. The binary you have installed came with a binary
+signature if you would like to verify the install. More information can be
 found on the website
 ==> Artifacts
 aws-sso (Binary)
 ```
 
-This post won't go over how to create *Formulae* or *Casks*, but you can
+This post won't go over how to create _Formulae_ or _Casks_, but you can
 reference the [Formula Cookbook][] and [Cask Cookbook][] to get started. It is
 important to mention that these Formula/Cask definitions are just Ruby scripts
-hosted by a *Tap*. If you'd like to view what these definitions look like, you
+hosted by a _Tap_. If you'd like to view what these definitions look like, you
 can run `brew cat go` to view the `go` Formula and `brew cat --cask aws-sso` to
 view the `aws-sso` Cask.
 
 While fully understanding these scripts isn't required if you are just a client
 of `brew`, there are some parts that you should understand to improve your
 security posture. We'll cover this later in the Security section, but first,
-let's cover the relationship between *Taps* & Git.
+let's cover the relationship between _Taps_ & Git.
 
 ## What's A Tap?
 
@@ -119,18 +119,18 @@ let's cover the relationship between *Taps* & Git.
 > commands. By default, taps are repositories that are assumed to come from
 > GitHub, but isn’t limited to any one location.
 >
-> *[Brew Man Page][]*
+> _[Brew Man Page][]_
 
-So, a tap is a location(remote or local) that contains the required *Formula* or
-*Cask*. The default *Tap* that `brew` uses is [`homebrew/core`][] and any
-additional *Taps* must be integrated with `brew tap`. It's important to note
+So, a tap is a location(remote or local) that contains the required _Formula_ or
+_Cask_. The default _Tap_ that `brew` uses is [`homebrew/core`][] and any
+additional _Taps_ must be integrated with `brew tap`. It's important to note
 here you should only `tap` trusted vendors since tapping gives the repo
 maintainers the ability to deliver code to your machine.
 
 To fully understand tapping, I think it's best to demo an example for `aws-sso`:
 
 ```sh
-# First, notice that brew can't find aws-sso by 
+# First, notice that brew can't find aws-sso by
 # default since it's not in homebrew/core
 $ brew search aws-sso
 ==> Formulae
@@ -149,7 +149,7 @@ Resolving deltas: 100% (158/158), done.
 Tapped 1 cask (15 files, 70.3KB).
 
 # Now, aws-sso is discoverable and can be installed
-$ brew search aws-sso         
+$ brew search aws-sso
 ==> Formulae
 aws-sso-cli     aws-sso-util
 
@@ -183,12 +183,12 @@ choice: it limits blast radius by keeping everything in userspace.
 
 Supply-chain risk, broadly, is the risk that any link in the chain between you
 and the software you install — the author, the build system, the distribution
-channel — gets compromised. In Homebrew's case, that chain is a Git repo full
-of Ruby scripts (the tap), an upstream source URL or vendor binary, and
-Homebrew's own [bottle][bottles] infrastructure. A hijacked tap, a swapped
-source tarball, or a compromised cask URL all mean someone else's code running
-on your machine. The rest of this section covers what Homebrew gives you out of
-the box and what you can tighten up.
+channel — gets compromised. In Homebrew's case, that chain is a Git repo full of
+Ruby scripts (the tap), an upstream source URL or vendor binary, and Homebrew's
+own [bottle][bottles] infrastructure. A hijacked tap, a swapped source tarball,
+or a compromised cask URL all mean someone else's code running on your machine.
+The rest of this section covers what Homebrew gives you out of the box and what
+you can tighten up.
 
 ### Know What You're Installing
 
@@ -201,12 +201,12 @@ to the `sha256` and the `url` pointing at the vendor binary.
 Formulae from `homebrew/core` ship as [bottles][] by default — precompiled
 binaries built by [BrewTestBot][] on Homebrew's own CI infrastructure. Each
 bottle has a per-platform `sha256` checksum baked into the formula definition,
-so you're getting a reproducible artifact rather than building from an
-arbitrary source tarball. If a bottle isn't available for the requested
-platform, Homebrew falls back to building from source.
+so you're getting a reproducible artifact rather than building from an arbitrary
+source tarball. If a bottle isn't available for the requested platform, Homebrew
+falls back to building from source.
 
-Casks don't have the same CI story — they pull vendor binaries directly. You
-can enforce checksum verification for casks globally:
+Casks don't have the same CI story — they pull vendor binaries directly. You can
+enforce checksum verification for casks globally:
 
 ```sh
 # require a sha256 checksum for every cask install
@@ -216,9 +216,9 @@ $ export HOMEBREW_CASK_OPTS="--require-sha"
 $ brew install --cask --require-sha aws-sso
 ```
 
-If a cask doesn't declare a `sha256`, the install will fail. This is a good
-way to catch casks that use `sha256 :no_check` (which means "trust the
-download URL blindly").
+If a cask doesn't declare a `sha256`, the install will fail. This is a good way
+to catch casks that use `sha256 :no_check` (which means "trust the download URL
+blindly").
 
 ### Auditing What's on Your Machine
 
@@ -231,19 +231,23 @@ $ brew uses --installed openssl
 
 # what taps are currently active
 $ brew tap
+
+# scan for vulnerabilities
+# https://github.com/Homebrew/homebrew-brew-vulns
+$ brew vulns
 ```
 
 A quick note on `brew audit`: it's a linting tool for formula/cask
-*contributors*, not an end-user security scanner. It checks style rules and
-packaging conventions. Useful if you're writing or reviewing a formula, but
-it won't tell you if something installed on your machine is compromised.
+_contributors_, not an end-user security scanner. It checks style rules and
+packaging conventions. Useful if you're writing or reviewing a formula, but it
+won't tell you if something installed on your machine is compromised.
 
 ### Tap Hygiene
 
 Remember, every `brew tap` is a Git repo whose maintainers can deliver arbitrary
 Ruby code to your machine. Treat tapping like adding a third-party package
-registry — vet the repo, check who maintains it, and untap anything you're
-no longer using.
+registry — vet the repo, check who maintains it, and untap anything you're no
+longer using.
 
 You can restrict which taps are allowed on your machine entirely with the
 `HOMEBREW_ALLOWED_TAPS` environment variable:
@@ -253,9 +257,9 @@ You can restrict which taps are allowed on your machine entirely with the
 export HOMEBREW_ALLOWED_TAPS="homebrew/core louislef299/aws-sso"
 ```
 
-With this set, any `brew tap` or `brew install` from a tap not on the list
-will be refused. This is especially useful on managed machines where you want
-to prevent drive-by tapping.
+With this set, any `brew tap` or `brew install` from a tap not on the list will
+be refused. This is especially useful on managed machines where you want to
+prevent drive-by tapping.
 
 ### Reproducibility with Brewfile
 
@@ -319,4 +323,5 @@ How is your system looking? Run `brew doctor && brew outdated` right now!
 [`homebrew/core`]: https://github.com/Homebrew/homebrew-core
 [Homebrew]: https://brew.sh/
 [Linux]: https://docs.brew.sh/Homebrew-on-Linux
-[refuses to run under sudo]: https://docs.brew.sh/FAQ#why-does-homebrew-say-sudo-is-bad
+[refuses to run under sudo]:
+  https://docs.brew.sh/FAQ#why-does-homebrew-say-sudo-is-bad
