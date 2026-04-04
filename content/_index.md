@@ -12,7 +12,7 @@ systems, networking and general programming.
 Professionally I'm a [programmer][] and tend to switch between a network
 engineer, system administrator, and developer on a daily basis. Essentially, if
 there's a problem and it involves computing, I'm game. Currently employed at
-Medtronic and trying to break my way into open source.
+Medica and trying to break my way into open source.
 
 Outside of computers, I also love to hunt for good restaurants & speakeasies,
 travel, and (obviously) blog a bit. To stay active, I like to [paddle][] on Bde
