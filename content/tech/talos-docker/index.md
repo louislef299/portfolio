@@ -44,6 +44,8 @@ the ecosystem and decide if Talos is worth investing in.
 Instead of annoying English, I'm just going to explain the setup with a code
 block:
 
+<!-- markdownlint-disable MD013 -->
+
 ```sh
 # I'm going to assume docker is installed...
 $ brew install kubernetes-cli siderolabs/tap/talosctl
@@ -62,6 +64,8 @@ bootstrapping cluster
 context deadline exceeded
 # exit(1)
 ```
+
+<!-- markdownlint-enable MD013 -->
 
 Ope! We really are going to have to roll up our sleeves earlier than I thought.
 Since I left my personal device at home, the corporate network is signing
