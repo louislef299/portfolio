@@ -1,6 +1,6 @@
 ---
 title: "Talos Basics with Docker"
-date: 2026-03-28T10:11:43-05:00
+date: 2026-04-25T10:11:43-05:00
 draft: false
 toc: true
 tags:
@@ -9,39 +9,39 @@ tags:
   - linux
 ---
 
-Recently, I've wanted to rebuild my kubernetes cluster home lab so that I could
+Recently, I've wanted to rebuild my Kubernetes cluster home lab so that I could
 host some backend compute. Cloud providers tend to over-charge for compute and I
 would rather all my services go down than have a rogue compute instance that
 gives me a surprise bill at the end of the month. Today, I'm just going to go
-over [creating a talos cluster with docker][Talos install Docker] from the
+over [creating a Talos cluster with Docker][Talos install Docker] from the
 perspective of a crusty old k8s admin.
 
 ## Why Talos?
 
 Just wanted to touch on my decision to use Talos Linux instead of vanilla
-kubernetes. Well, in the past, I'd had a kubernetes cluster in my homelab that
-I'd spun up with [`kubeadm`][] ontop of [arch(btw)][] and [raspbian][]. It
+Kubernetes. Well, in the past, I'd had a Kubernetes cluster in my homelab that
+I'd spun up with [`kubeadm`][] on top of [arch(btw)][] and [raspbian][]. It
 worked, but it got annoying to shell into each instance and run
 `pacman -Syu`/`apt update && apt upgrade && systemctl restart` once a week. My
-knee-jerk reaction was to spin up an ansible tower instance, but I'd worked with
-ansible enough to know that I didn't want to waste my time with the project (in
+knee-jerk reaction was to spin up an Ansible tower instance, but I'd worked with
+Ansible enough to know that I didn't want to waste my time with the project (in
 favor of immutable infrastructure).
 
 Eventually, the homelab got ignored as I moved onto other interests and the
 cluster gathered some dust. This is expected and if I'm going to maintain a
 homelab again, I need something that is simpler to maintain out-of-the-box.
-After reading up on talos a bit, [their philosophy][Philosophy of Talos],
-`talosctl` and a simple talos iso binary is what drew me to the project. A
-kubernetes cluster embedded into the linux os & all maintained over gRPC? It
+After reading up on Talos a bit, [their philosophy][Philosophy of Talos],
+`talosctl` and a simple Talos ISO binary is what drew me to the project. A
+Kubernetes cluster embedded into the Linux OS & all maintained over gRPC? It
 sounds too good to be true, right?
 
-This post will put talos to the test by installing it via docker and playing
+This post will put Talos to the test by installing it via Docker and playing
 around with it to ensure it's the right solution. The goal is to get a feel for
 the ecosystem and decide if Talos is worth investing in.
 
 ## Setup Talos on Docker
 
-Instead of annoying english, I'm just going to explain the setup with a code
+Instead of annoying English, I'm just going to explain the setup with a code
 block:
 
 ```sh
@@ -66,7 +66,7 @@ context deadline exceeded
 Ope! We really are going to have to roll up our sleeves earlier than I thought.
 Since I left my personal device at home, the corporate network is signing
 everything with their internal certificate[^1]. We're going to need to configure
-talos to trust this certificate instead of expecting theirs. Let's tear the
+Talos to trust this certificate instead of expecting theirs. Let's tear the
 cluster down and try again: `talosctl cluster destroy`.
 
 ![Roman Mad @ Certificates](roman.gif)
@@ -74,7 +74,7 @@ cluster down and try again: `talosctl cluster destroy`.
 ### Slight Certificate Detour
 
 Talos offers a clean solution with their [`TrustedRootsConfig`][] resource. I
-created the spec at `~/.talos/ca-patch.yaml:
+created the spec at `~/.talos/ca-patch.yaml`:
 
 ```yaml
 # ca-patch.yaml
@@ -122,75 +122,27 @@ namespace/kube-public       Active   19m
 namespace/kube-system       Active   19m
 ```
 
-Nice, got a little talos cluster running locally!
+Nice, got a little Talos cluster running locally!
 
-## Under the Hood
+## A Note on Immutability
 
-Now that we have a cluster running, let's take a step back and look at what
-Talos actually _is_ under the hood. If you're evaluating Talos for a homelab (or
-production), it's worth understanding the design decisions baked into the ISO
-before committing. Talos isn't just "Kubernetes on Linux" — it's a purpose-built
-OS with opinions about boot, security, and operations that differ significantly
-from a traditional distro.
+Before ending there, I want to point out the bit that grabbed my attention: a
+[SquashFS] rootfs mounted read-only, with `apid` over gRPC as the only
+administrative communication interface. Similar to distroless containers, you
+can't actually shell into a Talos instance and have to communicate over
+gRPC/`talosctl`. This is where Talos takes immutability to the next level by
+sealing off the instance entirely. No `ssh`, no `sudo`, no `apt install`.
 
-### The Boot Sequence
+From someone who let a homelab gather dust because the patch-and-pray cycle got
+tedious, that feature is huge to automatically securing my devices and making
+updates a breeze. You can't drift a node into a snowflake state if there's no
+shell to drift it from. Upgrades are A/B partition swaps with rollback: the
+whole rootfs gets replaced atomically, not patched in place. (See [Boot
+Loader][] for how that's wired up.)
 
-Talos boots differently than you'd expect. There's no systemd, no init scripts,
-no package manager. The entire userspace is a single binary — `machined` — that
-owns the boot process and spawns the handful of services needed to run
-Kubernetes. The [Architecture][] page covers the high-level structure: an
-immutable SquashFS rootfs, an API-driven control plane, and no SSH.
+Want more??? Here ya go:
 
-The [Components][] page breaks down what actually runs: `machined` (PID 1),
-`apid` (the Talos API), `trustd` (certificate management between nodes), and
-the Kubernetes components themselves. Each of these is managed through an
-internal state machine — not a process supervisor. The [Controllers and
-Resources][] page explains how this works: controllers watch typed resources and
-reconcile state, similar to Kubernetes controllers but for the OS itself. This
-is the machinery that drives the bootstrap sequence from "fresh boot" to
-"healthy Kubernetes node."
-
-For bare metal, the [Boot Loader][] page covers the GRUB/systemd-boot choice
-and A/B partition scheme that enables atomic upgrades and rollbacks.
-
-### Kernel & Security Choices
-
-Talos ships a custom kernel config. The [Philosophy][] page lays out the "why":
-minimal attack surface, immutability, and API-only access. No shell, no SSH, no
-way to `exec` into the host. If you can't get a shell, entire classes of attacks
-disappear.
-
-The specifics of _how_ they lock things down are spread across a few pages:
-
-- [Process Capabilities][] — Talos drops Linux capabilities aggressively. System
-  services run with only the caps they need, nothing more. This is the kind of
-  thing you'd configure manually with systemd unit files on a traditional distro;
-  here it's baked in.
-- [Customizing the Kernel][] — This is the page that shows what kernel options
-  Talos enables and disables. Lockdown mode, module signing restrictions,
-  hardened memory allocator options — the choices a security-conscious admin
-  would make, applied by default.
-- [SecureBoot][] — Full chain-of-trust from UEFI firmware through the
-  bootloader to the kernel and initramfs. Optional but supported out of the box.
-
-### The ISO & Extension Model
-
-Talos ISOs aren't assembled like traditional distros. The [Image Factory][]
-explains how images are built from "schematics" — a declarative spec of what
-extensions and overlays to include. Need ZFS, iSCSI, or Intel GPU drivers?
-You don't install packages post-boot; you bake them into the image via [System
-Extensions][]. The rootfs stays immutable, and extensions are layered in at
-image build time.
-
-This is the tradeoff: you give up `apt install` flexibility for reproducible,
-declarative images. For a homelab that "gathers dust" when you move onto other
-interests (ask me how I know), this is a feature.
-
-### Suggested Reading Order
-
-If you want to dig into these yourself, here's how I'd order them:
-
-1. [Philosophy][] — _why_ these choices were made
+1. [Philosophy][Philosophy of Talos] — _why_ these choices were made
 2. [Architecture][] — overall structure
 3. [Components][] — what runs and when
 4. [Controllers and Resources][] — how the bootstrap sequence is driven
@@ -199,7 +151,9 @@ If you want to dig into these yourself, here's how I'd order them:
 7. [SecureBoot][] — full trust chain
 8. [Image Factory][] + [System Extensions][] — how the ISO is composed
 
-## Further Reading
+---
+
+## Resources
 
 - [Introduction to Talos](https://blog.yadutaf.fr/2024/03/14/introduction-to-talos-kubernetes-os/)
 - [Talos on Hetzner Dedicated](https://seankhliao.com/blog/12026-02-28-talos-on-hetzner-dedicated/)
@@ -210,13 +164,13 @@ If you want to dig into these yourself, here's how I'd order them:
     _Think of HTTPS like sending a sealed letter. Normally, you seal it and only
     the recipient can open it. But corporate networks run a post office in the
     middle — a TLS-terminating forward proxy — that opens your letter, checks
-    for contraband, puts it in a *new* envelope sealed with *their* stamp, and
+    for contraband, puts it in a \_new_ envelope sealed with _their_ stamp, and
     sends it on its way. Your laptop already knows to trust that stamp. A Talos
     container, freshly spun up with no knowledge of corporate politics, sees an
     unfamiliar seal and refuses to accept the mail. That
     `x509: certificate signed by unknown authority` error? That's Talos saying
     "this stamp isn't in my address book." Cloudflare covers this concept well
-    in their blog post [Monsters in the Middleboxes][]._
+    in their blog post [Monsters in the Middleboxes][].\_
 
 [arch(btw)]: https://wiki.archlinux.org/title/Kubernetes
 [`kubeadm`]: https://kubernetes.io/docs/reference/setup-tools/kubeadm/
@@ -229,12 +183,10 @@ If you want to dig into these yourself, here's how I'd order them:
   https://docs.siderolabs.com/talos/v1.12/platform-specific-installations/local-platforms/docker
 [`TrustedRootsConfig`]:
   https://docs.siderolabs.com/talos/v1.12/reference/configuration/security/trustedrootsconfig
-[Architecture]:
-  https://docs.siderolabs.com/talos/v1.12/learn-more/architecture/
+[Architecture]: https://docs.siderolabs.com/talos/v1.12/learn-more/architecture/
 [Boot Loader]:
   https://docs.siderolabs.com/talos/v1.12/talos-guides/install/bare-metal-platforms/bootloader/
-[Components]:
-  https://docs.siderolabs.com/talos/v1.12/learn-more/components/
+[Components]: https://docs.siderolabs.com/talos/v1.12/learn-more/components/
 [Controllers and Resources]:
   https://docs.siderolabs.com/talos/v1.12/learn-more/controllers-resources/
 [Customizing the Kernel]:
@@ -245,5 +197,6 @@ If you want to dig into these yourself, here's how I'd order them:
   https://docs.siderolabs.com/talos/v1.12/learn-more/process-capabilities/
 [SecureBoot]:
   https://docs.siderolabs.com/talos/v1.12/talos-guides/install/bare-metal-platforms/secureboot/
+[SquashFS]: https://en.wikipedia.org/wiki/SquashFS
 [System Extensions]:
   https://docs.siderolabs.com/talos/v1.12/talos-guides/configuration/system-extensions/
