@@ -32,4 +32,4 @@ allow).
 [hunt]: https://www.surfersjournal.com/
 [paddle]:
   https://www.nationalgeographic.com/adventure/article/interview-allstar-paddleboarder-jamie-mitchell-wins
-[programmer]: https://youtu.be/dQw4w9WgXcQ?si=dYCurDeF0XZ1lQ0t
+[programmer]: https://www.dailymotion.com/video/x8snguw
