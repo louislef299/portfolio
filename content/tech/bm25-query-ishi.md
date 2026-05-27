@@ -118,44 +118,71 @@ what I'm looking for.
 
 ## Moving onto the Implementation
 
-The beauty of `postgres` is that it abstracts most of the complexity for us. No,
-I didn't have to recreate the full BM25 function in `zig`, nor did I have to
-pull in a library. I could rely on the `postgres` system to have my back here.
+The beauty of Postgres is that it abstracts most of the complexity for us. No, I
+didn't have to recreate the full BM25 function in `zig`, nor did I have to pull
+in a library. I could rely on the `postgres` system to have my back here.
+Postgres natively supports full-text search, essentially meaning is parses
+entire documents, not just metadata, to store relevant words to later match for
+search queries.
 
-### The textsearch column
+### `to_tsvector`
+
+To actually pull this off, Postgres provides the `to_tsvector` function to
+convert a string into a searchable tsvector data type[^1]. It does this by:
+
+- [Tokenizing][] the text
+- Converting the tokens into lexemes
+- Removing stop words ("and" or "the")[^2]
+
+To provide a quick example, here's a `SELECT` query I executed after authing to
+the `ishi` database with `psql`:
+
+```sql
+postgres=# SELECT to_tsvector('english', 'Data systems are boring to learn but are super powerful');
+                         to_tsvector
+-------------------------------------------------------------
+ 'bore':4 'data':1 'learn':6 'power':10 'super':9 'system':2
+(1 row)
+```
+
+### The `tsvector` type
+
+Postgres provides the [`tsvector` data type][], which is a sorted list of
+distinct lexemes. To be clear, this is a _data type_, so it is only creating the
+lexemes, not removing the stop words. For example:
+
+```sql
+-- Casting the string to the tsvector type:
+postgres=# SELECT 'Can postgres do it all?'::tsvector;
+             tsvector
+-----------------------------------
+ 'Can' 'all?' 'do' 'it' 'postgres'
+(1 row)
+
+-- As opposed to the to_tsvector function:
+postgres=# SELECT to_tsvector('english', 'Can postgres do it all?');
+ to_tsvector
+-------------
+ 'postgr':2
+(1 row)
+```
+
+### The final column
+
+Tying it all together, to derive the `to_tsvector` on every `INSERT`/`UPDATE`,
+we (this was Claude) added the stored generated column to the `items` table[^3]:
 
 ```sql
 textsearch tsvector GENERATED ALWAYS AS (to_tsvector('english', content)) STORED
 ```
 
-A `tsvector` is `postgres`'s preprocessed-text type — not a string but a sorted
-list of lexemes with positions. The content `"running tests for comptime"`
-lands as:
-
-```
-'comptim':4 'run':1 'test':2
-```
-
-`running` becomes `run`, `tests` becomes `test`, `comptime` becomes `comptim`,
-and `for` gets dropped as a stopword. That preprocessing is what lets
-full-text search stay fast — at query time `postgres` compares already-cooked
-against already-cooked, no per-row tokenization.
-
-`to_tsvector('english', content)` is the cooking function, and the `'english'`
-argument tells `postgres` which stemmer and stopword list to use (the commit
-messages in `ishi` are all English, so it's hardcoded). The
-`GENERATED ALWAYS AS (...) STORED` clause is the bit that made me smile —
-`postgres` derives the column itself on every INSERT/UPDATE of `content` and
-persists it to disk. That's why `seed.zig` didn't need a single line of
-change: the database handles the bookkeeping for us.
-
-### Throwing a GIN index on it
+### Slapping a GIN index on it
 
 ```sql
 CREATE INDEX IF NOT EXISTS items_textsearch_idx ON items USING GIN (textsearch);
 ```
 
-`GIN` stands for Generalized Inverted Index — the same shape Lucene and
+[GIN][] stands for Generalized Inverted Index — the same shape Lucene and
 Elasticsearch use under the hood. For every unique lexeme in the corpus, `GIN`
 keeps a sorted list of row IDs that contain it:
 
@@ -170,9 +197,9 @@ When you run `textsearch @@ plainto_tsquery('english', 'comptime rank')`,
 those rows. It never touches rows that don't contain the search terms.
 
 Why `GIN` and not B-tree? B-tree wants one entry per whole value — useless for
-"does this `tsvector` contain `'rank'`?", because you'd need a separate
-(row, lexeme) entry and the index would explode. `GIN` is purpose-built for
-the many-values-per-row case.
+"does this `tsvector` contain `'rank'`?", because you'd need a separate (row,
+lexeme) entry and the index would explode. `GIN` is purpose-built for the
+many-values-per-row case.
 
 ## How the hybrid query works
 
@@ -209,14 +236,14 @@ SELECT id, RANK() OVER (ORDER BY embedding <=> $1::vector) AS rank
 FROM items ORDER BY embedding <=> $1::vector LIMIT 20
 ```
 
-- `$1::vector` is the query embedding, cast from the string `postgres`
-  receives into a pgvector value.
-- `embedding <=> $1::vector` is pgvector's cosine-distance operator — smaller
-  is closer.
+- `$1::vector` is the query embedding, cast from the string `postgres` receives
+  into a pgvector value.
+- `embedding <=> $1::vector` is pgvector's cosine-distance operator — smaller is
+  closer.
 - `ORDER BY ... LIMIT 20` keeps the 20 nearest items.
 - `RANK() OVER (ORDER BY ...)` is a window function. It doesn't change which
-  rows come back, it tacks on a column with each row's position in the
-  ordering. Closest item gets `rank = 1`.
+  rows come back, it tacks on a column with each row's position in the ordering.
+  Closest item gets `rank = 1`.
 
 ### The keyword half
 
@@ -230,8 +257,8 @@ ORDER BY ts_rank_cd(textsearch, query) DESC LIMIT 20
 - `$2` is the raw query string the user typed (e.g. `"comptime"`).
 - `plainto_tsquery('english', $2)` parses it into a `tsquery` with English
   stemming applied, so `"running"` matches `"run"`.
-- `FROM items, plainto_tsquery(...) query` is a cross join that gives the
-  parsed query a name (`query`) so we don't have to recompute it three times.
+- `FROM items, plainto_tsquery(...) query` is a cross join that gives the parsed
+  query a name (`query`) so we don't have to recompute it three times.
 - `textsearch @@ query` is the match operator — does this row's `tsvector`
   contain the query terms? Only matches survive.
 - `ts_rank_cd` scores the match (higher = better, hence `DESC`). That's our
@@ -260,47 +287,59 @@ keyword-match still gets a shot at the podium. After the join, `ss.rank` is
 `1.0 / (60 + rank)` is the Reciprocal Rank Fusion formula. Rank 1 contributes
 `1/61 ≈ 0.0164`, rank 20 contributes `1/80 = 0.0125`. The `60` is a smoothing
 constant — without it, rank 1 would be worth `1.0` and rank 2 only `0.5`, way
-too steep a falloff. The `COALESCE(..., 0.0)` wrapper turns missing-side
-`NULL`s into zeros so the addition doesn't poison the score
-(`NULL + anything = NULL`, which would tank sorting).
+too steep a falloff. The `COALESCE(..., 0.0)` wrapper turns missing-side `NULL`s
+into zeros so the addition doesn't poison the score (`NULL + anything = NULL`,
+which would tank sorting).
 
 The trailing `JOIN items i` is just there to fetch `content` for display — the
-CTEs only carried `id` around to stay lean — and `COALESCE(ss.id, ks.id)`
-picks whichever id is present. `ORDER BY score DESC LIMIT 3` and we're done.
+CTEs only carried `id` around to stay lean — and `COALESCE(ss.id, ks.id)` picks
+whichever id is present. `ORDER BY score DESC LIMIT 3` and we're done.
 
 ### Why ranks and not raw scores
 
-The obvious "simpler" version is `ORDER BY similarity + ts_rank_cd`, but the
-two scores live on completely different scales — cosine distance is roughly
-0–2, `ts_rank_cd` is 0 to tiny — so whichever side has the bigger numbers
-wins by default. RRF sidesteps the whole scaling problem by using positions
-instead of values. That's why it's the textbook hybrid-search pattern, and
-what the [pgvector README][pgvector hybrid] recommends.
+The obvious "simpler" version is `ORDER BY similarity + ts_rank_cd`, but the two
+scores live on completely different scales — cosine distance is roughly 0–2,
+`ts_rank_cd` is 0 to tiny — so whichever side has the bigger numbers wins by
+default. RRF sidesteps the whole scaling problem by using positions instead of
+values. That's why it's the textbook hybrid-search pattern, and what the
+[pgvector README][pgvector hybrid] recommends.
 
 ### Tunable knobs
 
 - **`k = 60`** in `1.0 / (k + rank)` — lower `k` lets top-ranked results
   dominate harder, higher `k` flattens things out.
-- **`LIMIT 20`** per side controls recall: how far down each list you're
-  willing to consider when fusing.
+- **`LIMIT 20`** per side controls recall: how far down each list you're willing
+  to consider when fusing.
 - **`'english'`** in `plainto_tsquery` and `to_tsvector` sets the language
   config and decides stemming/stopwords.
 - **`LIMIT 3`** at the bottom is just how many final results to print.
 
 That's the whole pipeline end-to-end. [Issue #18][issue #18] can finally come
-off the board, and next on the list is the [knowledge graph layer][more
-intelligent knowledge graph system] that sits on top of this — but that's a
-bigger fish, and a future post.
+off the board, and next on the list is the [knowledge graph
+layer][more intelligent knowledge graph system] that sits on top of this — but
+that's a bigger fish, and a future post.
 
 [DMR Requirements]: https://docs.docker.com/ai/model-runner/#requirements
 [Docker AI]: https://www.docker.com/solutions/docker-ai/
+[GIN]: https://www.postgresql.org/docs/18/gin.html
 [Introducing Contextual Retrieval]:
   https://www.anthropic.com/engineering/contextual-retrieval
 [issue #18]: https://github.com/louislef299/ishi/issues/18
 [MCP]: https://modelcontextprotocol.io/specification/2025-11-25
 [more intelligent knowledge graph system]: https://arxiv.org/html/2411.09999v1
 [pgvector hybrid]: https://github.com/pgvector/pgvector#hybrid-search
+[Tokenizing]: https://mitchellh.com/zig/tokenizer
+[`tsvector` data type]:
+  https://www.postgresql.org/docs/current/datatype-textsearch.html#DATATYPE-TSVECTOR
 [`vector_dims`]: https://github.com/pgvector/pgvector#vector-functions
+
+[^1]:
+    https://www.slingacademy.com/article/postgresql-full-text-search-using-to-tsvector-and-to-tsquery/
+
+[^2]:
+    https://www.jocheojeda.com/2023/10/05/postgresql-full-text-search-using-text-search-vectors/
+
+[^3]: https://www.postgresql.org/docs/18/ddl-generated-columns.html
 
 <div style="opacity: 0.55; font-size: 0.85em; font-style: italic;
     margin-top: 3em; border-top: 1px solid currentColor; padding-top: 1em;">
