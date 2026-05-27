@@ -132,7 +132,8 @@ convert a string into a searchable tsvector data type[^1]. It does this by:
 
 - [Tokenizing][] the text
 - Converting the tokens into lexemes
-- Removing stop words ("and" or "the")[^2]
+- Removing stop words ("and" or "the")
+- Applies stemming (reducing words to their root form)[^2]
 
 To provide a quick example, here's a `SELECT` query I executed after authing to
 the `ishi` database with `psql`:
@@ -170,7 +171,7 @@ postgres=# SELECT to_tsvector('english', 'Can postgres do it all?');
 ### The final column
 
 Tying it all together, to derive the `to_tsvector` on every `INSERT`/`UPDATE`,
-we (this was Claude) added the stored generated column to the `items` table[^3]:
+we (Claude) added the stored generated column to the `items` table[^3]:
 
 ```sql
 textsearch tsvector GENERATED ALWAYS AS (to_tsvector('english', content)) STORED
@@ -182,14 +183,40 @@ textsearch tsvector GENERATED ALWAYS AS (to_tsvector('english', content)) STORED
 CREATE INDEX IF NOT EXISTS items_textsearch_idx ON items USING GIN (textsearch);
 ```
 
-[GIN][] stands for Generalized Inverted Index — the same shape Lucene and
-Elasticsearch use under the hood. For every unique lexeme in the corpus, `GIN`
-keeps a sorted list of row IDs that contain it:
+[GIN][] stands for Generalized Inverted Index and is designed for efficient
+full-text search. Combined with `to_tsvector` & `to_tsquery`, it's essentially a
+replacement for Elasticsearch. When a GIN index is created on a `ts_vector`
+column, it builds an index structure that maps each lexeme to the documents that
+contain it[^4]:
 
-```
+```text
 'comptim' → [row 7, row 23, row 41]
 'embed'   → [row 2, row 41, row 67, row 89]
 'rank'    → [row 7, row 41, row 55]
+```
+
+???
+
+```sql
+postgres=# SELECT * FROM items WHERE textsearch @@ plainto_tsquery('english', 'comptime rank');
+ id | sha | content | embedding | author_name | author_email | commit_date | files_changed | insertions | deletions | textsearch
+----+-----+---------+-----------+-------------+--------------+-------------+---------------+------------+-----------+------------
+(0 rows)
+
+postgres=# SELECT sha FROM items LIMIT 10;
+                   sha
+------------------------------------------
+ 5e21d9fbceb21efe92fa900f6398284086730808
+ f7e642bd37d0df4ee8f9905f5bf7a1c79a19a692
+ ea93aeeef5da400e809b3c5a6cd51ce9af2a3b70
+ 1d9d85acfc7a6389c5cacbbe969425fdca02fd8a
+ d4de9680b0c25246462a4a89ea4fda002e72ac30
+ b5e8536d7dbba69e6ab3126e21a338391b349b1f
+ 5cb8171840cd9f95ec2c9e7e9026ff8f6072ae8a
+ 7a23013b5c6874a19005e46d02761e71775f70f2
+ 9d123eaf54b61c0b35d7907969228319466cec2e
+ 381908a1577e1f9fedf8b69abc69bfec53fbdb24
+(10 rows)
 ```
 
 When you run `textsearch @@ plainto_tsquery('english', 'comptime rank')`,
@@ -340,6 +367,9 @@ that's a bigger fish, and a future post.
     https://www.jocheojeda.com/2023/10/05/postgresql-full-text-search-using-text-search-vectors/
 
 [^3]: https://www.postgresql.org/docs/18/ddl-generated-columns.html
+
+[^4]:
+    https://medium.com/@ketansomvanshi007/exploring-full-text-search-with-ts-vector-and-gin-indexing-in-postgresql-11ba4e7b8282
 
 <div style="opacity: 0.55; font-size: 0.85em; font-style: italic;
     margin-top: 3em; border-top: 1px solid currentColor; padding-top: 1em;">
