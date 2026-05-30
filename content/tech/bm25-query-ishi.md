@@ -118,12 +118,19 @@ what I'm looking for.
 
 ## Moving onto the Implementation
 
-The beauty of Postgres is that it abstracts most of the complexity for us. No, I
-didn't have to recreate the full BM25 function in `zig`, nor did I have to pull
-in a library. I could rely on the `postgres` system to have my back here.
-Postgres natively supports full-text search, essentially meaning is parses
-entire documents, not just metadata, to store relevant words to later match for
-search queries.
+The beauty of Postgres is that it abstracts most of the complexity for us. I
+didn't have to pull in a library or stand up a separate search engine — Postgres
+natively supports full-text search, parsing entire documents (not just metadata)
+into searchable terms.
+
+> **One correction:** I reached for this thinking "Postgres gives me BM25" — it
+> doesn't. `ts_rank_cd` ranks by term frequency and how tightly matches cluster
+> (coverage density), but with **no IDF and no `k1`/`b` length-normalization** —
+> the three things that actually define BM25. So this is a hybrid of semantic
+> and **keyword** search (the win I was after), just not BM25. Real BM25 on
+> Postgres needs an extension like [VectorChord-bm25][] or [ParadeDB][];
+> SQLite's FTS5 ships a true `bm25()` for free. The keyword arm now sits behind
+> a storage interface in ishi, so swapping engines later won't ripple outward.
 
 ### `to_tsvector`
 
@@ -288,8 +295,9 @@ ORDER BY ts_rank_cd(textsearch, query) DESC LIMIT 20
   query a name (`query`) so we don't have to recompute it three times.
 - `textsearch @@ query` is the match operator — does this row's `tsvector`
   contain the query terms? Only matches survive.
-- `ts_rank_cd` scores the match (higher = better, hence `DESC`). That's our
-  BM25-ish relevance score, and `RANK()` slots each surviving row 1..20.
+- `ts_rank_cd` scores the match (higher = better, hence `DESC`), and `RANK()`
+  slots each surviving row 1..20. (This is lexical ranking, **not** BM25 — see
+  the correction above.)
 
 Unlike the vector side, this CTE can return fewer than 20 rows — or zero — if
 the keywords don't hit much.
@@ -355,6 +363,8 @@ that's a bigger fish, and a future post.
 [MCP]: https://modelcontextprotocol.io/specification/2025-11-25
 [more intelligent knowledge graph system]: https://arxiv.org/html/2411.09999v1
 [pgvector hybrid]: https://github.com/pgvector/pgvector#hybrid-search
+[VectorChord-bm25]: https://github.com/tensorchord/VectorChord-bm25
+[ParadeDB]: https://github.com/paradedb/paradedb
 [Tokenizing]: https://mitchellh.com/zig/tokenizer
 [`tsvector` data type]:
   https://www.postgresql.org/docs/current/datatype-textsearch.html#DATATYPE-TSVECTOR
