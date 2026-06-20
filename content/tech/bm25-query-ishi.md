@@ -103,6 +103,8 @@ postgres=# SELECT vector_dims(embedding), commit_date FROM items WHERE sha LIKE 
 (1 row)
 ```
 
+Fair enough.
+
 ## So what's with the BM25 Search Fusion?
 
 Combining contextual embeddings with contextual BM25 and reranking [isn't a new
@@ -111,26 +113,22 @@ embeddings are great at capturing semantic relationships, but miss a fundamental
 search technique: basic keyword(lexical) search. By fusing semantic & lexical
 search, RAG systems have a much more accurate and balanced result.
 
-In basic terms, when I run `ishi query "zig comptime"`, I want to make sure the
-resulting commits with the keywords `zig` and/or `comptime` are scored with a
-higher priority when running cosine similarity since their actual terms match
-what I'm looking for.
+Tying this to `ishi`, when I run `ishi query "zig comptime"`, I want to make
+sure the resulting commits with the keywords `zig` and/or `comptime` are scored
+with a higher priority when running cosine similarity since their actual terms
+match what I'm looking for.
+
+To keep it simple for this implementation, I won't worry about a pure BM25
+implementation, but instead just leverage `ts_rank_cd` for keyword search. Real
+BM25 requires IDF and `k1`/`b` length-normalization and on Postgres needs an
+extension like [VectorChord-bm25][] or [ParadeDB][].
 
 ## Moving onto the Implementation
 
 The beauty of Postgres is that it abstracts most of the complexity for us. I
-didn't have to pull in a library or stand up a separate search engine — Postgres
-natively supports full-text search, parsing entire documents (not just metadata)
-into searchable terms.
-
-> **One correction:** I reached for this thinking "Postgres gives me BM25" — it
-> doesn't. `ts_rank_cd` ranks by term frequency and how tightly matches cluster
-> (coverage density), but with **no IDF and no `k1`/`b` length-normalization** —
-> the three things that actually define BM25. So this is a hybrid of semantic
-> and **keyword** search (the win I was after), just not BM25. Real BM25 on
-> Postgres needs an extension like [VectorChord-bm25][] or [ParadeDB][];
-> SQLite's FTS5 ships a true `bm25()` for free. The keyword arm now sits behind
-> a storage interface in ishi, so swapping engines later won't ripple outward.
+didn't have to pull in a library or stand up a separate search engine; Postgres
+natively supports full-text search, which parses entire documents into
+searchable terms.
 
 ### `to_tsvector`
 
@@ -146,10 +144,10 @@ To provide a quick example, here's a `SELECT` query I executed after authing to
 the `ishi` database with `psql`:
 
 ```sql
-postgres=# SELECT to_tsvector('english', 'Data systems are boring to learn but are super powerful');
+postgres=# SELECT to_tsvector('english', 'Data systems are boring to learn yet powerful');
                          to_tsvector
 -------------------------------------------------------------
- 'bore':4 'data':1 'learn':6 'power':10 'super':9 'system':2
+ 'bore':4 'data':1 'learn':6 'power':10 'system':2
 (1 row)
 ```
 
@@ -178,7 +176,7 @@ postgres=# SELECT to_tsvector('english', 'Can postgres do it all?');
 ### The final column
 
 Tying it all together, to derive the `to_tsvector` on every `INSERT`/`UPDATE`,
-we (Claude) added the stored generated column to the `items` table[^3]:
+let's add the stored generated column to the `items` table[^3]:
 
 ```sql
 textsearch tsvector GENERATED ALWAYS AS (to_tsvector('english', content)) STORED
