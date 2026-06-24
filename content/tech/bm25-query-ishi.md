@@ -1,0 +1,386 @@
+---
+title: "Implementing Hybrid Search for ishi"
+date: 2026-05-25T09:43:57-05:00
+draft: false
+toc: true
+tags:
+  - zig
+  - pg
+---
+
+This morning, I was able to crank out [issue #18][] that had been looming over
+my head for a couple months. I'd meant to implement this issue without AI
+assistance, but since I kept kicking the can and wanted to move onto a [more
+intelligent knowledge graph system][], I figured it was time to crack out Claude
+and just git'r done. So, today I'm going to document the existing `ishi` data
+structure stack and break down the final hybrid search postgres query that was
+written! I'm still quite the postgres noob so bear with me.
+
+## Spin Up the ishi System
+
+The local `ishi` system essentially just depends on [Docker AI][] and a computer
+with [enough juice][DMR Requirements] to run the embedding model locally.
+Getting up-and-running is as simple as:
+
+```sh
+$ git clone https://github.com/louislef299/ishi.git && cd ishi
+
+# Ensure that DMR(Docker AI) is enabled
+$ docker model ls
+
+# Spin up the pgvector database & initialize with `ishi init`
+$ docker compose up -d
+```
+
+## The ishi Domain Structure
+
+If you're too lazy to skim the README, `ishi` is essentially just a `git` commit
+embedding tool with the goal of surfacing a shared `git` knowledge base to
+agents over [MCP][]. If done correctly, `ishi` should enable RAG over MCP and
+enable a smarter AI coding agent that understands coding preferences and style
+without requiring the user to excessively prompt.
+
+With that background, the overall domain structure will make a bit more sense:
+
+```sql
+CREATE TABLE IF NOT EXISTS items (
+  id bigserial PRIMARY KEY,
+
+-- Basic git commit object data
+  sha TEXT UNIQUE,
+  content text,
+  author_name TEXT,
+  author_email TEXT,
+  commit_date TIMESTAMPTZ,
+  files_changed INT,
+  insertions INT,
+  deletions INT,
+
+-- Embedding is generated after `ishi seed` runs
+  embedding vector({d}),
+
+-- We'll worry about this part later...
+  textsearch tsvector GENERATED ALWAYS AS (to_tsvector('english', content)) STORED);
+)
+```
+
+So, as a more practical example, I seed the 5 latest commits in the `ishi` repo,
+connect to the local database and use the [`vector_dims`][] function to output
+the number of dimensions and the commit date of commit `d4de968`.
+
+```sh
+$ ./zig-out/bin/ishi seed --limit 5
+info(seed): Walking up to 5 commits...
+info(seed): Found 5 commits, seeding...
+info(seed): embedding 5e21d9fbceb21efe92fa900f6398284086730808...
+info(seed):   seeded 5e21d9fbceb21efe92fa900f6398284086730808
+info(seed): embedding f7e642bd37d0df4ee8f9905f5bf7a1c79a19a692...
+info(seed):   seeded f7e642bd37d0df4ee8f9905f5bf7a1c79a19a692
+info(seed): embedding ea93aeeef5da400e809b3c5a6cd51ce9af2a3b70...
+info(seed):   seeded ea93aeeef5da400e809b3c5a6cd51ce9af2a3b70
+info(seed): embedding 1d9d85acfc7a6389c5cacbbe969425fdca02fd8a...
+info(seed):   seeded 1d9d85acfc7a6389c5cacbbe969425fdca02fd8a
+info(seed): embedding d4de9680b0c25246462a4a89ea4fda002e72ac30...
+info(seed):   seeded d4de9680b0c25246462a4a89ea4fda002e72ac30
+
+$ psql -U postgres -h localhost
+Password for user postgres:
+psql (18.3 (Homebrew))
+Type "help" for help.
+
+postgres=# \d
+              List of relations
+ Schema |     Name     |   Type   |  Owner
+--------+--------------+----------+----------
+ public | items        | table    | postgres
+ public | items_id_seq | sequence | postgres
+(2 rows)
+
+postgres=# SELECT vector_dims(embedding), commit_date FROM items WHERE sha LIKE 'd4de968%';
+ vector_dims |      commit_date
+-------------+------------------------
+         768 | 2026-04-09 12:08:28+00
+(1 row)
+```
+
+Fair enough.
+
+## So what's with the BM25 Search Fusion?
+
+Combining contextual embeddings with contextual BM25 and reranking [isn't a new
+concept][Introducing Contextual Retrieval]. The TL;DR there is that contextual
+embeddings are great at capturing semantic relationships, but miss a fundamental
+search technique: basic keyword(lexical) search. By fusing semantic & lexical
+search, RAG systems have a much more accurate and balanced result.
+
+Tying this to `ishi`, when I run `ishi query "zig comptime"`, I want to make
+sure the resulting commits with the keywords `zig` and/or `comptime` are scored
+with a higher priority when running cosine similarity since their actual terms
+match what I'm looking for.
+
+To keep it simple for this implementation, I won't worry about a pure BM25
+implementation, but instead just leverage `ts_rank_cd` for keyword search. Real
+BM25 requires IDF and `k1`/`b` length-normalization and on Postgres needs an
+extension like [VectorChord-bm25][] or [ParadeDB][].
+
+## Moving onto the Implementation
+
+The beauty of Postgres is that it abstracts most of the complexity for us. I
+didn't have to pull in a library or stand up a separate search engine; Postgres
+natively supports full-text search, which parses entire documents into
+searchable terms.
+
+### `to_tsvector`
+
+To actually pull this off, Postgres provides the `to_tsvector` function to
+convert a string into a searchable tsvector data type[^1]. It does this by:
+
+- [Tokenizing][] the text
+- Converting the tokens into lexemes
+- Removing stop words ("and" or "the")
+- Applies stemming (reducing words to their root form)[^2]
+
+To provide a quick example, here's a `SELECT` query I executed after authing to
+the `ishi` database with `psql`:
+
+```sql
+postgres=# SELECT to_tsvector('english', 'Data systems are boring to learn yet powerful');
+                         to_tsvector
+-------------------------------------------------------------
+ 'bore':4 'data':1 'learn':6 'power':10 'system':2
+(1 row)
+```
+
+### The `tsvector` type
+
+Postgres provides the [`tsvector` data type][], which is a sorted list of
+distinct lexemes. To be clear, this is a _data type_, so it is only creating the
+lexemes, not removing the stop words. For example:
+
+```sql
+-- Casting the string to the tsvector type:
+postgres=# SELECT 'Can postgres do it all?'::tsvector;
+             tsvector
+-----------------------------------
+ 'Can' 'all?' 'do' 'it' 'postgres'
+(1 row)
+
+-- As opposed to the to_tsvector function:
+postgres=# SELECT to_tsvector('english', 'Can postgres do it all?');
+ to_tsvector
+-------------
+ 'postgr':2
+(1 row)
+```
+
+### The final column
+
+Tying it all together, to derive the `to_tsvector` on every `INSERT`/`UPDATE`,
+let's add the stored generated column to the `items` table[^3]:
+
+```sql
+textsearch tsvector GENERATED ALWAYS AS (to_tsvector('english', content)) STORED
+```
+
+### Slapping a GIN index on it
+
+```sql
+CREATE INDEX IF NOT EXISTS items_textsearch_idx ON items USING GIN (textsearch);
+```
+
+[GIN][] stands for Generalized Inverted Index and is designed for efficient
+full-text search. Combined with `to_tsvector` & `to_tsquery`, it's essentially a
+replacement for Elasticsearch. When a GIN index is created on a `ts_vector`
+column, it builds an index structure that maps each lexeme to the documents that
+contain it[^4]:
+
+```text
+'comptim' → [row 7, row 23, row 41]
+'embed'   → [row 2, row 41, row 67, row 89]
+'rank'    → [row 7, row 41, row 55]
+```
+
+???
+
+```sql
+postgres=# SELECT * FROM items WHERE textsearch @@ plainto_tsquery('english', 'comptime rank');
+ id | sha | content | embedding | author_name | author_email | commit_date | files_changed | insertions | deletions | textsearch
+----+-----+---------+-----------+-------------+--------------+-------------+---------------+------------+-----------+------------
+(0 rows)
+
+postgres=# SELECT sha FROM items LIMIT 10;
+                   sha
+------------------------------------------
+ 5e21d9fbceb21efe92fa900f6398284086730808
+ f7e642bd37d0df4ee8f9905f5bf7a1c79a19a692
+ ea93aeeef5da400e809b3c5a6cd51ce9af2a3b70
+ 1d9d85acfc7a6389c5cacbbe969425fdca02fd8a
+ d4de9680b0c25246462a4a89ea4fda002e72ac30
+ b5e8536d7dbba69e6ab3126e21a338391b349b1f
+ 5cb8171840cd9f95ec2c9e7e9026ff8f6072ae8a
+ 7a23013b5c6874a19005e46d02761e71775f70f2
+ 9d123eaf54b61c0b35d7907969228319466cec2e
+ 381908a1577e1f9fedf8b69abc69bfec53fbdb24
+(10 rows)
+```
+
+When you run `textsearch @@ plainto_tsquery('english', 'comptime rank')`,
+`postgres` grabs the two lists, intersects them down to `[7, 41]`, and returns
+those rows. It never touches rows that don't contain the search terms.
+
+Why `GIN` and not B-tree? B-tree wants one entry per whole value — useless for
+"does this `tsvector` contain `'rank'`?", because you'd need a separate (row,
+lexeme) entry and the index would explode. `GIN` is purpose-built for the
+many-values-per-row case.
+
+## How the hybrid query works
+
+`ishi query` doesn't run one search — it runs two, and fuses them.
+
+```sql
+WITH semantic_search AS (
+    SELECT id, RANK() OVER (ORDER BY embedding <=> $1::vector) AS rank
+    FROM items ORDER BY embedding <=> $1::vector LIMIT 20
+),
+keyword_search AS (
+    SELECT id, RANK() OVER (ORDER BY ts_rank_cd(textsearch, query) DESC) AS rank
+    FROM items, plainto_tsquery('english', $2) query
+    WHERE textsearch @@ query
+    ORDER BY ts_rank_cd(textsearch, query) DESC LIMIT 20
+)
+SELECT i.content,
+       COALESCE(1.0 / (60 + ss.rank), 0.0)
+     + COALESCE(1.0 / (60 + ks.rank), 0.0) AS score
+FROM semantic_search ss
+FULL OUTER JOIN keyword_search ks ON ss.id = ks.id
+JOIN items i ON i.id = COALESCE(ss.id, ks.id)
+ORDER BY score DESC LIMIT 3;
+```
+
+Two CTEs and a final `SELECT` that stitches them together. A CTE —
+`WITH name AS (...)` — is just a temp view that lives for the duration of one
+statement.
+
+### The vector half
+
+```sql
+SELECT id, RANK() OVER (ORDER BY embedding <=> $1::vector) AS rank
+FROM items ORDER BY embedding <=> $1::vector LIMIT 20
+```
+
+- `$1::vector` is the query embedding, cast from the string `postgres` receives
+  into a pgvector value.
+- `embedding <=> $1::vector` is pgvector's cosine-distance operator — smaller is
+  closer.
+- `ORDER BY ... LIMIT 20` keeps the 20 nearest items.
+- `RANK() OVER (ORDER BY ...)` is a window function. It doesn't change which
+  rows come back, it tacks on a column with each row's position in the ordering.
+  Closest item gets `rank = 1`.
+
+### The keyword half
+
+```sql
+SELECT id, RANK() OVER (ORDER BY ts_rank_cd(textsearch, query) DESC) AS rank
+FROM items, plainto_tsquery('english', $2) query
+WHERE textsearch @@ query
+ORDER BY ts_rank_cd(textsearch, query) DESC LIMIT 20
+```
+
+- `$2` is the raw query string the user typed (e.g. `"comptime"`).
+- `plainto_tsquery('english', $2)` parses it into a `tsquery` with English
+  stemming applied, so `"running"` matches `"run"`.
+- `FROM items, plainto_tsquery(...) query` is a cross join that gives the parsed
+  query a name (`query`) so we don't have to recompute it three times.
+- `textsearch @@ query` is the match operator — does this row's `tsvector`
+  contain the query terms? Only matches survive.
+- `ts_rank_cd` scores the match (higher = better, hence `DESC`), and `RANK()`
+  slots each surviving row 1..20. (This is lexical ranking, **not** BM25 — see
+  the correction above.)
+
+Unlike the vector side, this CTE can return fewer than 20 rows — or zero — if
+the keywords don't hit much.
+
+### Fusing them with RRF
+
+```sql
+SELECT i.content,
+       COALESCE(1.0 / (60 + ss.rank), 0.0)
+     + COALESCE(1.0 / (60 + ks.rank), 0.0) AS score
+FROM semantic_search ss
+FULL OUTER JOIN keyword_search ks ON ss.id = ks.id
+JOIN items i ON i.id = COALESCE(ss.id, ks.id)
+ORDER BY score DESC LIMIT 3
+```
+
+The `FULL OUTER JOIN` is what makes this hybrid rather than intersection — we
+want any item that landed on either side, so a strong vector hit that didn't
+keyword-match still gets a shot at the podium. After the join, `ss.rank` is
+`NULL` if the item only showed up on the keyword side, and vice versa.
+
+`1.0 / (60 + rank)` is the Reciprocal Rank Fusion formula. Rank 1 contributes
+`1/61 ≈ 0.0164`, rank 20 contributes `1/80 = 0.0125`. The `60` is a smoothing
+constant — without it, rank 1 would be worth `1.0` and rank 2 only `0.5`, way
+too steep a falloff. The `COALESCE(..., 0.0)` wrapper turns missing-side `NULL`s
+into zeros so the addition doesn't poison the score (`NULL + anything = NULL`,
+which would tank sorting).
+
+The trailing `JOIN items i` is just there to fetch `content` for display — the
+CTEs only carried `id` around to stay lean — and `COALESCE(ss.id, ks.id)` picks
+whichever id is present. `ORDER BY score DESC LIMIT 3` and we're done.
+
+### Why ranks and not raw scores
+
+The obvious "simpler" version is `ORDER BY similarity + ts_rank_cd`, but the two
+scores live on completely different scales — cosine distance is roughly 0–2,
+`ts_rank_cd` is 0 to tiny — so whichever side has the bigger numbers wins by
+default. RRF sidesteps the whole scaling problem by using positions instead of
+values. That's why it's the textbook hybrid-search pattern, and what the
+[pgvector README][pgvector hybrid] recommends.
+
+### Tunable knobs
+
+- **`k = 60`** in `1.0 / (k + rank)` — lower `k` lets top-ranked results
+  dominate harder, higher `k` flattens things out.
+- **`LIMIT 20`** per side controls recall: how far down each list you're willing
+  to consider when fusing.
+- **`'english'`** in `plainto_tsquery` and `to_tsvector` sets the language
+  config and decides stemming/stopwords.
+- **`LIMIT 3`** at the bottom is just how many final results to print.
+
+That's the whole pipeline end-to-end. [Issue #18][issue #18] can finally come
+off the board, and next on the list is the [knowledge graph
+layer][more intelligent knowledge graph system] that sits on top of this — but
+that's a bigger fish, and a future post.
+
+[DMR Requirements]: https://docs.docker.com/ai/model-runner/#requirements
+[Docker AI]: https://www.docker.com/solutions/docker-ai/
+[GIN]: https://www.postgresql.org/docs/18/gin.html
+[Introducing Contextual Retrieval]:
+  https://www.anthropic.com/engineering/contextual-retrieval
+[issue #18]: https://github.com/louislef299/ishi/issues/18
+[MCP]: https://modelcontextprotocol.io/specification/2025-11-25
+[more intelligent knowledge graph system]: https://arxiv.org/html/2411.09999v1
+[pgvector hybrid]: https://github.com/pgvector/pgvector#hybrid-search
+[VectorChord-bm25]: https://github.com/tensorchord/VectorChord-bm25
+[ParadeDB]: https://github.com/paradedb/paradedb
+[Tokenizing]: https://mitchellh.com/zig/tokenizer
+[`tsvector` data type]:
+  https://www.postgresql.org/docs/current/datatype-textsearch.html#DATATYPE-TSVECTOR
+[`vector_dims`]: https://github.com/pgvector/pgvector#vector-functions
+
+[^1]:
+    https://www.slingacademy.com/article/postgresql-full-text-search-using-to-tsvector-and-to-tsquery/
+
+[^2]:
+    https://www.jocheojeda.com/2023/10/05/postgresql-full-text-search-using-text-search-vectors/
+
+[^3]: https://www.postgresql.org/docs/18/ddl-generated-columns.html
+
+[^4]:
+    https://medium.com/@ketansomvanshi007/exploring-full-text-search-with-ts-vector-and-gin-indexing-in-postgresql-11ba4e7b8282
+
+<div style="opacity: 0.55; font-size: 0.85em; font-style: italic;
+    margin-top: 3em; border-top: 1px solid currentColor; padding-top: 1em;">
+The implementation, and the first draft of the hybrid-query walkthrough, were
+aided by Claude Opus 4.7.
+</div>
