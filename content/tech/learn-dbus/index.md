@@ -163,7 +163,7 @@ Character | Code Data Type
 --- | ---
 y | 8-bit unsigned integer
 b | boolean value
-n |16-bit signed integer
+n | 16-bit signed integer
 q | 16-bit unsigned integer
 i | 32-bit signed integer
 u | 32-bit unsigned integer
