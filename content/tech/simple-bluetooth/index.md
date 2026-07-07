@@ -4,11 +4,13 @@ date: 2024-12-07T14:23:59-06:00
 draft: false
 toc: true
 tags:
-- go
-- ble
-- linux
-- net
+  - go
+  - ble
+  - linux
+  - net
 ---
+
+<!-- markdownlint-disable MD001 -->
 
 Just going to go over communicating over bluetooth in Go. Over the summer, I had
 spent some time learning the [basics of bluetooth][] and made a super simple
@@ -69,8 +71,8 @@ description and instead give this high-level diagram of what it does:
 │    advertise..   │            │ and then disconnect  │
 │                  ◄────────────┼                      │
 │                  │            │   (Central)          │
-│   (Peripheral)   │            └────────────────────── 
-└──────────────────┘                                    
+│   (Peripheral)   │            └──────────────────────
+└──────────────────┘
 ```
 
 The PiZero in this case was on my local network and I had it advertise bluetooth
@@ -83,8 +85,10 @@ relationship between my computer and the pi5. It helps understand how to allow
 the peripheral node to act as a sort of gateway to the central(where I need to
 understand this architecture and how this ble interest started).
 
-[basics of bluetooth]: https://learn.adafruit.com/introduction-to-bluetooth-low-energy/gap
+[basics of bluetooth]:
+  https://learn.adafruit.com/introduction-to-bluetooth-low-energy/gap
 [ble-playground]: https://github.com/louislef299/ble-playground
 [bluez]: https://www.bluez.org/
 [Profiles]: https://www.bluetooth.com/specifications/specs/
-[Services and Characteristics]: https://www.bluetooth.com/specifications/assigned-numbers/
+[Services and Characteristics]:
+  https://www.bluetooth.com/specifications/assigned-numbers/

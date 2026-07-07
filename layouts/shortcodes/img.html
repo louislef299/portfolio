@@ -34,6 +34,7 @@
   {{- if eq $priority "high" -}}
     {{- $lqip := $img.Resize "20x webp" -}}
     {{- $lqipB64 := $lqip.Content | base64Encode -}}
+    {{- $lqipStyle := printf "filter:blur(10px);transition:filter 0.3s%s" (cond (ne $style "") (printf ";%s" $style) "") -}}
     <img
       src="data:image/webp;base64,{{ $lqipB64 }}"
       data-src="{{ $full.RelPermalink }}"
@@ -42,7 +43,7 @@
       height="{{ $full.Height }}"
       {{- if $class }} class="{{ $class }}"{{ end }}
       {{- if $id }} id="{{ $id }}"{{ end }}
-      style="filter:blur(10px);transition:filter 0.3s{{ with $style }};{{ . }}{{ end }}"
+      style="{{ $lqipStyle | safeCSS }}"
       fetchpriority="high"
       {{- if gt (len $variants) 1 }}
       data-srcset="{{ $srcset }}"
@@ -58,7 +59,7 @@
       height="{{ $full.Height }}"
       {{- if $class }} class="{{ $class }}"{{ end }}
       {{- if $id }} id="{{ $id }}"{{ end }}
-      {{- if $style }} style="{{ $style }}"{{ end }}
+      {{- if $style }} style="{{ $style | safeCSS }}"{{ end }}
       loading="lazy"
       {{- if gt (len $variants) 1 }}
       srcset="{{ $srcset }}"
@@ -73,7 +74,7 @@
     alt="{{ $alt }}"
     {{- if $class }} class="{{ $class }}"{{ end }}
     {{- if $id }} id="{{ $id }}"{{ end }}
-    {{- if $style }} style="{{ $style }}"{{ end }}
+    {{- if $style }} style="{{ $style | safeCSS }}"{{ end }}
     loading="lazy"
   />
 {{- else -}}
@@ -83,7 +84,7 @@
     alt="{{ $alt }}"
     {{- if $class }} class="{{ $class }}"{{ end }}
     {{- if $id }} id="{{ $id }}"{{ end }}
-    {{- if $style }} style="{{ $style }}"{{ end }}
+    {{- if $style }} style="{{ $style | safeCSS }}"{{ end }}
     loading="lazy"
   />
 {{- end -}}
