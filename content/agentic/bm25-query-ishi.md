@@ -200,7 +200,8 @@ contain it[^4]:
 'rank'    → [row 7, row 41, row 55]
 ```
 
-???
+Querying it is just as tidy — `@@` walks the inverted index, intersects the row
+lists, and returns only what matches. No table scan needed.
 
 ```sql
 postgres=# SELECT * FROM items WHERE textsearch @@ plainto_tsquery('english', 'comptime rank');
@@ -369,15 +370,15 @@ that's a bigger fish, and a future post.
 [`vector_dims`]: https://github.com/pgvector/pgvector#vector-functions
 
 [^1]:
-    https://www.slingacademy.com/article/postgresql-full-text-search-using-to-tsvector-and-to-tsquery/
+    <https://www.slingacademy.com/article/postgresql-full-text-search-using-to-tsvector-and-to-tsquery/>
 
 [^2]:
-    https://www.jocheojeda.com/2023/10/05/postgresql-full-text-search-using-text-search-vectors/
+    <https://www.jocheojeda.com/2023/10/05/postgresql-full-text-search-using-text-search-vectors/>
 
-[^3]: https://www.postgresql.org/docs/18/ddl-generated-columns.html
+[^3]: <https://www.postgresql.org/docs/18/ddl-generated-columns.html>
 
 [^4]:
-    https://medium.com/@ketansomvanshi007/exploring-full-text-search-with-ts-vector-and-gin-indexing-in-postgresql-11ba4e7b8282
+    <https://medium.com/@ketansomvanshi007/exploring-full-text-search-with-ts-vector-and-gin-indexing-in-postgresql-11ba4e7b8282>
 
 <div style="opacity: 0.55; font-size: 0.85em; font-style: italic;
     margin-top: 3em; border-top: 1px solid currentColor; padding-top: 1em;">
