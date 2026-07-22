@@ -1,0 +1,70 @@
+{{- /*
+  maplibre.html — reusable MapLibre GL JS map backed by OpenFreeMap (no API key).
+
+  Params (all named):
+    style      short name (positron|liberty|bright) or a full style URL. Default: positron
+    height     container height. Default: 400px
+    center     "lng,lat" fallback center when no pins are given
+    zoom       fallback zoom when no pins are given. Default: 8
+    from/to    "lng,lat" pin coordinates; if both set the view auto-fits to both
+    fromLabel  popup label for the "from" pin
+    toLabel    popup label for the "to" pin
+
+  Example:
+    {{< maplibre style="positron" height="380px"
+         from="-120.8499,35.3658" fromLabel="Morro Bay"
+         to="-121.4685,35.9210"  toLabel="Sand Dollar Beach" >}}
+*/ -}}
+{{- $style := .Get "style" | default "positron" -}}
+{{- $styleURL := $style -}}
+{{- if not (strings.Contains $style "://") -}}
+  {{- $styleURL = printf "https://tiles.openfreemap.org/styles/%s" $style -}}
+{{- end -}}
+{{- $height := .Get "height" | default "400px" -}}
+{{- $zoom := .Get "zoom" | default "8" -}}
+{{- $center := .Get "center" -}}
+{{- $from := .Get "from" -}}
+{{- $to := .Get "to" -}}
+{{- $fromLabel := .Get "fromLabel" -}}
+{{- $toLabel := .Get "toLabel" -}}
+{{- $id := printf "maplibre-%d" .Ordinal -}}
+
+{{- if not (.Page.Store.Get "hasMaplibre") -}}
+<link rel="stylesheet" href="https://unpkg.com/maplibre-gl@5/dist/maplibre-gl.css" />
+<script src="https://unpkg.com/maplibre-gl@5/dist/maplibre-gl.js"></script>
+{{- .Page.Store.Set "hasMaplibre" true -}}
+{{- end -}}
+
+<div id="{{ $id }}" class="maplibre-map" style="height: {{ $height }}"></div>
+
+<script>
+  (function () {
+    var opts = { container: "{{ $id }}", style: "{{ $styleURL }}" };
+    {{ if and $from $to }}
+    var from = "{{ $from }}".split(",").map(Number);
+    var to = "{{ $to }}".split(",").map(Number);
+    var bounds = new maplibregl.LngLatBounds();
+    bounds.extend(from);
+    bounds.extend(to);
+    opts.bounds = bounds;
+    opts.fitBoundsOptions = { padding: 60 };
+    {{ else }}
+    opts.center = {{ with $center }}"{{ . }}".split(",").map(Number){{ else }}[-121.16, 35.64]{{ end }};
+    opts.zoom = {{ $zoom }};
+    {{ end }}
+
+    var map = new maplibregl.Map(opts);
+    map.addControl(new maplibregl.NavigationControl(), "top-right");
+
+    {{ if and $from $to }}
+    new maplibregl.Marker()
+      .setLngLat(from)
+      {{ with $fromLabel }}.setPopup(new maplibregl.Popup({ offset: 25 }).setText("{{ . }}")){{ end }}
+      .addTo(map);
+    new maplibregl.Marker()
+      .setLngLat(to)
+      {{ with $toLabel }}.setPopup(new maplibregl.Popup({ offset: 25 }).setText("{{ . }}")){{ end }}
+      .addTo(map);
+    {{ end }}
+  })();
+</script>
