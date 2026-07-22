@@ -2,6 +2,10 @@
 title: "Discovering Sand Dollar Beach"
 date: 2026-07-22T08:20:16-07:00
 draft: false
+tags:
+  - surf
+  - slocal
+  - bigsur
 ---
 
 <!-- markdownlint-disable MD013 -->
