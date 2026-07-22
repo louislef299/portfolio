@@ -5,6 +5,39 @@
 {{- $style := .Get "style" | default "" -}}
 {{- $priority := .Get "priority" | default "" -}}
 {{- $isGif := strings.HasSuffix (lower $src) ".gif" -}}
+
+{{- /* Emit the float helper CSS once per page, only when an image uses it.
+       Mobile-first: images stack full-width, then float on screens >=600px.
+       Per-image width can be overridden via the id + an inline <style> in the post. */ -}}
+{{- $isFloat := or (strings.Contains $class "img-left") (strings.Contains $class "img-right") -}}
+{{- if and $isFloat (not (.Page.Store.Get "hasImgFloat")) -}}
+<style>
+    .img-left,
+    .img-right {
+        display: block;
+        width: 100%;
+        height: auto;
+        margin-bottom: 1%;
+        border-radius: 0.5rem;
+    }
+
+    @media (min-width: 600px) {
+        .img-left {
+            float: left;
+            width: 45%;
+            margin-right: 3%;
+        }
+
+        .img-right {
+            float: right;
+            width: 45%;
+            margin-left: 3%;
+        }
+    }
+</style>
+{{- .Page.Store.Set "hasImgFloat" true -}}
+{{- end -}}
+
 {{- $img := .Page.Resources.GetMatch $src -}}
 {{- if not $img -}}
   {{- $img = resources.Get $src -}}
