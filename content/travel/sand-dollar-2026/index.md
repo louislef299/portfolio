@@ -4,6 +4,8 @@ date: 2026-07-22T08:20:16-07:00
 draft: false
 ---
 
+<!-- markdownlint-disable MD013 -->
+
 <div style="float:right; width:320px; max-width:40%; margin:0 0 1.5rem 2rem;">
 
 {{< maplibre style="positron" height="280px"
