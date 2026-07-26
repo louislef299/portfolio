@@ -263,4 +263,12 @@ CITIES = [
     fillKey: "city",
     date: "2026-02",
   },
+  {
+    name: "Paso Robles",
+    latitude: 35.6344649,
+    longitude: - 120.7009244,
+    radius: 3,
+    fillKey: "city",
+    date: "2026-07",
+  }
 ];
