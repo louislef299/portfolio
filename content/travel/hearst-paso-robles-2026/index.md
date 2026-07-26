@@ -4,6 +4,8 @@ date: 2026-07-24T09:02:32-07:00
 draft: false
 ---
 
+<!-- markdownlint-disable MD013 -->
+
 It was our last full day in Morro Bay on Wednesday, and we decided to visit
 Hearst Castle since it was so gloomy and there was zero surf. So, we made a
 similar drive to Sand Dollar and just rode the 1 up a bit past San Simeon and
