@@ -4,8 +4,8 @@ date: 2024-12-29T23:34:32-06:00
 draft: false
 toc: true
 tags:
-- mn
-- north shore
+  - mn
+  - norshore
 ---
 
 Current list of possible and upcoming trips for 2025:
@@ -19,8 +19,8 @@ Current list of possible and upcoming trips for 2025:
 - [Boundary Waters](#boundary-waters-canoe-area-wilderness)
 
 I'll want to do a little research on each place for any camp reservations,
-memberships, times of operation, suggested camping times or general
-information about the area.
+memberships, times of operation, suggested camping times or general information
+about the area.
 
 ## Upcoming Trips
 
@@ -69,20 +69,20 @@ area.
 
 ### Sailing the Great Lakes
 
-Registration opens up January 1st at noon for sailing classes on the [Minneapolis
-Sailing Center site][]. Those 420 classes fill up quickly and I want to get in
-with Elise ASAP. That way I can shake the rust off for sailing and give me a bit
-more practice on boat control with the smaller boats. If I get confident enough,
-the goal would be to potentially rent a sail boat up north.
+Registration opens up January 1st at noon for sailing classes on the
+[Minneapolis Sailing Center site][]. Those 420 classes fill up quickly and I
+want to get in with Elise ASAP. That way I can shake the rust off for sailing
+and give me a bit more practice on boat control with the smaller boats. If I get
+confident enough, the goal would be to potentially rent a sail boat up north.
 
 <!-- markdownlint-disable MD033 MD013 -->
 <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3923812.402536819!2d-89.7011060847916!3d44.325921255783584!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x881e32b2d7da29dd%3A0x47bfdc3f3f745621!2sTraverse%20City%2C%20MI!5e0!3m2!1sen!2sus!4v1735540579052!5m2!1sen!2sus" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
 <!-- markdownlint-enable MD033 MD013 -->
 
-It looks like there are charters in Traverse City, Michigan given by [Great Lakes
-Sailing Co][], that would be a bit expensive of a trip, but could be a super
-memorable trip too. Will want to get more details of sailing in the North Shore
-if possible, but great to see that there are links.
+It looks like there are charters in Traverse City, Michigan given by [Great
+Lakes Sailing Co][], that would be a bit expensive of a trip, but could be a
+super memorable trip too. Will want to get more details of sailing in the North
+Shore if possible, but great to see that there are links.
 
 ### Voyageurs National Park
 
@@ -113,13 +113,18 @@ link them. For now, nice just to get a better idea of the idea to start thinking
 them through. Budgeting for them, doing the extra research, and prepping for a
 busy summer so that I take advantage of the Great Lakes!
 
-[Anaz-Borrego State Park]: https://en.wikipedia.org/wiki/Anza-Borrego_Desert_State_Park
-[Boundary Waters]: https://www.exploreminnesota.com/iconic-destinations/boundary-waters
+[Anaz-Borrego State Park]:
+  https://en.wikipedia.org/wiki/Anza-Borrego_Desert_State_Park
+[Boundary Waters]:
+  https://www.exploreminnesota.com/iconic-destinations/boundary-waters
 [coffee shop hop]: https://northshorevisitor.com/business/timber-coffee-company/
 [depends on snow]: https://www.lutsen.com/mountain-info/daily-snow-report
 [Great Lakes Sailing Co]: https://www.greatlakessailingco.com/charters/
-[Little Italy]: https://www.sandiego.org/explore/downtown-urban/little-italy.aspx
+[Little Italy]:
+  https://www.sandiego.org/explore/downtown-urban/little-italy.aspx
 [Minneapolis Sailing Center site]: https://sailmpls.org/
-[online travel guide]: https://digital.milespartnership.com/publication/?i=834702&p=12&view=issueViewer
-[Santa Cruz wharf collapsed]: https://www.ksbw.com/article/santa-cruz-california-partial-wharf-collapse/63293469
+[online travel guide]:
+  https://digital.milespartnership.com/publication/?i=834702&p=12&view=issueViewer
+[Santa Cruz wharf collapsed]:
+  https://www.ksbw.com/article/santa-cruz-california-partial-wharf-collapse/63293469
 [Voyageurs]: https://en.wikipedia.org/wiki/Voyageurs_National_Park

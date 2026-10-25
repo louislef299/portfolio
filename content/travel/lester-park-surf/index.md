@@ -2,6 +2,10 @@
 title: "Lester Park Surf"
 date: 2026-10-13T07:29:33-05:00
 draft: false
+tags:
+  - norshore
+  - mn
+  - surf
 ---
 
 So I surfed Stoney Point a couple weeks ago and just yesterday, I surfed [Lester
