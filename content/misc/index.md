@@ -7,11 +7,9 @@ params:
   hideReply: true
 ---
 
-## **_Misc_**
+## **_Resources_**
 
 - [My PGP](/public-key.txt)
-
-## **_Online Resources_**
 
 ### _Software Engineers_
 
@@ -41,3 +39,4 @@ params:
 - [derekwinters.com](https://derekwinters.com/)
 - [eskwak.github.io](https://eskwak.github.io/)
 - [783170.github.io](https://783170.github.io/)
+- [mikeschlosser16.github.io](https://mikeschlosser16.github.io/)
